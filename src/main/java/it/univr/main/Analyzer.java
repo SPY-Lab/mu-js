@@ -16,13 +16,12 @@ import it.univr.domain.coalasced.FA;
 import it.univr.domain.lifted.LiftedUnionAbstractDomain;
 import it.univr.state.AbstractMemory;
 import it.univr.state.AbstractState;
-import it.univr.state.Variable;
 
 public class Analyzer {
 
 	public static void main(String[] args) throws IOException {
 		System.out.println(potd());
-		String file = "";
+		String file = args[0];
 
 		boolean narrowing = false;
 		boolean printInvariants = false;
@@ -58,11 +57,12 @@ public class Analyzer {
 		try {
 			if (printInvariants) {
 				state = Analyzer.analyzeInvariants(file, domain, narrowing);
+				System.out.println("\n\n\n");
 				System.out.println(state);
 			} else {
 				memory = Analyzer.analyze(file, domain, narrowing);
+				System.out.println("\n\n\n");
 				System.out.println(memory);
-				System.out.println(((FA) memory.getValue(new Variable("dec"))).getAutomaton().automatonPrint());
 			}
 		} catch (FileNotFoundException f) {
 			System.out.println(printHelp());
