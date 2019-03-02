@@ -227,4 +227,18 @@ public class IndexOfTest {
 		
 		Assert.assertEquals(new Interval("-1", "-1"), automaton.indexOf(search));
 	}
+	
+	@Test
+	public void indexOfTest012() {
+		Automaton a = Automaton.union(Automaton.makeAutomaton("abc"), Automaton.makeAutomaton("bc"));
+		a = Automaton.union(a, Automaton.makeAutomaton("ddd"));
+		
+		
+		FA automaton = new FA(a);
+		
+		FA search = new FA(Automaton.makeAutomaton("c"));
+		
+		Assert.assertEquals(new Interval("-1", "2"), automaton.indexOf(search));
+
+	}
 }

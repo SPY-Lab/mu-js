@@ -27,6 +27,7 @@ public class Analyzer {
 		boolean printInvariants = false;
 
 		AbstractDomain domain = new CoalascedAbstractDomain();
+		
 		for (int i = 0; i < args.length; ++i) {
 			if (args[i].equals("-narr"))
 				narrowing = true;

@@ -479,7 +479,7 @@ public class FA implements AbstractValue {
 			q.setInitialState(true);
 
 			if (!Automaton.isEmptyLanguageAccepted(Automaton.intersection(build, search.getAutomaton()))) 
-				indexesOf.add(getAutomaton().minimumDijkstra(q).size() - 1);
+				indexesOf.add(getAutomaton().maximumDijkstra(q).size() - 1);
 
 			q.setInitialState(false);	
 		}
