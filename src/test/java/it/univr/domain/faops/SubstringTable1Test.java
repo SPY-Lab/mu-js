@@ -190,16 +190,16 @@ public class SubstringTable1Test {
 		
 		// a^*cccb^*
 		Automaton a = new Automaton(delta, states);
-		
+
 		Automaton b = Automaton.makeAutomaton("hello");
 		
 		FA automaton = new FA(Automaton.union(a, b));
-		
 		FA result = automaton.substring(new Interval("2", "2"), new Interval("3", "4"));
 		
 		HashSet<Automaton> automata = new HashSet<>();
 		
 		List<String> ss = new ArrayList<>(Arrays.asList("a", "aa", "c", "ac", "cc", "cb", "l", "ll"));
+		
 		for (String s : ss) 
 			automata.add(Automaton.makeAutomaton(s));
 		
@@ -248,29 +248,12 @@ public class SubstringTable1Test {
 
 	@Test
 	public void testSubstringT1Case12_003() throws Exception {
-		HashSet<State> states = new HashSet<State>();
-		HashSet<Transition> delta = new HashSet<Transition>();
+
+		Automaton a = Automaton.star(Automaton.makeRealAutomaton("a"));
+		Automaton b = Automaton.makeRealAutomaton("ccc");
+		Automaton c = Automaton.star(Automaton.makeRealAutomaton("b"));
 		
-		State q0 = new State("q0", true, false);
-		State q1 = new State("q1", false, false);
-		State q2 = new State("q2", false, false);
-		State q3 = new State("q3", false, true);
-		
-		states.add(q0);		
-		states.add(q1);
-		states.add(q2);
-		states.add(q3);
-		
-		delta.add(new Transition(q0, q0, "a"));
-		delta.add(new Transition(q0, q1, "c"));
-		delta.add(new Transition(q1, q2, "c"));
-		delta.add(new Transition(q2, q3, "c"));
-		delta.add(new Transition(q3, q3, "b"));
-		
-		// a^*cccb^*
-		Automaton a = new Automaton(delta, states);
-		
-		FA automaton = new FA(a);
+		FA automaton = new FA(Automaton.concat(Automaton.concat(a, b), c));
 		
 		FA result = automaton.substring(new Interval("0", "0"), new Interval("-Inf", "2"));
 		

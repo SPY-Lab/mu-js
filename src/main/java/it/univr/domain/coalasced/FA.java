@@ -12,6 +12,12 @@ public class FA implements AbstractValue {
 
 	private static int widening = 3;
 	
+	
+	public static void main(String[] args) {
+		Automaton a = Automaton.rightQuotient(Automaton.suffixesAt(4,Automaton.makeRealAutomaton("hello")),  Automaton.suffix(Automaton.suffixesAt(6, Automaton.makeRealAutomaton("hello"))));
+		System.err.println(a);
+	}
+	
 	private Automaton automaton; 
 
 	public FA() {
@@ -19,11 +25,13 @@ public class FA implements AbstractValue {
 	}
 
 	public FA(String s) {
-		this.automaton = Automaton.makeAutomaton(s);
+		this.automaton = Automaton.makeRealAutomaton(s);
+		this.automaton.minimize();
 	}
 
 	public FA(Automaton automaton) {
 		this.automaton = automaton;
+		this.automaton.minimize();
 	}
 	
 	public void minimize() {
@@ -73,6 +81,9 @@ public class FA implements AbstractValue {
 	public FA substring(Interval init, Interval end) {
 		Automaton result = Automaton.makeEmptyLanguage();
 
+		if (getAutomaton().isSingleString())
+			setAutomaton(Automaton.makeRealAutomaton(getAutomaton().getSingleString()));
+		
 		if (init.isNegativeInfinite())
 			init.setLow("0");
 
@@ -269,6 +280,9 @@ public class FA implements AbstractValue {
 
 		Automaton result = Automaton.makeEmptyLanguage();
 
+		if (getAutomaton().isSingleString())
+			setAutomaton(Automaton.makeRealAutomaton(getAutomaton().getSingleString()));
+		
 		// Case 1
 		if (index.isFiniteConcrete()) {
 
@@ -417,6 +431,8 @@ public class FA implements AbstractValue {
 
 	public Interval length() {
 
+		if (getAutomaton().isSingleString())
+			return new Interval(String.valueOf(getAutomaton().getSingleString().length()), String.valueOf(getAutomaton().getSingleString().length()));
 
 		if (getAutomaton().hasCycle()) {
 
@@ -465,8 +481,11 @@ public class FA implements AbstractValue {
 		if (getAutomaton().hasCycle())
 			return new Interval("-1", "+Inf");
 
-		Automaton build = getAutomaton().clone();
+		Automaton build = getAutomaton().isSingleString() ? Automaton.makeRealAutomaton(getAutomaton().getSingleString()) : getAutomaton().clone();
+		Automaton search_clone = search.getAutomaton().isSingleString() ? Automaton.makeRealAutomaton(search.getAutomaton().getSingleString()) : search.getAutomaton().clone();
 
+		Automaton original = getAutomaton().isSingleString() ? Automaton.makeRealAutomaton(getAutomaton().getSingleString()) : getAutomaton().clone();
+		
 		HashSet<Integer> indexesOf = new HashSet<>();
 
 		for (State s : build.getStates()) {
@@ -478,16 +497,17 @@ public class FA implements AbstractValue {
 		for (State q : build.getStates()) {
 			q.setInitialState(true);
 
-			if (!Automaton.isEmptyLanguageAccepted(Automaton.intersection(build, search.getAutomaton()))) 
-				indexesOf.add(getAutomaton().maximumDijkstra(q).size() - 1);
+			if (!Automaton.isEmptyLanguageAccepted(Automaton.intersection(build, search_clone))) 
+				indexesOf.add(original.maximumDijkstra(q).size() - 1);
+			
 
 			q.setInitialState(false);	
 		}
-
+		
 		// No state in the automaton can read search
 		if (indexesOf.isEmpty())
 			return new Interval("-1", "-1");
-		else if (search.getAutomaton().recognizesExactlyOneString() && getAutomaton().recognizesExactlyOneString())
+		else if (search_clone.recognizesExactlyOneString() && original.recognizesExactlyOneString())
 			return new Interval(String.valueOf(getMinimumInteger(indexesOf)), String.valueOf(getMinimumInteger(indexesOf)));
 		else 
 			return new Interval("-1", String.valueOf(getMaximumInteger(indexesOf)));
