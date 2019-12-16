@@ -21,6 +21,7 @@ INT: SIGN? [0-9]+
 STRING: '"' ~('\r' | '\n' | '"')* '"'
 	| 	'\'' ~('\r' | '\n' )* '\'';
 	
+	 
 LESS : '<'
 	;	
 	
@@ -32,7 +33,10 @@ val: 	INT 															#Integer
 	| 	STRING															#String
 	|	NAN																#NaN
 	;	
-	
+
+object: '{' '}'															#EmptyObject
+	|	'{' (ID ':' expression) (';' ID ':' expression)* '}'			#Obj
+	;
 expression:	
 		expression '.' 'substring' '(' expression ',' expression ')'	#Substring
 	|	expression '.' 'charAt' '(' expression ')'						#CharAt
@@ -51,6 +55,8 @@ expression:
 	|	expression '&&' expression										#And
 	|	expression '||' expression										#Or
 	|	'!' expression													#Not
+	|	object															#ObjectExpression
+	|	ID'[' expression ']'											#PropLookup
 	;
 	
 stmt:
@@ -59,6 +65,9 @@ stmt:
 	| 'while' '(' expression ')' block									#WhileStmt
 	|  block															#BlockStmt
 	|  stmt stmt														#Composition
+	|  ID ASG 'new' object SEMICOLON 									#ObjectAsg
+	|  ID '[' expression ']' ASG expression SEMICOLON 					#PropUpdate
+	
 	;
 	
 block:  '{' '}'

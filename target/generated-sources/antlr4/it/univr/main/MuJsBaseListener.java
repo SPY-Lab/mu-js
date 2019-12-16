@@ -1,7 +1,5 @@
 // Generated from MuJs.g4 by ANTLR 4.4
-
-    package it.univr.main;
-
+package it.univr.main;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -19,13 +17,13 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAExp(@NotNull MuJsParser.AExpContext ctx) { }
+	@Override public void enterPropUpdate(@NotNull MuJsParser.PropUpdateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAExp(@NotNull MuJsParser.AExpContext ctx) { }
+	@Override public void exitPropUpdate(@NotNull MuJsParser.PropUpdateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -43,18 +41,6 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIdBExp(@NotNull MuJsParser.IdBExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIdBExp(@NotNull MuJsParser.IdBExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterDiff(@NotNull MuJsParser.DiffContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -67,73 +53,61 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSExpPar(@NotNull MuJsParser.SExpParContext ctx) { }
+	@Override public void enterString(@NotNull MuJsParser.StringContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSExpPar(@NotNull MuJsParser.SExpParContext ctx) { }
+	@Override public void exitString(@NotNull MuJsParser.StringContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterInt(@NotNull MuJsParser.IntContext ctx) { }
+	@Override public void enterParenthesis(@NotNull MuJsParser.ParenthesisContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitInt(@NotNull MuJsParser.IntContext ctx) { }
+	@Override public void exitParenthesis(@NotNull MuJsParser.ParenthesisContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBExpPar(@NotNull MuJsParser.BExpParContext ctx) { }
+	@Override public void enterIdentifier(@NotNull MuJsParser.IdentifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBExpPar(@NotNull MuJsParser.BExpParContext ctx) { }
+	@Override public void exitIdentifier(@NotNull MuJsParser.IdentifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStr(@NotNull MuJsParser.StrContext ctx) { }
+	@Override public void enterPropLookup(@NotNull MuJsParser.PropLookupContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStr(@NotNull MuJsParser.StrContext ctx) { }
+	@Override public void exitPropLookup(@NotNull MuJsParser.PropLookupContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterConcat(@NotNull MuJsParser.ConcatContext ctx) { }
+	@Override public void enterEmptyObject(@NotNull MuJsParser.EmptyObjectContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitConcat(@NotNull MuJsParser.ConcatContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBool(@NotNull MuJsParser.BoolContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBool(@NotNull MuJsParser.BoolContext ctx) { }
+	@Override public void exitEmptyObject(@NotNull MuJsParser.EmptyObjectContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -151,6 +125,30 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterObj(@NotNull MuJsParser.ObjContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitObj(@NotNull MuJsParser.ObjContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNaN(@NotNull MuJsParser.NaNContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNaN(@NotNull MuJsParser.NaNContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBlock(@NotNull MuJsParser.BlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -158,6 +156,18 @@ public class MuJsBaseListener implements MuJsListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBlock(@NotNull MuJsParser.BlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBoolean(@NotNull MuJsParser.BooleanContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoolean(@NotNull MuJsParser.BooleanContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -175,6 +185,18 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterSubstring(@NotNull MuJsParser.SubstringContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSubstring(@NotNull MuJsParser.SubstringContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterComposition(@NotNull MuJsParser.CompositionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -182,18 +204,6 @@ public class MuJsBaseListener implements MuJsListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitComposition(@NotNull MuJsParser.CompositionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBExp(@NotNull MuJsParser.BExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBExp(@NotNull MuJsParser.BExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -211,25 +221,13 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIdAExp(@NotNull MuJsParser.IdAExpContext ctx) { }
+	@Override public void enterIndexOf(@NotNull MuJsParser.IndexOfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIdAExp(@NotNull MuJsParser.IdAExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAExpPar(@NotNull MuJsParser.AExpParContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAExpPar(@NotNull MuJsParser.AExpParContext ctx) { }
+	@Override public void exitIndexOf(@NotNull MuJsParser.IndexOfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -259,13 +257,25 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSExp(@NotNull MuJsParser.SExpContext ctx) { }
+	@Override public void enterPrimitiveValue(@NotNull MuJsParser.PrimitiveValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSExp(@NotNull MuJsParser.SExpContext ctx) { }
+	@Override public void exitPrimitiveValue(@NotNull MuJsParser.PrimitiveValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterInteger(@NotNull MuJsParser.IntegerContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInteger(@NotNull MuJsParser.IntegerContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -331,6 +341,30 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCharAt(@NotNull MuJsParser.CharAtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCharAt(@NotNull MuJsParser.CharAtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLength(@NotNull MuJsParser.LengthContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLength(@NotNull MuJsParser.LengthContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAnd(@NotNull MuJsParser.AndContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -343,13 +377,13 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterToNum(@NotNull MuJsParser.ToNumContext ctx) { }
+	@Override public void enterGreater(@NotNull MuJsParser.GreaterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitToNum(@NotNull MuJsParser.ToNumContext ctx) { }
+	@Override public void exitGreater(@NotNull MuJsParser.GreaterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -367,13 +401,25 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIdSExp(@NotNull MuJsParser.IdSExpContext ctx) { }
+	@Override public void enterObjectExpression(@NotNull MuJsParser.ObjectExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIdSExp(@NotNull MuJsParser.IdSExpContext ctx) { }
+	@Override public void exitObjectExpression(@NotNull MuJsParser.ObjectExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterObjectAsg(@NotNull MuJsParser.ObjectAsgContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitObjectAsg(@NotNull MuJsParser.ObjectAsgContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

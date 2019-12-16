@@ -1,7 +1,5 @@
 // Generated from MuJs.g4 by ANTLR 4.4
-
-    package it.univr.main;
-
+package it.univr.main;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -14,75 +12,61 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by the {@code AExp}
-	 * labeled alternative in {@link MuJsParser#exp}.
+	 * Visit a parse tree produced by the {@code PropUpdate}
+	 * labeled alternative in {@link MuJsParser#stmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAExp(@NotNull MuJsParser.AExpContext ctx);
+	T visitPropUpdate(@NotNull MuJsParser.PropUpdateContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Or}
-	 * labeled alternative in {@link MuJsParser#bexp}.
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitOr(@NotNull MuJsParser.OrContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code IdBExp}
-	 * labeled alternative in {@link MuJsParser#bexp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIdBExp(@NotNull MuJsParser.IdBExpContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Diff}
-	 * labeled alternative in {@link MuJsParser#aexp}.
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitDiff(@NotNull MuJsParser.DiffContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code SExpPar}
-	 * labeled alternative in {@link MuJsParser#sexp}.
+	 * Visit a parse tree produced by the {@code String}
+	 * labeled alternative in {@link MuJsParser#val}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSExpPar(@NotNull MuJsParser.SExpParContext ctx);
+	T visitString(@NotNull MuJsParser.StringContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Int}
-	 * labeled alternative in {@link MuJsParser#aexp}.
+	 * Visit a parse tree produced by the {@code Parenthesis}
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitInt(@NotNull MuJsParser.IntContext ctx);
+	T visitParenthesis(@NotNull MuJsParser.ParenthesisContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code BExpPar}
-	 * labeled alternative in {@link MuJsParser#bexp}.
+	 * Visit a parse tree produced by the {@code Identifier}
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBExpPar(@NotNull MuJsParser.BExpParContext ctx);
+	T visitIdentifier(@NotNull MuJsParser.IdentifierContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Str}
-	 * labeled alternative in {@link MuJsParser#sexp}.
+	 * Visit a parse tree produced by the {@code PropLookup}
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStr(@NotNull MuJsParser.StrContext ctx);
+	T visitPropLookup(@NotNull MuJsParser.PropLookupContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Concat}
-	 * labeled alternative in {@link MuJsParser#sexp}.
+	 * Visit a parse tree produced by the {@code EmptyObject}
+	 * labeled alternative in {@link MuJsParser#object}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitConcat(@NotNull MuJsParser.ConcatContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Bool}
-	 * labeled alternative in {@link MuJsParser#bexp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBool(@NotNull MuJsParser.BoolContext ctx);
+	T visitEmptyObject(@NotNull MuJsParser.EmptyObjectContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code WhileStmt}
 	 * labeled alternative in {@link MuJsParser#stmt}.
@@ -91,18 +75,46 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWhileStmt(@NotNull MuJsParser.WhileStmtContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Obj}
+	 * labeled alternative in {@link MuJsParser#object}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitObj(@NotNull MuJsParser.ObjContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NaN}
+	 * labeled alternative in {@link MuJsParser#val}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNaN(@NotNull MuJsParser.NaNContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MuJsParser#block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitBlock(@NotNull MuJsParser.BlockContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Boolean}
+	 * labeled alternative in {@link MuJsParser#val}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolean(@NotNull MuJsParser.BooleanContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Less}
-	 * labeled alternative in {@link MuJsParser#bexp}.
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitLess(@NotNull MuJsParser.LessContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Substring}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSubstring(@NotNull MuJsParser.SubstringContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Composition}
 	 * labeled alternative in {@link MuJsParser#stmt}.
@@ -111,33 +123,19 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitComposition(@NotNull MuJsParser.CompositionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code BExp}
-	 * labeled alternative in {@link MuJsParser#exp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBExp(@NotNull MuJsParser.BExpContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Mul}
-	 * labeled alternative in {@link MuJsParser#aexp}.
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitMul(@NotNull MuJsParser.MulContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code IdAExp}
-	 * labeled alternative in {@link MuJsParser#aexp}.
+	 * Visit a parse tree produced by the {@code IndexOf}
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIdAExp(@NotNull MuJsParser.IdAExpContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code AExpPar}
-	 * labeled alternative in {@link MuJsParser#aexp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAExpPar(@NotNull MuJsParser.AExpParContext ctx);
+	T visitIndexOf(@NotNull MuJsParser.IndexOfContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code BlockStmt}
 	 * labeled alternative in {@link MuJsParser#stmt}.
@@ -147,35 +145,42 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	T visitBlockStmt(@NotNull MuJsParser.BlockStmtContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Sum}
-	 * labeled alternative in {@link MuJsParser#aexp}.
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitSum(@NotNull MuJsParser.SumContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code SExp}
-	 * labeled alternative in {@link MuJsParser#exp}.
+	 * Visit a parse tree produced by the {@code PrimitiveValue}
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSExp(@NotNull MuJsParser.SExpContext ctx);
+	T visitPrimitiveValue(@NotNull MuJsParser.PrimitiveValueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Integer}
+	 * labeled alternative in {@link MuJsParser#val}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInteger(@NotNull MuJsParser.IntegerContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Div}
-	 * labeled alternative in {@link MuJsParser#aexp}.
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitDiv(@NotNull MuJsParser.DivContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Not}
-	 * labeled alternative in {@link MuJsParser#bexp}.
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitNot(@NotNull MuJsParser.NotContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Equals}
-	 * labeled alternative in {@link MuJsParser#bexp}.
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -195,19 +200,33 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgramExecution(@NotNull MuJsParser.ProgramExecutionContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code CharAt}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCharAt(@NotNull MuJsParser.CharAtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Length}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLength(@NotNull MuJsParser.LengthContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code And}
-	 * labeled alternative in {@link MuJsParser#bexp}.
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitAnd(@NotNull MuJsParser.AndContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ToNum}
-	 * labeled alternative in {@link MuJsParser#aexp}.
+	 * Visit a parse tree produced by the {@code Greater}
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitToNum(@NotNull MuJsParser.ToNumContext ctx);
+	T visitGreater(@NotNull MuJsParser.GreaterContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code AssignmentStmt}
 	 * labeled alternative in {@link MuJsParser#stmt}.
@@ -216,10 +235,17 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignmentStmt(@NotNull MuJsParser.AssignmentStmtContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code IdSExp}
-	 * labeled alternative in {@link MuJsParser#sexp}.
+	 * Visit a parse tree produced by the {@code ObjectExpression}
+	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIdSExp(@NotNull MuJsParser.IdSExpContext ctx);
+	T visitObjectExpression(@NotNull MuJsParser.ObjectExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ObjectAsg}
+	 * labeled alternative in {@link MuJsParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitObjectAsg(@NotNull MuJsParser.ObjectAsgContext ctx);
 }

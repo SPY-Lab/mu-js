@@ -1,5 +1,7 @@
 package it.univr.main;
 
+import org.antlr.v4.runtime.misc.NotNull;
+
 import it.univr.domain.AbstractDomain;
 import it.univr.domain.AbstractValue;
 import it.univr.domain.coalasced.Bool;
@@ -10,7 +12,6 @@ import it.univr.domain.coalasced.NaN;
 import it.univr.main.MuJsParser.IdentifierContext;
 import it.univr.main.MuJsParser.PrimitiveValueContext;
 import it.univr.state.AbstractEnvironment;
-import it.univr.state.AbstractMemory;
 import it.univr.state.AbstractState;
 import it.univr.state.KeyAbstractState;
 import it.univr.state.Variable;
@@ -51,6 +52,48 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		this.domain = domain;
 	}
 
+	
+	/**
+	 * 
+	 * MuJS Objects
+	 * 
+	 */
+	@Override 
+	public AbstractValue visitPropUpdate(MuJsParser.PropUpdateContext ctx) { 
+		// TODO: Marin
+		return visitChildren(ctx); 
+	}
+
+	@Override 
+	public AbstractValue visitPropLookup(MuJsParser.PropLookupContext ctx) { 
+		// TODO: Marin
+		return visitChildren(ctx); 
+	}
+	
+	@Override 
+	public AbstractValue visitEmptyObject(MuJsParser.EmptyObjectContext ctx) { 
+		// TODO: Marin
+		return visitChildren(ctx); 
+	}
+
+	@Override 
+	public AbstractValue visitObj(MuJsParser.ObjContext ctx) { 
+		// TODO: Marin
+		return visitChildren(ctx); 
+	}
+
+	@Override 
+	public AbstractValue visitObjectExpression(MuJsParser.ObjectExpressionContext ctx) { 
+		// TODO: Marin
+		return visitChildren(ctx);
+	}
+	
+	@Override 
+	public AbstractValue visitObjectAsg(MuJsParser.ObjectAsgContext ctx) { 
+		// TODO: Marin
+		return visitChildren(ctx); 
+	}
+	
 	/**
 	 * 
 	 * MuJS Statements
@@ -170,7 +213,6 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 			if (narrowingIsEnabled)
 				s.intersect(projectTrueState(ctx.expression()));	
 
-			System.err.println(s);
 			if (previous.equals(s))
 				break;
 			else
