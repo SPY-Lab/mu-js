@@ -57,4 +57,9 @@ public class AbstractObject implements AbstractValue {
 		// TODO: Marin
 		return false;
 	}
+	
+	public AbstractObject normalize() {
+		//TODO: Marin
+		return null;
+	}
 }
