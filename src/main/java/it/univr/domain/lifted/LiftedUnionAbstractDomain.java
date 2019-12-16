@@ -316,4 +316,25 @@ public class LiftedUnionAbstractDomain extends AbstractDomain {
 
 		return new LiftedUnionAbstractValue();
 	}
+
+	@Override
+	public AbstractValue makeBottom() {
+		return new LiftedUnionAbstractValue();
+	}
+
+	@Override
+	public boolean isTrue(AbstractValue v) {
+		return v instanceof Bool && ((Bool) v).isTrue(); 
+	}
+
+	@Override
+	public boolean isFalse(AbstractValue v) {	
+		return v instanceof Bool && ((Bool) v).isFalse(); 
+	}
+
+	@Override
+	public boolean isTopBool(AbstractValue v) {	
+		return v instanceof Bool && ((Bool) v).isTopBool(); 
+
+	}
 }

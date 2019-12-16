@@ -8,6 +8,7 @@ import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
 import it.univr.fsm.machine.Automaton;
 import it.univr.main.Analyzer;
+import it.univr.state.AbstractEnvironment;
 import it.univr.state.AbstractMemory;
 import it.univr.state.Variable;
 
@@ -17,10 +18,11 @@ public class CoalescedIndexOfTest {
 	@Test
 	public void testIndexOf001() throws Exception {
 		String file = "src/test/resources/indexof/io001.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
 		// State size
-		Assert.assertEquals(state.size(), 1);
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
 
 		// State values
 		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("1", "1"));
@@ -29,10 +31,11 @@ public class CoalescedIndexOfTest {
 	@Test
 	public void testIndexOf002() throws Exception {
 		String file = "src/test/resources/indexof/io002.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
 		// State size
-		Assert.assertEquals(state.size(), 3);
+		Assert.assertEquals(state.sizeStore(), 3);
+		Assert.assertEquals(state.sizeHeap(), 0);
 
 		// State values
 		Assert.assertEquals(state.getValue(new Variable("x")), new FA(Automaton.makeAutomaton("helloworld")));

@@ -13,7 +13,7 @@ import it.univr.fsm.machine.Automaton;
 import it.univr.fsm.machine.State;
 import it.univr.fsm.machine.Transition;
 import it.univr.main.Analyzer;
-import it.univr.state.AbstractMemory;
+import it.univr.state.AbstractEnvironment;
 import it.univr.state.Variable;
 
 public class LiftedUnionIfTest {
@@ -23,11 +23,12 @@ public class LiftedUnionIfTest {
 	@Test
 	public void testIf001() throws Exception {
 		String file = "src/test/resources/if/if001.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
 		// State size
-		Assert.assertEquals(state.size(), 1);
-		
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
 		LiftedUnionAbstractValue x = new LiftedUnionAbstractValue();
 		x.setInterval(new Interval("1", "1"));
 		
@@ -38,11 +39,12 @@ public class LiftedUnionIfTest {
 	@Test
 	public void testIf002() throws Exception {
 		String file = "src/test/resources/if/if002.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
 		// State size
-		Assert.assertEquals(state.size(), 2);
-		
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
 		LiftedUnionAbstractValue a = new LiftedUnionAbstractValue();
 		a.setInterval(new Interval("0", "+Inf"));
 		
@@ -58,11 +60,12 @@ public class LiftedUnionIfTest {
 	@Test
 	public void testIf003() throws Exception {
 		String file = "src/test/resources/if/if003.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
 		// State size
-		Assert.assertEquals(state.size(), 2);
-		
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
 		HashSet<State> states = new HashSet<State>();
 		HashSet<Transition> delta = new HashSet<Transition>();
 
@@ -89,11 +92,12 @@ public class LiftedUnionIfTest {
 	@Test
 	public void testIf004() throws Exception {
 		String file = "src/test/resources/if/if004.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
 		// State size
-		Assert.assertEquals(state.size(), 1);
-		
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
 		LiftedUnionAbstractValue x = new LiftedUnionAbstractValue();
 		x.setInterval(new Interval("2", "2"));
 		
@@ -104,11 +108,12 @@ public class LiftedUnionIfTest {
 	@Test
 	public void testIf005() throws Exception {
 		String file = "src/test/resources/if/if005.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
 		// State size
-		Assert.assertEquals(state.size(), 1);
-		
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
 		LiftedUnionAbstractValue x = new LiftedUnionAbstractValue();
 		x.setInterval(new Interval("2", "2"));
 		
@@ -119,11 +124,12 @@ public class LiftedUnionIfTest {
 	@Test
 	public void testIf006() throws Exception {
 		String file = "src/test/resources/if/if006.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
 		// State size
-		Assert.assertEquals(state.size(), 1);
-		
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
 		LiftedUnionAbstractValue x = new LiftedUnionAbstractValue();
 		x.setInterval(new Interval("0", "0"));
 		
@@ -134,11 +140,12 @@ public class LiftedUnionIfTest {
 	@Test
 	public void testIf007() throws Exception {
 		String file = "src/test/resources/if/if007.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
 		// State size
-		Assert.assertEquals(state.size(), 1);
-		
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
 		LiftedUnionAbstractValue x = new LiftedUnionAbstractValue();
 		x.setInterval(new Interval("1", "1"));
 		
@@ -149,11 +156,12 @@ public class LiftedUnionIfTest {
 	@Test
 	public void testIf008() throws Exception {
 		String file = "src/test/resources/if/if008.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
 		// State size
-		Assert.assertEquals(state.size(), 3);
-		
+		Assert.assertEquals(state.sizeStore(), 3);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
 		LiftedUnionAbstractValue a = new LiftedUnionAbstractValue();
 		a.setInterval(new Interval("0", "+Inf"));	
 
@@ -172,11 +180,12 @@ public class LiftedUnionIfTest {
 	@Test
 	public void testIf009() throws Exception {
 		String file = "src/test/resources/if/if009.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 		Automaton aut = Automaton.union(Automaton.union(Automaton.union(Automaton.makeAutomaton("a"), Automaton.makeAutomaton("b")), Automaton.makeAutomaton("c")), Automaton.makeAutomaton("d"));
 
 		// State size
-		Assert.assertEquals(state.size(), 2);
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 0);
 
 		LiftedUnionAbstractValue a = new LiftedUnionAbstractValue();
 		a.setInterval(new Interval("0", "+Inf"));
@@ -192,11 +201,12 @@ public class LiftedUnionIfTest {
 	@Test
 	public void testIf010() throws Exception {
 		String file = "src/test/resources/if/if010.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 		Automaton aut = Automaton.union(Automaton.makeAutomaton("ab"), Automaton.makeAutomaton("ac"));
 		
 		// State size
-		Assert.assertEquals(state.size(), 2);
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 0);
 
 		LiftedUnionAbstractValue i = new LiftedUnionAbstractValue();
 		i.setInterval(new Interval("0", "+Inf"));

@@ -9,6 +9,7 @@ import it.univr.domain.coalasced.Interval;
 import it.univr.domain.coalasced.NaN;
 import it.univr.main.MuJsParser.IdentifierContext;
 import it.univr.main.MuJsParser.PrimitiveValueContext;
+import it.univr.state.AbstractEnvironment;
 import it.univr.state.AbstractMemory;
 import it.univr.state.AbstractState;
 import it.univr.state.KeyAbstractState;
@@ -16,7 +17,7 @@ import it.univr.state.Variable;
 
 public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
-	private AbstractMemory memory;
+	private AbstractEnvironment env;
 	private AbstractDomain domain;
 	private AbstractState state;
 
@@ -24,22 +25,22 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	private boolean printInvariants;
 
 	public AbstractInterpreter(AbstractDomain domain, boolean narrowing, boolean invariants) {
-		this.memory = new AbstractMemory(domain);
+		this.env = new AbstractEnvironment(domain);
 		this.state = new AbstractState();
 		this.narrowingIsEnabled = narrowing;
 		this.printInvariants = invariants;
 	}
 
-	public AbstractMemory getFinalAbstractMemory() {
-		return memory;
+	public AbstractEnvironment getFinalAbstractMemory() {
+		return env;
 	}
 
 	public AbstractState getAbstractState() {
 		return state;
 	}
 
-	public void setAbstractState(AbstractMemory state) {
-		this.memory = state;
+	public void setAbstractState(AbstractEnvironment env) {
+		this.env = env;
 	}
 
 	public AbstractDomain getAbstractDomain() {
@@ -64,11 +65,11 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitAssignmentStmt(MuJsParser.AssignmentStmtContext ctx) { 
 
 		Variable v = new Variable(ctx.getChild(0).getText());
-		memory.put(v, visit(ctx.expression()));
+		env.put(v, visit(ctx.expression()));
 
 		if (printInvariants) {
 			KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
-			state.add(key, memory.clone());
+			state.add(key, env.clone());
 		}
 		return new Bottom(); 
 	}
@@ -99,20 +100,20 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		if (evaluationGuard.isFalse())
 			return visit(ctx.block(1));
 
-		AbstractMemory previous = (AbstractMemory) memory.clone();
+		AbstractEnvironment previous = (AbstractEnvironment) env.clone();
 
 		visit(ctx.block(0));
 
-		AbstractMemory trueBranch = (AbstractMemory) memory.clone();
-		memory = previous;
+		AbstractEnvironment trueBranch = (AbstractEnvironment) env.clone();
+		env = previous;
 
 		visit(ctx.block(1));
 
-		memory = memory.leastUpperBound(trueBranch);
+		env = env.leastUpperBound(trueBranch);
 
 		if (printInvariants) {
 			KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
-			state.add(key, memory.clone());
+			state.add(key, env.clone());
 		}		
 
 		return new Bottom();
@@ -126,50 +127,50 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	@Override 
 	public AbstractValue visitWhileStmt(MuJsParser.WhileStmtContext ctx) { 
 
-		AbstractMemory lastExecution = new AbstractMemory(domain);
-		AbstractMemory previous = (AbstractMemory) memory.clone();
+		AbstractEnvironment lastExecution = new AbstractEnvironment(domain);
+		AbstractEnvironment previous = (AbstractEnvironment) env.clone();
 
 		do {
-			Bool evaluationGuard = (Bool) domain.juggleToBool(visit(ctx.expression()));
 
 			/**
 			 * True
 			 */
-			if (evaluationGuard.isTrue()) {
+			if (domain.isTrue(domain.juggleToBool(visit(ctx.expression())))) {
 				visit(ctx.block());
 
 				if (narrowingIsEnabled)
-					lastExecution =  memory.clone();
-				memory = previous.widening(memory);
+					lastExecution =  env.clone();
+				env = previous.widening(env);
 			} 
 
 			/**
 			 * False
 			 */
-			else if (evaluationGuard.isFalse()) {
+			else if (domain.isFalse(domain.juggleToBool(visit(ctx.expression())))) {
 				if (narrowingIsEnabled)
 
-					lastExecution =  memory.clone();
+					lastExecution =  env.clone();
 				break;
 			} 
 
 			/**
 			 * Top
 			 */
-			else {
+			else if (domain.isTopBool(domain.juggleToBool(visit(ctx.expression())))) {
 				if (narrowingIsEnabled)
-					memory.intersect(projectTrueState(ctx.expression()));
+					env.intersect(projectTrueState(ctx.expression()));
+				
 				visit(ctx.block());
 				if (narrowingIsEnabled)
-					lastExecution = memory.clone();
-				memory = previous.widening(previous.leastUpperBound(memory));
+					lastExecution = env.clone();
+				env = previous.widening(previous.leastUpperBound(env));
 			}
 
-			AbstractMemory s =  memory.clone();
+			AbstractEnvironment s =  env.clone();
 			if (narrowingIsEnabled)
-
 				s.intersect(projectTrueState(ctx.expression()));	
 
+			System.err.println(s);
 			if (previous.equals(s))
 				break;
 			else
@@ -177,13 +178,13 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		} while (true);
 
 		if (narrowingIsEnabled) {
-			memory.intersect(projectFalseState(ctx.expression()));
-			memory = memory.narrowing(lastExecution);
+			env.intersect(projectFalseState(ctx.expression()));
+			env = env.narrowing(lastExecution);
 		}
 
 		if (printInvariants) {
 			KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
-			state.add(key, memory.clone());
+			state.add(key, env.clone());
 		}
 
 		return new Bottom(); 
@@ -329,8 +330,8 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 		Variable v = new Variable(ctx.ID().getText());
 
-		if (memory.containsKey(v))
-			return memory.get(v);
+		if (env.getStore().containsKey(v))
+			return env.getStore().get(v);
 		else
 			return new Bottom();
 	}
@@ -345,8 +346,8 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		return domain.makeNaN(new NaN());
 	}
 
-	public AbstractMemory projectTrueState(MuJsParser.ExpressionContext exp) {
-		AbstractMemory state = new AbstractMemory(domain);
+	public AbstractEnvironment projectTrueState(MuJsParser.ExpressionContext exp) {
+		AbstractEnvironment state = new AbstractEnvironment(domain);
 
 		// A > B
 		if (exp instanceof MuJsParser.GreaterContext) {
@@ -360,7 +361,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 					numericBound = Long.parseLong(bound);
 				} catch (Exception e){
 
-					return new AbstractMemory(domain);
+					return new AbstractEnvironment(domain);
 				}
 
 				state.put(new Variable(((MuJsParser.GreaterContext) exp).expression(0).getChild(0).getText()), domain.makeInterval(new Interval(String.valueOf(numericBound + 1), "+Inf")));
@@ -376,7 +377,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 					numericBound = Long.parseLong(bound);
 				} catch (Exception e){
 
-					return new AbstractMemory(domain);
+					return new AbstractEnvironment(domain);
 				}
 
 				state.put(new Variable(((MuJsParser.GreaterContext) exp).expression(1).getChild(0).getText()), domain.makeInterval(new Interval("-Inf", String.valueOf(numericBound -1))));
@@ -397,7 +398,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 					numericBound = Long.parseLong(bound);
 				} catch (Exception e){
 
-					return new AbstractMemory(domain);
+					return new AbstractEnvironment(domain);
 				}
 
 				state.put(new Variable(((MuJsParser.LessContext) exp).expression(0).getChild(0).getText()), domain.makeInterval(new Interval("-Inf", String.valueOf(numericBound - 1))));
@@ -413,7 +414,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 					numericBound = Long.parseLong(bound);
 				} catch (Exception e){
 
-					return new AbstractMemory(domain);
+					return new AbstractEnvironment(domain);
 				}
 
 				state.put(new Variable(((MuJsParser.LessContext) exp).expression(1).getChild(0).getText()), domain.makeInterval(new Interval(String.valueOf(numericBound + 1), "+Inf")));
@@ -422,11 +423,11 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 		}
 
-		return new AbstractMemory(domain);
+		return new AbstractEnvironment(domain);
 	}
 
-	public AbstractMemory projectFalseState(MuJsParser.ExpressionContext exp) {
-		AbstractMemory state = new AbstractMemory(domain);
+	public AbstractEnvironment projectFalseState(MuJsParser.ExpressionContext exp) {
+		AbstractEnvironment state = new AbstractEnvironment(domain);
 
 		// A < B
 		if (exp instanceof MuJsParser.LessContext) {
@@ -440,7 +441,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 					numericBound = Long.parseLong(bound);
 				} catch (Exception e){
 
-					return new AbstractMemory(domain);
+					return new AbstractEnvironment(domain);
 				}
 
 				state.put(new Variable(((MuJsParser.LessContext) exp).expression(0).getChild(0).getText()), domain.makeInterval(new Interval(String.valueOf(numericBound), "+Inf")));
@@ -456,7 +457,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 					numericBound = Long.parseLong(bound);
 				} catch (Exception e){
 
-					return new AbstractMemory(domain);
+					return new AbstractEnvironment(domain);
 				}
 
 				state.put(new Variable(((MuJsParser.LessContext) exp).expression(1).getChild(0).getText()), domain.makeInterval(new Interval("-Inf", String.valueOf(numericBound))));
@@ -477,7 +478,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 					numericBound = Long.parseLong(bound);
 				} catch (Exception e){
 
-					return new AbstractMemory(domain);
+					return new AbstractEnvironment(domain);
 				}
 
 				state.put(new Variable(((MuJsParser.GreaterContext) exp).expression(0).getChild(0).getText()), domain.makeInterval(new Interval("-Inf", String.valueOf(numericBound))));
@@ -493,7 +494,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 					numericBound = Long.parseLong(bound);
 				} catch (Exception e){
 
-					return new AbstractMemory(domain);
+					return new AbstractEnvironment(domain);
 				}
 
 				state.put(new Variable(((MuJsParser.GreaterContext) exp).expression(1).getChild(0).getText()), domain.makeInterval(new Interval(String.valueOf(numericBound), "+Inf")));
@@ -502,6 +503,6 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 		}
 
-		return new AbstractMemory(domain);
+		return new AbstractEnvironment(domain);
 	}
 }

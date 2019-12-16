@@ -8,7 +8,7 @@ import it.univr.domain.coalasced.NaN;
 import it.univr.domain.lifted.LiftedUnionAbstractDomain;
 import it.univr.domain.lifted.LiftedUnionAbstractValue;
 import it.univr.main.Analyzer;
-import it.univr.state.AbstractMemory;
+import it.univr.state.AbstractEnvironment;
 import it.univr.state.Variable;
 
 public class LiftedUnionNanTest {
@@ -18,11 +18,12 @@ public class LiftedUnionNanTest {
 	@Test
 	public void testNan001() throws Exception {
 		String file = dir + "nan001.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
 		// State size
-		Assert.assertEquals(state.size(), 1);
-		
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
 		LiftedUnionAbstractValue x = new LiftedUnionAbstractValue();
 		x.setNaN(new NaN());
 		
@@ -33,11 +34,12 @@ public class LiftedUnionNanTest {
 	@Test
 	public void testNan002() throws Exception {
 		String file = dir + "nan002.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
 		// State size
-		Assert.assertEquals(state.size(), 1);
-		
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
 		LiftedUnionAbstractValue x = new LiftedUnionAbstractValue();
 		x.setNaN(new NaN());
 		
@@ -48,11 +50,12 @@ public class LiftedUnionNanTest {
 	@Test
 	public void testNan003() throws Exception {
 		String file = dir + "nan003.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
 		// State size
-		Assert.assertEquals(state.size(), 1);
-		
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
 		LiftedUnionAbstractValue x = new LiftedUnionAbstractValue();
 		x.setNaN(new NaN());
 		
@@ -63,11 +66,12 @@ public class LiftedUnionNanTest {
 	@Test
 	public void testNan004() throws Exception {
 		String file = dir + "nan004.js";
-		AbstractMemory state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
 		// State size
-		Assert.assertEquals(state.size(), 3);
-		
+		Assert.assertEquals(state.sizeStore(), 3);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
 		LiftedUnionAbstractValue x = new LiftedUnionAbstractValue();
 		x.setInterval(new Interval("0", "+Inf"));		
 		

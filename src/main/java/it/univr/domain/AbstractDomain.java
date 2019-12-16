@@ -26,4 +26,9 @@ public abstract class AbstractDomain implements TypeJuggligAbstractDomain {
 	public abstract AbstractValue makeFA(AbstractValue v);
 	public abstract AbstractValue makeNaN(AbstractValue v);
 	public abstract AbstractValue makeBool(AbstractValue v);
+	
+	public abstract AbstractValue makeBottom();
+	public abstract boolean isTrue(AbstractValue v);
+	public abstract boolean isFalse(AbstractValue v);
+	public abstract boolean isTopBool(AbstractValue v);
 }

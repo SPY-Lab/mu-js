@@ -240,4 +240,26 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 		//TODO:div
 		return new Top();
 	}
+
+	@Override
+	public AbstractValue makeBottom() {
+		return new Bottom();
+	}
+
+	@Override
+	public boolean isTrue(AbstractValue v) {
+		AbstractValue r = juggleToBool(v);
+		return r instanceof Bool && ((Bool) r).isTrue();	
+	}
+
+	@Override
+	public boolean isFalse(AbstractValue v) {
+		AbstractValue r = juggleToBool(v);
+		return r instanceof Bool && ((Bool) r).isFalse();	}
+
+	@Override
+	public boolean isTopBool(AbstractValue v) {
+		AbstractValue r = juggleToBool(v);
+		return r instanceof Bool && ((Bool) r).isTopBool();
+	}
 }

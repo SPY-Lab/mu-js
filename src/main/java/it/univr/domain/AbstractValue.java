@@ -1,6 +1,7 @@
 package it.univr.domain;
 
-public interface AbstractValue extends TypeJuggling {
+
+public interface AbstractValue  extends TypeJuggling {
 
 	public AbstractValue leastUpperBound(AbstractValue other);
 	public AbstractValue widening(AbstractValue other);

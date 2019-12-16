@@ -14,6 +14,7 @@ import it.univr.domain.AbstractDomain;
 import it.univr.domain.coalasced.CoalascedAbstractDomain;
 import it.univr.domain.coalasced.FA;
 import it.univr.domain.lifted.LiftedUnionAbstractDomain;
+import it.univr.state.AbstractEnvironment;
 import it.univr.state.AbstractMemory;
 import it.univr.state.AbstractState;
 
@@ -52,7 +53,7 @@ public class Analyzer {
 			}
 		}
 
-		AbstractMemory memory = null;
+		AbstractEnvironment memory = null;
 		AbstractState state = null;
 		
 		try {
@@ -70,7 +71,7 @@ public class Analyzer {
 		}
 	}
 
-	public static AbstractMemory analyze(String file, AbstractDomain domain, boolean narrowing) throws IOException {
+	public static AbstractEnvironment analyze(String file, AbstractDomain domain, boolean narrowing) throws IOException {
 		AbstractInterpreter interpreter = new AbstractInterpreter(domain, narrowing, false);
 
 		interpreter.setAbstractDomain(domain);
