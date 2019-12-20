@@ -1,5 +1,7 @@
 package it.univr.domain.coalasced;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -12,14 +14,34 @@ public class FA implements AbstractValue {
 
 	private static int widening = 3;
 	
-	
 	public static void main(String[] args) {
 		Automaton a = Automaton.rightQuotient(Automaton.suffixesAt(4,Automaton.makeRealAutomaton("hello")),  Automaton.suffix(Automaton.suffixesAt(6, Automaton.makeRealAutomaton("hello"))));
 		System.err.println(a);
 	}
-	
+
 	private Automaton automaton; 
 
+	private boolean hasCycle() {
+		return this.automaton.hasCycle();
+	}
+	
+	public HashSet<String> getLanguage() {
+		assertTrue(!this.automaton.hasCycle());
+		return this.automaton.getLanguage();
+	}
+	
+	public boolean isSingleString() {
+		return this.automaton.isSingleString();
+	}
+	
+	public boolean isInfinite() {
+		return hasCycle();
+	}
+	
+	public FA minus(FA that) {
+		return new FA(Automaton.minus(this.automaton, that.automaton));
+	}
+	
 	public FA() {
 		this.automaton = Automaton.makeEmptyLanguage();
 	}
