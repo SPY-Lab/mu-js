@@ -20,7 +20,8 @@ public class FA implements AbstractValue {
 	}
 
 	private Automaton automaton; 
-
+	
+	// 20.12 START
 	private boolean hasCycle() {
 		return this.automaton.hasCycle();
 	}
@@ -41,6 +42,7 @@ public class FA implements AbstractValue {
 	public FA minus(FA that) {
 		return new FA(Automaton.minus(this.automaton, that.automaton));
 	}
+	// 20.12 END
 	
 	public FA() {
 		this.automaton = Automaton.makeEmptyLanguage();
