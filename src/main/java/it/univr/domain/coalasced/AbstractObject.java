@@ -18,6 +18,10 @@ public class AbstractObject implements AbstractValue {
 		this.abstractObject.put(fa, abstractValue);
 	}
 	
+	public AbstractObject() {
+		this.abstractObject = new MultiHashMap<>();
+	}
+	
 	public MultiHashMap<FA, AbstractValue> getAbstractObjectMap() {
 		return this.abstractObject;
 	}
@@ -77,6 +81,11 @@ public class AbstractObject implements AbstractValue {
 	}
 	
 	@Override
+	public String toString() {
+		return abstractObject.toString();
+	}
+	
+	@Override
 	public int hashCode() {
 		// TODO: Marin
 		return this.abstractObject.hashCode();
@@ -84,28 +93,31 @@ public class AbstractObject implements AbstractValue {
 
 	@Override
 	public boolean equals(Object other) {
-		// TODO: Marin
 		if (other instanceof AbstractObject)
 			return this.abstractObject.equals(((AbstractObject)other).getAbstractObjectMap());
+		
 		return false;
 	}
+	
 	/**
 	 * 
 	 * @return normalized this abstract object
 	 */
-	public AbstractObject normalize() {
-		//TODO: Marin
-		AbstractObject absObj = new AbstractObject(this.getAbstractObjectMap());
-		for(FA fa: absObj.getAbstractObjectMap().keySet()) {
-			//AbstractValue abstractValue = (AbstractValue) absObj.getAbstractObjectMap().get(fa); // .getCollection(fa);
-			Object abstractValue = absObj.getAbstractObjectMap().get(fa);
-			if (!fa.isSingleString() || !fa.isInfinite()) {
-				this.abstractObject.remove(fa, abstractValue); // ??
-				for (String s: fa.getLanguage())
-					for(Object o: (Collection<AbstractValue>)abstractValue)
-						this.abstractObject.put(new FA(s), (AbstractValue)o);
+	public void normalize() {
+		
+		for (FA abstractProperty: getAbstractObjectMap().keySet()) {
+			
+			Object abstractValue = getAbstractObjectMap().get(abstractProperty);
+			
+			if (!abstractProperty.isSingleString() || !abstractProperty.isInfinite()) {
+				// this means that the abstract property recognizes only finite languages (not equals to 1)
+				
+				abstractObject.remove(abstractProperty);
+				
+				for (String s: abstractProperty.getLanguage())
+					for(Object o: (Collection<AbstractValue>) abstractValue)
+						this.abstractObject.put(new FA(s), (AbstractValue) o);
 			}
 		}
-		return this;
 	}
 }
