@@ -1,15 +1,31 @@
 package it.univr.domain.coalasced;
 
-
+import java.util.Collection;
 
 import org.apache.commons.collections15.multimap.MultiHashMap;
-
 import it.univr.domain.AbstractValue;
 
 public class AbstractObject implements AbstractValue {
-	// this è una multihashmap, quindi due chiavi uguali va bene
 	
-	private MultiHashMap<FA, AbstractValue> abstractObject = new MultiHashMap<FA,AbstractValue>();
+	private MultiHashMap<FA, AbstractValue> abstractObject;// = new MultiHashMap<FA,AbstractValue>();
+	
+//	public AbstractObject() {
+//		this.abstractObject = new MultiHashMap<FA,AbstractValue>();
+//	}
+	
+	public AbstractObject(FA fa, AbstractValue abstractValue) {
+		this.abstractObject = new MultiHashMap<>();
+		this.abstractObject.put(fa, abstractValue);
+	}
+	
+	public MultiHashMap<FA, AbstractValue> getAbstractObjectMap() {
+		return this.abstractObject;
+	}
+	
+	public AbstractObject(MultiHashMap<FA, AbstractValue> abstractObject) {
+		this.abstractObject = new MultiHashMap<>();
+		this.abstractObject.putAll(abstractObject);
+	}
 	
 	@Override
 	public AbstractValue juggleToNumber() {
@@ -40,10 +56,9 @@ public class AbstractObject implements AbstractValue {
 	@Override
 	public AbstractValue widening(AbstractValue other) {
 		// TODO: Marin
-//		if(other instanceof MultiHashMap)
-//			for (FA fa: ((MultiHashMap<FA,AbstractValue>) other).keySet()){
-//				
-//			}
+//		if(other instanceof AbstractObject) {
+//			return null;
+//		}
 		return new Top();
 	}
 
@@ -70,28 +85,27 @@ public class AbstractObject implements AbstractValue {
 	@Override
 	public boolean equals(Object other) {
 		// TODO: Marin
-		/*
-		 * todo
-		 */
 		if (other instanceof AbstractObject)
-			return this.abstractObject.equals(other);
+			return this.abstractObject.equals(((AbstractObject)other).getAbstractObjectMap());
 		return false;
 	}
 	/**
 	 * 
 	 * @return normalized this abstract object
 	 */
-	private MultiHashMap<FA, AbstractValue> normalize() {
+	public AbstractObject normalize() {
 		//TODO: Marin
-		MultiHashMap<FA, AbstractValue> tempAbstractObject = (MultiHashMap<FA, AbstractValue>) this.abstractObject.clone();
-		for(FA fa: tempAbstractObject.keySet()) {
-			AbstractValue abstractValue = (AbstractValue) tempAbstractObject.get(fa);
+		AbstractObject absObj = new AbstractObject(this.getAbstractObjectMap());
+		for(FA fa: absObj.getAbstractObjectMap().keySet()) {
+			//AbstractValue abstractValue = (AbstractValue) absObj.getAbstractObjectMap().get(fa); // .getCollection(fa);
+			Object abstractValue = absObj.getAbstractObjectMap().get(fa);
 			if (!fa.isSingleString() || !fa.isInfinite()) {
 				this.abstractObject.remove(fa, abstractValue); // ??
 				for (String s: fa.getLanguage())
-					this.abstractObject.put(new FA(s), abstractValue);
+					for(Object o: (Collection<AbstractValue>)abstractValue)
+						this.abstractObject.put(new FA(s), (AbstractValue)o);
 			}
 		}
-		return this.abstractObject;
+		return this;
 	}
 }
