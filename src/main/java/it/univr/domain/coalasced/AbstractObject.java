@@ -120,4 +120,9 @@ public class AbstractObject implements AbstractValue {
 			}
 		}
 	}
+	
+	public AbstractValue lookupAbstractObject(FA p) {
+		//TODO: Marin
+		return new Bottom();
+	}
 }
