@@ -2,8 +2,10 @@ package it.univr.domain.coalasced;
 
 import java.util.Collection;
 
+
 import org.apache.commons.collections15.multimap.MultiHashMap;
 import it.univr.domain.AbstractValue;
+import it.univr.fsm.machine.Automaton;
 
 public class AbstractObject implements AbstractValue {
 	
@@ -105,24 +107,83 @@ public class AbstractObject implements AbstractValue {
 	 */
 	public void normalize() {
 		
+		// first part
 		for (FA abstractProperty: getAbstractObjectMap().keySet()) {
 			
-			Object abstractValue = getAbstractObjectMap().get(abstractProperty);
-			
+			//Object abstractValue = getAbstractObjectMap().get(abstractProperty);
+			AbstractValue abstractValue = this.lookupAbstractObject(abstractProperty);
 			if (!abstractProperty.isSingleString() || !abstractProperty.isInfinite()) {
 				// this means that the abstract property recognizes only finite languages (not equals to 1)
 				
-				abstractObject.remove(abstractProperty);
+				this.abstractObject.remove(abstractProperty);
 				
 				for (String s: abstractProperty.getLanguage())
-					for(Object o: (Collection<AbstractValue>) abstractValue)
-						this.abstractObject.put(new FA(s), (AbstractValue) o);
+					//for(Object o: (Collection<?>) abstractValue)
+						//if(o instanceof AbstractValue)
+							//this.abstractObject.put(new FA(s), (AbstractValue) o);
+					this.abstractObject.put(new FA(s), abstractValue);
+			}
+		}
+		
+		// second part
+		
+		for (FA abstractProperty1: this.getAbstractObjectMap().keySet()) {
+			AbstractValue abstractValue1 =  this.lookupAbstractObject(abstractProperty1);
+			this.abstractObject.remove(abstractProperty1);
+			boolean normalized = false;
+			
+			for (FA abstractProperty2: this.getAbstractObjectMap().keySet()) {
+				AbstractValue abstractValue2 = this.lookupAbstractObject(abstractProperty2);
+				Automaton intersectionAutomaton = Automaton.intersection(abstractProperty1.getAutomaton(), abstractProperty2.getAutomaton());
+				if (!intersectionAutomaton.equals(Automaton.makeEmptyLanguage()) || !abstractValue1.equals(abstractValue2)) {
+					normalized = true;
+					FA intersectionProperty = new FA(intersectionAutomaton);
+					this.abstractObject.put(intersectionProperty, lookupAbstractObject(intersectionProperty).leastUpperBound(abstractValue1.leastUpperBound(abstractValue2)));
+					FA minusP1P2 = abstractProperty1.minus(abstractProperty2);
+					if (!minusP1P2.getAutomaton().equals(Automaton.makeEmptyLanguage())) {
+						this.abstractObject.put(minusP1P2, this.lookupAbstractObject(minusP1P2).leastUpperBound(abstractValue1));
+					}
+					FA minusP2P1 = abstractProperty2.minus(abstractProperty2);
+					if (!minusP2P1.getAutomaton().equals(Automaton.makeEmptyLanguage())) {
+						this.abstractObject.put(minusP2P1, this.lookupAbstractObject(minusP2P1).leastUpperBound(abstractValue2));
+					}
+					this.abstractObject.remove(abstractProperty2);
+				}
+			}
+			if (!normalized) {
+				this.abstractObject.put(abstractProperty1, abstractValue1);
 			}
 		}
 	}
 	
 	public AbstractValue lookupAbstractObject(FA p) {
 		//TODO: Marin
+		
+		AbstractValue resultAbstractValue = null;
+		
+		// verify if this object has abstract properties
+		if (!getAbstractObjectMap().isEmpty()) {
+			
+			for (FA abstractProperty: getAbstractObjectMap().keySet()) {
+				// for each abstract property
+				if (!Automaton.intersection(p.getAutomaton(), abstractProperty.getAutomaton()).equals(Automaton.makeEmptyLanguage())) {
+					
+					for(Object o: (Collection<?>) getAbstractObjectMap().get(abstractProperty)) {
+						
+						if(o instanceof AbstractValue) {
+							
+							if (resultAbstractValue == null)
+								resultAbstractValue = (AbstractValue)o;
+							
+							resultAbstractValue = resultAbstractValue.leastUpperBound((AbstractValue)o);
+							
+						}
+					}
+				}
+			}
+			
+			return resultAbstractValue;
+		}
 		return new Bottom();
 	}
 }
