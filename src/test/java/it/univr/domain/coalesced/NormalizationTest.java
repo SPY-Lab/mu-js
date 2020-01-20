@@ -13,7 +13,7 @@ import org.apache.commons.collections15.multimap.MultiHashMap;
 public class NormalizationTest {
 	
 	@Test
-	public void testNormalization001()  throws Exception {
+	public void testNormalization001() throws Exception {
 		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
 		abstractObjectMap.put(FA.union(new FA("a"), new FA("b")), new Interval("1", "2"));
 		
