@@ -102,26 +102,29 @@ public class AbstractObject implements AbstractValue {
 	 */
 	public void normalize() {
 
-		 HashSet<FA> keys = new HashSet<FA>();
-		 
-		 for (FA k : this.abstractObject.keySet())
-			 keys.add(k.clone());
+		HashSet<FA> keys = new HashSet<FA>();
+		
+		for (FA k : this.abstractObject.keySet())
+			keys.add(k.clone());
 
 		// first part
 		for (FA abstractProperty: keys) {
-			
-			AbstractValue abstractValue = this.lookupAbstractObject(abstractProperty);
-			if (!abstractProperty.isSingleString() || !abstractProperty.isInfinite()) {
+			Collection<AbstractValue> abstractValue = getAbstractObjectMap().get(abstractProperty);
+			// !abstractProperty.isSingleString() doesn't work, why?
+			if (abstractProperty.getLanguage().size() != 1 || !abstractProperty.isInfinite()) {
 				// this means that the abstract property recognizes only finite languages (not equals to 1)
-				
-				this.abstractObject.remove(abstractProperty);
-				
+				abstractObject.remove(abstractProperty);
 				for (String s: abstractProperty.getLanguage())
-					this.abstractObject.put(new FA(s), abstractValue);
+					for(AbstractValue a: abstractValue)
+						this.abstractObject.put(new FA(s), a);
 			}
 		}
 		
 		// second part
+		keys.clear();
+		 
+		for (FA k : this.abstractObject.keySet())
+			keys.add(k.clone());
 		
 		for (FA abstractProperty1: keys) {
 		
@@ -129,21 +132,25 @@ public class AbstractObject implements AbstractValue {
 			this.abstractObject.remove(abstractProperty1);
 			boolean normalized = false;
 			
-			for (FA abstractProperty2: keys) {
+			HashSet<FA> keys2 = new HashSet<FA>();
+			for (FA k : this.abstractObject.keySet())
+				keys2.add(k.clone());
+			
+			for (FA abstractProperty2: keys2) {
 				AbstractValue abstractValue2 = this.lookupAbstractObject(abstractProperty2);
 				Automaton intersectionAutomaton = Automaton.intersection(abstractProperty1.getAutomaton(), abstractProperty2.getAutomaton());
-				if (!(Automaton.isEmptyLanguageAccepted(intersectionAutomaton)) || !abstractValue1.equals(abstractValue2)) {
+				if ((!Automaton.isEmptyLanguageAccepted(intersectionAutomaton)) && !abstractProperty1.equals(abstractProperty2)) {
 					normalized = true;
 					FA intersectionProperty = new FA(intersectionAutomaton);
-					this.abstractObject.put(intersectionProperty, lookupAbstractObject(intersectionProperty).leastUpperBound(abstractValue1.leastUpperBound(abstractValue2)));
+					this.abstractObject.put(intersectionProperty, lookupAbstractObject(intersectionProperty).leastUpperBound(abstractValue1).leastUpperBound(abstractValue2));
 					FA minusP1P2 = abstractProperty1.minus(abstractProperty2);
 					if (!Automaton.isEmptyLanguageAccepted(minusP1P2.getAutomaton())) {
-						// !minusP1P2.getAutomaton().equals(Automaton.makeEmptyLanguage())
+						 //!minusP1P2.getAutomaton().equals(Automaton.makeEmptyLanguage())
 						this.abstractObject.put(minusP1P2, this.lookupAbstractObject(minusP1P2).leastUpperBound(abstractValue1));
 					}
-					FA minusP2P1 = abstractProperty2.minus(abstractProperty2);
+					FA minusP2P1 = abstractProperty2.minus(abstractProperty1);
 					if (!Automaton.isEmptyLanguageAccepted(minusP2P1.getAutomaton())) {
-						// !minusP2P1.getAutomaton().equals(Automaton.makeEmptyLanguage())
+						 //!minusP2P1.getAutomaton().equals(Automaton.makeEmptyLanguage())
 						this.abstractObject.put(minusP2P1, this.lookupAbstractObject(minusP2P1).leastUpperBound(abstractValue2));
 					}
 					this.abstractObject.remove(abstractProperty2);
