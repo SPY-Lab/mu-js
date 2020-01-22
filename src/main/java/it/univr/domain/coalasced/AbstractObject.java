@@ -132,11 +132,11 @@ public class AbstractObject implements AbstractValue {
 			this.abstractObject.remove(abstractProperty1);
 			boolean normalized = false;
 			
-			HashSet<FA> keys2 = new HashSet<FA>();
-			for (FA k : this.abstractObject.keySet())
-				keys2.add(k.clone());
+			//HashSet<FA> keys2 = new HashSet<FA>();
+			//for (FA k : this.abstractObject.keySet())
+			//	keys2.add(k.clone());
 			
-			for (FA abstractProperty2: keys2) {
+			for (FA abstractProperty2: keys) {
 				AbstractValue abstractValue2 = this.lookupAbstractObject(abstractProperty2);
 				Automaton intersectionAutomaton = Automaton.intersection(abstractProperty1.getAutomaton(), abstractProperty2.getAutomaton());
 				if ((!Automaton.isEmptyLanguageAccepted(intersectionAutomaton)) && !abstractProperty1.equals(abstractProperty2)) {
