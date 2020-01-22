@@ -6,6 +6,7 @@ import it.univr.domain.AbstractValue;
 import it.univr.domain.coalasced.AbstractObject;
 import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
+import it.univr.fsm.machine.Automaton;
 
 import static org.junit.Assert.assertEquals;
 
@@ -33,6 +34,24 @@ public class NormalizationTest {
 	public void testNormalization002() throws Exception {
 		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
 		
+		abstractObjectMap.put(FA.union(new FA("a"), new FA("b")), new Interval("1", "1"));
+		abstractObjectMap.put(FA.union(new FA("a"), new FA("b")), new Interval("2", "2"));
+		
+		AbstractObject obj = new AbstractObject(abstractObjectMap);
+		obj.normalize();
+	
+		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
+		expectedAbstractObjectMap.put(new FA("a"), new Interval("1", "2"));
+		expectedAbstractObjectMap.put(new FA("b"), new Interval("1", "2"));
+		
+		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
+		assertEquals(obj, expectedObj);
+	}
+	
+	@Test
+	public void testNormalization003() throws Exception {
+		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
+		
 		abstractObjectMap.put(new FA("a"), new Interval("2", "4"));
 		abstractObjectMap.put(FA.union(new FA("a"), new FA("b")), new Interval("3", "6"));
 		
@@ -48,7 +67,7 @@ public class NormalizationTest {
 	}
 
 	@Test
-	public void testNormalization003() throws Exception {
+	public void testNormalization004() throws Exception {
 		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
 		
 		abstractObjectMap.put(new FA("a"), new Interval("5", "5"));
@@ -67,7 +86,7 @@ public class NormalizationTest {
 	}
 	
 	@Test
-	public void testNormalization004() throws Exception {
+	public void testNormalization005() throws Exception {
 		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
 		
 		abstractObjectMap.put(FA.union(new FA("a"), new FA("b")), new Interval("1", "2"));
@@ -86,7 +105,7 @@ public class NormalizationTest {
 	}
 	
 	@Test
-	public void testNormalization005() throws Exception {
+	public void testNormalization006() throws Exception {
 		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
 		
 		abstractObjectMap.put(FA.union(new FA("a"), new FA("b")), new Interval("1", "3"));
@@ -106,7 +125,7 @@ public class NormalizationTest {
 	}
 	
 	@Test
-	public void testNormalization006() throws Exception {
+	public void testNormalization007() throws Exception {
 		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
 		
 		abstractObjectMap.put(FA.union(new FA("a"), FA.union(new FA("b"), new FA("c"))), new Interval("3", "3"));
@@ -120,6 +139,97 @@ public class NormalizationTest {
 		expectedAbstractObjectMap.put(new FA("a"), new Interval("3", "3"));
 		expectedAbstractObjectMap.put(new FA("b"), new Interval("3", "4"));
 		expectedAbstractObjectMap.put(new FA("c"), new Interval("3", "5"));
+		
+		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
+		assertEquals(obj, expectedObj);
+	}
+	
+	@Test
+	public void testNormalization008() throws Exception {
+		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
+		
+		abstractObjectMap.put(FA.union(new FA("a"), FA.union(new FA("b"), new FA("c"))), new Interval("4", "4"));
+		abstractObjectMap.put(FA.union(new FA("a"), new FA("b")), new Interval("1", "2"));
+		abstractObjectMap.put(FA.union(new FA("b"), new FA("c")), new Interval("5", "5"));
+		
+		AbstractObject obj = new AbstractObject(abstractObjectMap);
+		obj.normalize();
+		
+		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
+		expectedAbstractObjectMap.put(new FA("a"), new Interval("1", "4"));
+		expectedAbstractObjectMap.put(new FA("b"), new Interval("1", "5"));
+		expectedAbstractObjectMap.put(new FA("c"), new Interval("4", "5"));
+		
+		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
+		assertEquals(obj, expectedObj);
+	}
+	
+	@Test
+	public void testNormalization009() throws Exception {
+		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
+		
+		abstractObjectMap.put(FA.union(FA.star("a"), new FA("b")), new Interval("1", "2"));
+		
+		AbstractObject obj = new AbstractObject(abstractObjectMap);
+		obj.normalize();
+		
+		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
+		expectedAbstractObjectMap.put(FA.star("a"), new Interval("1", "2"));
+		expectedAbstractObjectMap.put(new FA("b"), new Interval("1", "2"));
+		
+		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
+		assertEquals(obj, expectedObj);
+	}
+	
+	@Test
+	public void testNormalization010() throws Exception {
+		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
+		
+		abstractObjectMap.put(FA.star("a"), new Interval("1", "2"));
+		abstractObjectMap.put(FA.union(FA.star("a"), new FA("b")), new Interval("3", "3"));
+		
+		AbstractObject obj = new AbstractObject(abstractObjectMap);
+		obj.normalize();
+		
+		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
+		expectedAbstractObjectMap.put(FA.star("a"), new Interval("1", "3"));
+		expectedAbstractObjectMap.put(new FA("b"), new Interval("3", "3"));
+		
+		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
+		assertEquals(obj, expectedObj);
+	}
+	
+	@Test
+	public void testNormalization011() throws Exception {
+		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
+		
+		abstractObjectMap.put(new FA("a"), new Interval("1", "1"));
+		abstractObjectMap.put(FA.star("a"), new Interval("2", "2"));
+		
+		AbstractObject obj = new AbstractObject(abstractObjectMap);
+		obj.normalize();
+		
+		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
+		expectedAbstractObjectMap.put(new FA("a"), new Interval("1", "2"));
+		expectedAbstractObjectMap.put((FA.star("a").minus(new FA("a"))), new Interval("2", "2"));
+		
+		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
+		assertEquals(obj, expectedObj);
+	}
+	
+	@Test
+	public void testNormalization012() throws Exception {
+		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
+		
+		abstractObjectMap.put(new FA("a"), new Interval("1", "1"));
+		abstractObjectMap.put(FA.star("a"), new Interval("2", "2"));
+		
+		AbstractObject obj = new AbstractObject(abstractObjectMap);
+		obj.normalize();
+		
+		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
+		expectedAbstractObjectMap.put(new FA("a"), new Interval("1", "2"));
+		expectedAbstractObjectMap.put((FA.star("a").minus(new FA("a"))), new Interval("2", "2"));
 		
 		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
 		assertEquals(obj, expectedObj);
