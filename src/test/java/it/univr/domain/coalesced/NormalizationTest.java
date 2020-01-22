@@ -41,4 +41,27 @@ public class NormalizationTest {
 		obj.normalize();
 		System.out.println("normalized: "+obj);
 	}
+	
+	/*
+	 * obj: {a : [1, 1], a* : [5,5]}
+	 * expectedObj (Norm(obj)): {a : [1,5], a* \ a : [5,5]}
+	 */
+	@Test
+	public void testNormalization008() throws Exception {
+		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
+
+		abstractObjectMap.put(new FA("a"), new Interval("1", "1"));
+		abstractObjectMap.put(FA.star("a"), new Interval("5", "5"));
+
+		AbstractObject obj = new AbstractObject(abstractObjectMap);
+
+		obj.normalize();
+
+		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
+		expectedAbstractObjectMap.put(new FA("a"), new Interval("1", "5"));
+		expectedAbstractObjectMap.put(FA.star("a").minus(new FA("a")), new Interval("5", "5"));
+
+		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
+		assertEquals(obj, expectedObj);
+	}
 }

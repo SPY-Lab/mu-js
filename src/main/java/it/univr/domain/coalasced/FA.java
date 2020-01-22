@@ -19,7 +19,39 @@ public class FA implements AbstractValue {
 		System.err.println(a);
 	}
 
-	private Automaton automaton; 
+	private Automaton automaton;
+	
+	public static FA makeEmptyLanguage() {
+		return new FA(Automaton.makeEmptyLanguage());
+	}
+
+	public static FA union(String ... strings) {
+		FA res = FA.makeEmptyLanguage();
+
+		for (String s : strings)
+			res = FA.union(res, new FA(s));
+
+		return res;
+	}
+
+	public static FA union(FA ... automata) {
+		FA res = FA.makeEmptyLanguage();
+
+		for (FA a : automata)
+			res = FA.union(res, a);
+
+		return res;
+	}
+	
+	public static FA star(Automaton a) {
+		return new FA(Automaton.star(a));
+	}
+
+	public static FA star(String s) {
+		return new FA(Automaton.star(Automaton.makeAutomaton(s)));
+	}
+
+
 	
 	// 20.12 START
 	private boolean hasCycle() {

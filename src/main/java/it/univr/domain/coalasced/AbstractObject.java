@@ -107,6 +107,7 @@ public class AbstractObject implements AbstractValue {
 	 */
 	public void normalize() {
 		//TODO: Marin
+		
 		HashSet<FA> keys = new HashSet<FA>();
 		for (FA k : this.abstractObject.keySet())
 			keys.add(k.clone());
@@ -114,13 +115,13 @@ public class AbstractObject implements AbstractValue {
 		// first part
 		for (FA abstractProperty: keys) {
 			
-			Collection<AbstractValue> abstractValue = getAbstractObjectMap().get(abstractProperty);
+			Collection<AbstractValue> abstractValue = this.getAbstractObjectMap().get(abstractProperty);
 			
 			// !abstractProperty.isSingleString() doesn't work, why?
-			if (abstractProperty.getLanguage().size() != 1 && !abstractProperty.isInfinite()) {
+			if (!abstractProperty.isInfinite() && abstractProperty.getLanguage().size() != 1 ) {
 				// this means that the abstract property recognizes only finite languages (not equals to 1)
 				
-				abstractObject.remove(abstractProperty);
+				this.abstractObject.remove(abstractProperty);
 				
 				for (String s: abstractProperty.getLanguage())
 					for(AbstractValue a: abstractValue)
@@ -146,8 +147,11 @@ public class AbstractObject implements AbstractValue {
 			for (FA abstractProperty2: keys2) {
 				AbstractValue abstractValue2 = this.lookupAbstractObject(abstractProperty2);
 				
+				// get intersection of first and second abstractProperty
 				Automaton intersectionAutomaton = Automaton.intersection(abstractProperty1.getAutomaton(), abstractProperty2.getAutomaton());
-				if ((!Automaton.isEmptyLanguageAccepted(intersectionAutomaton)) && !abstractProperty1.equals(abstractProperty2)) {
+				
+				if (!Automaton.isEmptyLanguageAccepted(intersectionAutomaton) && !abstractProperty1.equals(abstractProperty2)) {
+					
 					normalized = true;
 					
 					FA intersectionProperty = new FA(intersectionAutomaton);
@@ -180,9 +184,7 @@ public class AbstractObject implements AbstractValue {
 		
 		AbstractValue resultAbstractValue = new Bottom();
 		
-		// verify if this object has abstract properties
 		for (FA abstractProperty: getAbstractObjectMap().keySet()) {
-			// for each abstract property
 			if (!Automaton.intersection(p.getAutomaton(), abstractProperty.getAutomaton()).equals(Automaton.makeEmptyLanguage())) {
 				for(Object o: (Collection<?>) getAbstractObjectMap().get(abstractProperty)) {
 					if(o instanceof AbstractValue) {
