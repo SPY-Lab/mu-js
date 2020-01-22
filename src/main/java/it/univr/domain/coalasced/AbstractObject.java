@@ -110,7 +110,8 @@ public class AbstractObject implements AbstractValue {
 		// first part
 		for (FA abstractProperty: keys) {
 			Collection<AbstractValue> abstractValue = getAbstractObjectMap().get(abstractProperty);
-			if ((!abstractProperty.isSingleString() || abstractProperty.getLanguage().size() != 1) && !abstractProperty.isInfinite()) {
+			
+			if (!abstractProperty.isInfinite() && (!abstractProperty.isSingleString() || abstractProperty.getLanguage().size() != 1)) {
 				// this means that the abstract property recognizes only finite languages (not equals to 1)
 				abstractObject.remove(abstractProperty);
 				for (String s: abstractProperty.getLanguage())

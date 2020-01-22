@@ -39,6 +39,14 @@ public class FA implements AbstractValue {
 		return hasCycle();
 	}
 	
+	public static FA star(Automaton a) {
+		return new FA(Automaton.star(a));
+	}
+	
+	public static FA star(String s) {
+		return new FA(Automaton.star(Automaton.makeAutomaton(s)));
+	}
+	
 	public FA minus(FA that) {
 		return new FA(Automaton.minus(this.automaton, that.automaton));
 	}
@@ -300,6 +308,28 @@ public class FA implements AbstractValue {
 		return new FA(Automaton.union(a.getAutomaton(), b.getAutomaton()));
 	}
 
+	public static FA makeEmptyLanguage() {
+		return new FA(Automaton.makeEmptyLanguage());
+	}
+	
+	public static FA union(String ... strings) {
+		FA res = FA.makeEmptyLanguage();
+		
+		for (String s : strings)
+			res = FA.union(res, new FA(s));
+		
+		return res;
+	}
+	
+	public static FA union(FA ... automata) {
+		FA res = FA.makeEmptyLanguage();
+		
+		for (FA a : automata)
+			res = FA.union(res, a);
+		
+		return res;
+	}
+	
 	public FA charAt(Interval index) {
 
 		Automaton result = Automaton.makeEmptyLanguage();
