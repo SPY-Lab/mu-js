@@ -11,22 +11,22 @@ import static org.junit.Assert.assertEquals;
 
 import org.apache.commons.collections15.multimap.MultiHashMap;
 public class NormalizationTest {
-	
+		
 	@Test
 	public void testNormalization001() throws Exception {
 		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
+		
 		abstractObjectMap.put(FA.union(new FA("a"), new FA("b")), new Interval("1", "2"));
 		
 		AbstractObject obj = new AbstractObject(abstractObjectMap);
-		
 		obj.normalize();
 	
-		MultiHashMap<FA, AbstractValue> expcetedAbstractObjectMap = new MultiHashMap<>();
-		expcetedAbstractObjectMap.put(new FA("a"), new Interval("1", "2"));
-		expcetedAbstractObjectMap.put(new FA("b"), new Interval("1", "2"));
+		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
+		expectedAbstractObjectMap.put(new FA("a"), new Interval("1", "2"));
+		expectedAbstractObjectMap.put(new FA("b"), new Interval("1", "2"));
 		
-		AbstractObject expcetedObj = new AbstractObject(expcetedAbstractObjectMap);
-		assertEquals(obj, expcetedObj);
+		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
+		assertEquals(obj, expectedObj);
 	}
 	
 	@Test
@@ -40,6 +40,102 @@ public class NormalizationTest {
 		System.out.println("original: "+obj);
 		obj.normalize();
 		System.out.println("normalized: "+obj);
+		
+		abstractObjectMap.put(new FA("a"), new Interval("2", "4"));
+		abstractObjectMap.put(FA.union(new FA("a"), new FA("b")), new Interval("3", "6"));
+		
+		obj.normalize();
+		
+		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
+		expectedAbstractObjectMap.put(new FA("a"), new Interval("2", "6"));
+		expectedAbstractObjectMap.put(new FA("b"), new Interval("3", "6"));
+		
+		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
+		assertEquals(obj, expectedObj);
+	}
+
+	@Test
+	public void testNormalization004() throws Exception {
+		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
+		
+		abstractObjectMap.put(FA.union(new FA("a"), new FA("b")), new Interval("1", "2"));
+		abstractObjectMap.put(FA.union(new FA("a"), new FA("c")), new Interval("4", "5"));
+		
+		AbstractObject obj = new AbstractObject(abstractObjectMap);
+		obj.normalize();
+		
+		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
+		expectedAbstractObjectMap.put(new FA("a"), new Interval("1", "5"));
+		expectedAbstractObjectMap.put(new FA("b"), new Interval("1", "2"));
+		expectedAbstractObjectMap.put(new FA("c"), new Interval("4", "5"));
+		
+		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
+		assertEquals(obj, expectedObj);
+	}
+	
+	@Test
+	public void testNormalization005() throws Exception {
+		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
+		
+		abstractObjectMap.put(FA.union(new FA("a"), new FA("b")), new Interval("1", "3"));
+		abstractObjectMap.put(FA.union(new FA("a"), new FA("c")), new Interval("6", "6"));
+		abstractObjectMap.put(FA.union(new FA("b"), new FA("c")), new Interval("5", "8"));
+		
+		AbstractObject obj = new AbstractObject(abstractObjectMap);
+		obj.normalize();
+		
+		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
+		expectedAbstractObjectMap.put(new FA("a"), new Interval("1", "6"));
+		expectedAbstractObjectMap.put(new FA("b"), new Interval("1", "8"));
+		expectedAbstractObjectMap.put(new FA("c"), new Interval("5", "8"));
+		
+		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
+		assertEquals(obj, expectedObj);
+	}
+	
+	@Test
+	public void testNormalization006() throws Exception {
+		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
+		
+		abstractObjectMap.put(FA.union(new FA("a"), FA.union(new FA("b"), new FA("c"))), new Interval("3", "3"));
+		abstractObjectMap.put(FA.union(new FA("b"), new FA("c")), new Interval("4", "4"));
+		abstractObjectMap.put(new FA("c"), new Interval("5", "5"));
+		
+		AbstractObject obj = new AbstractObject(abstractObjectMap);
+		obj.normalize();
+		
+		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
+		expectedAbstractObjectMap.put(new FA("a"), new Interval("3", "3"));
+		expectedAbstractObjectMap.put(new FA("b"), new Interval("3", "4"));
+		expectedAbstractObjectMap.put(new FA("c"), new Interval("3", "5"));
+		
+		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
+		assertEquals(obj, expectedObj);
+	}
+	
+	/*
+	 * obj: {a : [1, 1], b : [1, 1], c : [1, 1]}
+	 * expectedObj (Norm(obj)): {a : [1, 1], b : [1, 1], c : [1, 1]}
+	 */
+	@Test
+	public void testNormalization007() throws Exception {
+		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
+		
+		abstractObjectMap.put(new FA("a"), new Interval("1", "1"));
+		abstractObjectMap.put(new FA("b"), new Interval("1", "1"));
+		abstractObjectMap.put(new FA("c"), new Interval("1", "1"));
+		
+		AbstractObject obj = new AbstractObject(abstractObjectMap);
+		
+		obj.normalize();
+		
+		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
+		expectedAbstractObjectMap.put(new FA("a"), new Interval("1", "1"));
+		expectedAbstractObjectMap.put(new FA("b"), new Interval("1", "1"));
+		expectedAbstractObjectMap.put(new FA("c"), new Interval("1", "1"));;
+		
+		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
+		assertEquals(obj, expectedObj);
 	}
 	
 	/*
@@ -49,18 +145,18 @@ public class NormalizationTest {
 	@Test
 	public void testNormalization008() throws Exception {
 		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
-
+		
 		abstractObjectMap.put(new FA("a"), new Interval("1", "1"));
 		abstractObjectMap.put(FA.star("a"), new Interval("5", "5"));
-
+		
 		AbstractObject obj = new AbstractObject(abstractObjectMap);
-
+		
 		obj.normalize();
-
+		
 		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
 		expectedAbstractObjectMap.put(new FA("a"), new Interval("1", "5"));
 		expectedAbstractObjectMap.put(FA.star("a").minus(new FA("a")), new Interval("5", "5"));
-
+		
 		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
 		assertEquals(obj, expectedObj);
 	}

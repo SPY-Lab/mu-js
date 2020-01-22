@@ -115,14 +115,12 @@ public class AbstractObject implements AbstractValue {
 		// first part
 		for (FA abstractProperty: keys) {
 			
-			Collection<AbstractValue> abstractValue = this.getAbstractObjectMap().get(abstractProperty);
+			Collection<AbstractValue> abstractValue = getAbstractObjectMap().get(abstractProperty);
 			
 			// !abstractProperty.isSingleString() doesn't work, why?
 			if (!abstractProperty.isInfinite() && abstractProperty.getLanguage().size() != 1 ) {
 				// this means that the abstract property recognizes only finite languages (not equals to 1)
-				
-				this.abstractObject.remove(abstractProperty);
-				
+				abstractObject.remove(abstractProperty);
 				for (String s: abstractProperty.getLanguage())
 					for(AbstractValue a: abstractValue)
 						this.abstractObject.put(new FA(s), a);
@@ -131,6 +129,7 @@ public class AbstractObject implements AbstractValue {
 		
 		// second part
 		keys.clear();
+		
 		for (FA k : this.abstractObject.keySet())
 			keys.add(k.clone());
 		
@@ -149,20 +148,19 @@ public class AbstractObject implements AbstractValue {
 				
 				// get intersection of first and second abstractProperty
 				Automaton intersectionAutomaton = Automaton.intersection(abstractProperty1.getAutomaton(), abstractProperty2.getAutomaton());
-				
-				if (!Automaton.isEmptyLanguageAccepted(intersectionAutomaton) && !abstractProperty1.equals(abstractProperty2)) {
-					
+
+				if ((!Automaton.isEmptyLanguageAccepted(intersectionAutomaton)) && !abstractProperty1.equals(abstractProperty2)) {
 					normalized = true;
 					
 					FA intersectionProperty = new FA(intersectionAutomaton);
 					this.abstractObject.put(intersectionProperty, lookupAbstractObject(intersectionProperty).leastUpperBound(abstractValue1).leastUpperBound(abstractValue2));
-					
+
 					FA minusP1P2 = abstractProperty1.minus(abstractProperty2);
 					if (!Automaton.isEmptyLanguageAccepted(minusP1P2.getAutomaton())) {
 						 //!minusP1P2.getAutomaton().equals(Automaton.makeEmptyLanguage())
 						this.abstractObject.put(minusP1P2, this.lookupAbstractObject(minusP1P2).leastUpperBound(abstractValue1));
 					}
-					
+
 					FA minusP2P1 = abstractProperty2.minus(abstractProperty1);
 					if (!Automaton.isEmptyLanguageAccepted(minusP2P1.getAutomaton())) {
 						 //!minusP2P1.getAutomaton().equals(Automaton.makeEmptyLanguage())
