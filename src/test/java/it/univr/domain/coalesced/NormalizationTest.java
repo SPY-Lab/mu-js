@@ -213,7 +213,7 @@ public class NormalizationTest {
 		
 		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
 		expectedAbstractObjectMap.put(new FA("b"), new Interval("1", "5"));
-		expectedAbstractObjectMap.put(FA.union(FA.star("a"), new FA("b")), new Interval("4", "5"));
+		expectedAbstractObjectMap.put(FA.union(FA.star("a"), new FA("b").minus(new FA("b"))), new Interval("4", "5"));
 		
 		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
 		assertEquals(expectedObj, obj);
@@ -258,7 +258,7 @@ public class NormalizationTest {
 		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
 		expectedAbstractObjectMap.put(new FA("a"), new Interval("2", "4"));
 		expectedAbstractObjectMap.put(new FA("b"), new Interval("2", "4"));
-		expectedAbstractObjectMap.put(FA.union(FA.star("a"), FA.star("b")).minus(new FA("a").minus(new FA("b"))), new Interval("4", "4"));
+		expectedAbstractObjectMap.put(FA.union(FA.star("a"), FA.star("b")).minus(new FA("a")).minus(new FA("b")), new Interval("4", "4"));
 		
 		AbstractObject expectedObj = new AbstractObject(expectedAbstractObjectMap);
 		assertEquals(expectedObj, obj);

@@ -1,7 +1,15 @@
 package it.univr.domain.coalasced;
 
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.SortedSet;
+
 import org.apache.commons.collections15.multimap.MultiHashMap;
 import it.univr.domain.AbstractValue;
 import it.univr.fsm.machine.Automaton;
@@ -121,45 +129,49 @@ public class AbstractObject implements AbstractValue {
 		}
 		
 		// second part
-		keys.clear();
-		 
-		for (FA k : this.abstractObject.keySet())
-			keys.add(k.clone());
+		LinkedHashSet<FA> properties = new LinkedHashSet<>(this.abstractObject.keySet());
 		
-		for (FA abstractProperty1: keys) {
-		
+		while (properties.size() > 0) {
+			FA abstractProperty1 = (FA)properties.toArray()[0];
+			
 			AbstractValue abstractValue1 =  this.lookupAbstractObject(abstractProperty1);
 			this.abstractObject.remove(abstractProperty1);
+			properties.remove(abstractProperty1);
+			
 			boolean normalized = false;
 			
-			//HashSet<FA> keys2 = new HashSet<FA>();
-			//for (FA k : this.abstractObject.keySet())
-			//	keys2.add(k.clone());
-			
-			for (FA abstractProperty2: keys) {
+			for (int i = 0; i < properties.size(); i++) {
+				FA abstractProperty2 = (FA)properties.toArray()[i];
+				
 				AbstractValue abstractValue2 = this.lookupAbstractObject(abstractProperty2);
 				Automaton intersectionAutomaton = Automaton.intersection(abstractProperty1.getAutomaton(), abstractProperty2.getAutomaton());
 				if ((!Automaton.isEmptyLanguageAccepted(intersectionAutomaton)) && !abstractProperty1.equals(abstractProperty2)) {
 					normalized = true;
 					FA intersectionProperty = new FA(intersectionAutomaton);
-					this.abstractObject.put(intersectionProperty, lookupAbstractObject(intersectionProperty).leastUpperBound(abstractValue1).leastUpperBound(abstractValue2));
+					
+					this.abstractObject.put(intersectionProperty, this.lookupAbstractObject(intersectionProperty).leastUpperBound(abstractValue1).leastUpperBound(abstractValue2));
+					properties.add(intersectionProperty);
+					
 					FA minusP1P2 = abstractProperty1.minus(abstractProperty2);
 					if (!Automaton.isEmptyLanguageAccepted(minusP1P2.getAutomaton())) {
-						 //!minusP1P2.getAutomaton().equals(Automaton.makeEmptyLanguage())
 						this.abstractObject.put(minusP1P2, this.lookupAbstractObject(minusP1P2).leastUpperBound(abstractValue1));
+						properties.add(minusP1P2);
 					}
 					FA minusP2P1 = abstractProperty2.minus(abstractProperty1);
 					if (!Automaton.isEmptyLanguageAccepted(minusP2P1.getAutomaton())) {
-						 //!minusP2P1.getAutomaton().equals(Automaton.makeEmptyLanguage())
 						this.abstractObject.put(minusP2P1, this.lookupAbstractObject(minusP2P1).leastUpperBound(abstractValue2));
+						properties.add(minusP2P1);
 					}
 					this.abstractObject.remove(abstractProperty2);
+					properties.remove(abstractProperty2);
+					i--;
 				}
 			}
 			if (!normalized) {
 				this.abstractObject.put(abstractProperty1, abstractValue1);
 			}
 		}
+		
 	}
 	
 	public AbstractValue lookupAbstractObject(FA p) {
@@ -167,28 +179,26 @@ public class AbstractObject implements AbstractValue {
 		
 		AbstractValue resultAbstractValue = new Bottom();
 		
-		// verify if this object has abstract properties
-		if (!getAbstractObjectMap().isEmpty()) {
-			
-			for (FA abstractProperty: getAbstractObjectMap().keySet()) {
-				// for each abstract property
-				if (!Automaton.intersection(p.getAutomaton(), abstractProperty.getAutomaton()).equals(Automaton.makeEmptyLanguage())) {
+	
+		
+		for (FA abstractProperty: getAbstractObjectMap().keySet()) {
+			// for each abstract property
+			if (!Automaton.intersection(p.getAutomaton(), abstractProperty.getAutomaton()).equals(Automaton.makeEmptyLanguage())) {
+				
+				for(Object o: (Collection<?>) getAbstractObjectMap().get(abstractProperty)) {
 					
-					for(Object o: (Collection<?>) getAbstractObjectMap().get(abstractProperty)) {
+					if(o instanceof AbstractValue) {
 						
-						if(o instanceof AbstractValue) {
-							
+					
 						
-							
-							resultAbstractValue = resultAbstractValue.leastUpperBound((AbstractValue)o);
-							
-						}
+						resultAbstractValue = resultAbstractValue.leastUpperBound((AbstractValue)o);
+						
 					}
 				}
 			}
-			
-			return resultAbstractValue;
 		}
-		return new Bottom();
+		
+		return resultAbstractValue;
+	
 	}
 }
