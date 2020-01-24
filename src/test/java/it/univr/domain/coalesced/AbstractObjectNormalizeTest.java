@@ -6,12 +6,11 @@ import it.univr.domain.AbstractValue;
 import it.univr.domain.coalasced.AbstractObject;
 import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
-import it.univr.fsm.machine.Automaton;
 
 import static org.junit.Assert.assertEquals;
 
 import org.apache.commons.collections15.multimap.MultiHashMap;
-public class NormalizationTest {
+public class AbstractObjectNormalizeTest {
 	
 	/*
 	 * obj: {a|b : [1, 2]}
