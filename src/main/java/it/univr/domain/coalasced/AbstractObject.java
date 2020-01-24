@@ -208,27 +208,18 @@ public class AbstractObject implements AbstractValue {
 
 		AbstractValue resultAbstractValue = new Bottom();
 
-
-
 		for (FA abstractProperty: getAbstractObjectMap().keySet()) {
 			// for each abstract property
 			if (!Automaton.intersection(p.getAutomaton(), abstractProperty.getAutomaton()).equals(Automaton.makeEmptyLanguage())) {
 
-				for(Object o: (Collection<?>) getAbstractObjectMap().get(abstractProperty)) {
-
-					if(o instanceof AbstractValue) {
-
-
-
-						resultAbstractValue = resultAbstractValue.leastUpperBound((AbstractValue)o);
-
-					}
+				for(AbstractValue currentValue: getAbstractObjectMap().get(abstractProperty)) {
+					
+					resultAbstractValue = resultAbstractValue.leastUpperBound(currentValue);
 				}
 			}
 		}
 
 		return resultAbstractValue;
-
 	}
 
 	public AbstractValue get(FA k) {
