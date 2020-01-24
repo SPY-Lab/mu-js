@@ -42,17 +42,10 @@ public class NormalizationTest {
 	public void testNormalization002() throws Exception {
 		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
 		
-		abstractObjectMap.put(new FA("a"), new Interval("5", "5"));
-		abstractObjectMap.put(new FA("b"), new Interval("7", "7"));
-		abstractObjectMap.put(FA.union(new FA("a"), new FA("b")), new Interval("1", "1"));
-		AbstractObject obj = new AbstractObject(abstractObjectMap);
-		System.out.println("original: "+obj);
-		obj.normalize();
-		System.out.println("normalized: "+obj);
-		
 		abstractObjectMap.put(new FA("a"), new Interval("2", "4"));
 		abstractObjectMap.put(FA.union("a", "b"), new Interval("3", "6"));
 		
+		AbstractObject obj = new AbstractObject(abstractObjectMap);
 		obj.normalize();
 		
 		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
