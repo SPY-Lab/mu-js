@@ -49,14 +49,32 @@ public class AbstractObject implements AbstractValue {
 	@Override
 	public AbstractValue leastUpperBound(AbstractValue other) {
 		// TODO: Marin
+		
 		if(other instanceof AbstractObject) {
-			HashSet<FA> keys = new HashSet<FA>();
-			 
-			 for (FA k : this.abstractObject.keySet())
-				 keys.add(k.clone());
-		}
+			AbstractObject otherAbstractObject = (AbstractObject)other;
+			MultiHashMap<FA, AbstractValue> resultAbstractObjectMap = new MultiHashMap<>();
 			
-		return new Bottom();
+			for (FA abstractProperty: getAbstractObjectMap().keySet()) {
+				resultAbstractObjectMap.put(abstractProperty, this.lookupAbstractObject(abstractProperty));
+			}
+			
+			for (FA abstractProperty: otherAbstractObject.getAbstractObjectMap().keySet()) {
+				resultAbstractObjectMap.put(abstractProperty, otherAbstractObject.lookupAbstractObject(abstractProperty));
+			}
+			
+			AbstractObject abstractObject = new AbstractObject(resultAbstractObjectMap);
+			abstractObject.normalize();
+			
+			return abstractObject;
+		} else if (other instanceof Bottom)
+			return clone();
+
+		return new Top();
+	}
+	
+	@Override
+	public AbstractObject clone() {
+		return new AbstractObject(getAbstractObjectMap());
 	}
 
 	@Override
