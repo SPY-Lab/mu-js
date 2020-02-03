@@ -1,9 +1,12 @@
 package it.univr.main;
 
 import org.antlr.v4.runtime.misc.NotNull;
+import org.omg.CORBA.Environment;
 
 import it.univr.domain.AbstractDomain;
 import it.univr.domain.AbstractValue;
+import it.univr.domain.AllocationSite;
+import it.univr.domain.coalasced.AllocationSites;
 import it.univr.domain.coalasced.Bool;
 import it.univr.domain.coalasced.Bottom;
 import it.univr.domain.coalasced.FA;
@@ -84,14 +87,17 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 	@Override 
 	public AbstractValue visitObjectExpression(MuJsParser.ObjectExpressionContext ctx) { 
-		// TODO: Marin
 		return visitChildren(ctx);
 	}
 	
 	@Override 
 	public AbstractValue visitObjectAsg(MuJsParser.ObjectAsgContext ctx) { 
 		// TODO: Marin
-		return visitChildren(ctx); 
+		AbstractValue obj = visit(ctx.object());
+		env.getStore().put(new Variable("x"), new AllocationSites(getProgramPoint()));
+		env.getHeap().put(getProgramPoint(), visit(ctx.object()));
+		
+		return new Bottom();
 	}
 	
 	/**

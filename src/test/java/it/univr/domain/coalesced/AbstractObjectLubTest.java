@@ -172,7 +172,7 @@ public class AbstractObjectLubTest {
 		AbstractObject obj1 = new AbstractObject(abstractObjectMap1);
 		
 		abstractObjectMap2.put(new FA("a"), new Interval("2", "4"));
-		abstractObjectMap1.put(new FA("b"), new Top());
+		abstractObjectMap2.put(new FA("b"), new Top());
 		AbstractObject obj2 = new AbstractObject(abstractObjectMap2);
 		
 		AbstractValue lub = obj1.leastUpperBound(obj2);
@@ -201,7 +201,7 @@ public class AbstractObjectLubTest {
 		AbstractObject obj1 = new AbstractObject(abstractObjectMap1);
 		
 		abstractObjectMap2.put(FA.star("a"), new Interval("3", "4"));
-		abstractObjectMap1.put(new FA("b"), new Bool(0));
+		abstractObjectMap2.put(new FA("b"), new Bool(0));
 		AbstractObject obj2 = new AbstractObject(abstractObjectMap2);
 		
 		AbstractValue lub = obj1.leastUpperBound(obj2);
