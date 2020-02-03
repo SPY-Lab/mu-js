@@ -1,8 +1,5 @@
 package it.univr.main;
 
-import org.antlr.v4.runtime.misc.NotNull;
-import org.omg.CORBA.Environment;
-
 import it.univr.domain.AbstractDomain;
 import it.univr.domain.AbstractValue;
 import it.univr.domain.AllocationSite;
@@ -93,9 +90,14 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	@Override 
 	public AbstractValue visitObjectAsg(MuJsParser.ObjectAsgContext ctx) { 
 		// TODO: Marin
+
+		int row = ctx.getStart().getLine();
+		int col = ctx.getStart().getCharPositionInLine();
+		AllocationSite l = new AllocationSite(row, col);
+		
 		AbstractValue obj = visit(ctx.object());
-		env.getStore().put(new Variable("x"), new AllocationSites(getProgramPoint()));
-		env.getHeap().put(getProgramPoint(), visit(ctx.object()));
+		env.getStore().put(new Variable("x"), new AllocationSites(l));
+		env.getHeap().put(l, visit(ctx.object()));
 		
 		return new Bottom();
 	}
