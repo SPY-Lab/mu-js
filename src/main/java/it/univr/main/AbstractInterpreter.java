@@ -1,8 +1,8 @@
 package it.univr.main;
 
-import org.antlr.v4.runtime.misc.NotNull;
-import org.hamcrest.core.IsInstanceOf;
-import org.omg.CORBA.Environment;
+import java.util.HashMap;
+
+import org.apache.commons.collections15.multimap.MultiHashMap;
 
 import it.univr.domain.AbstractDomain;
 import it.univr.domain.AbstractValue;
@@ -14,6 +14,7 @@ import it.univr.domain.coalasced.Bottom;
 import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
 import it.univr.domain.coalasced.NaN;
+import it.univr.main.MuJsParser.ExpressionContext;
 import it.univr.main.MuJsParser.IdentifierContext;
 import it.univr.main.MuJsParser.PrimitiveValueContext;
 import it.univr.state.AbstractEnvironment;
@@ -82,9 +83,22 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	}
 
 	@Override 
-	public AbstractValue visitObj(MuJsParser.ObjContext ctx) { 
+	public AbstractValue visitObj(MuJsParser.ObjContext ctx) {
+		HashMap<FA, AbstractValue> objectMap = new HashMap<>();
 		// TODO: Marin
-		return visitChildren(ctx); 
+		for (int i = 0; i < ctx.ID().size(); i++) {
+			AbstractValue expression = visit(ctx.expression(i));
+			FA id = new FA(ctx.ID(i).toString());
+			objectMap.put(id, expression);
+		}
+		
+		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
+		for (FA key : objectMap.keySet()) {
+			abstractObjectMap.put(key, objectMap.get(key));
+		}
+		
+		AbstractObject obj = new AbstractObject(abstractObjectMap);
+		return obj;
 	}
 
 	@Override 
@@ -95,11 +109,13 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	@Override 
 	public AbstractValue visitObjectAsg(MuJsParser.ObjectAsgContext ctx) { 
 		// TODO: Marin
-		AbstractValue obj = visit(ctx.object());
-		if (obj instanceof AbstractObject) {			
-			env.getStore().put(new Variable("x"), new AllocationSites(getProgramPoint()));
-			env.getHeap().put(getProgramPoint(), visit(ctx.object()));
-		}
+		
+		int row = ctx.getStart().getLine();
+		int col = ctx.getStart().getCharPositionInLine();
+		AllocationSite l = new AllocationSite(row, col);
+		
+		env.getStore().put(new Variable("x"), new AllocationSites(l));
+		env.getHeap().put(l, visit(ctx.object()));
 		
 		return new Bottom();
 	}

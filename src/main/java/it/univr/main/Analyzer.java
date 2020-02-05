@@ -23,7 +23,7 @@ public class Analyzer {
 	public static void main(String[] args) throws IOException {
 		System.out.println(potd());
 		String file = args[0];
-
+		
 		boolean narrowing = false;
 		boolean printInvariants = false;
 
