@@ -68,33 +68,17 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitPropUpdate(MuJsParser.PropUpdateContext ctx) { 
 		// TODO: Marin
 		
-		
-		AbstractObject obj = (AbstractObject)visit(ctx.ID());
-		FA key = new FA(ctx.expression(0).toString());
-		
-		//if (env.getHeap().containsKey(ctx.expression(0)))
-		//	env.getHeap().get(ctx.expression(0))
-		
-		AbstractValue value = visit(ctx.expression(1));
-		AbstractValue lubAbs = obj.get(key).leastUpperBound(value);
-		obj.getAbstractObjectMap().put(key, lubAbs);
-		
-		System.out.println("\n" + obj);
-		
-		/*
-		int row = ctx.getStart().getLine();
-		int col = ctx.getStart().getCharPositionInLine();
-		AllocationSite l = new AllocationSite(row, col);
-		*/
-		/*
-		int row = ctx.getStart().getLine();
-		int col = ctx.getStart().getCharPositionInLine();
-		AllocationSite l = new AllocationSite(row, col);
-		
-		env.getStore().put(new Variable("x"), new AllocationSites(l));
-		env.getHeap().put(l, visit(ctx.object()));
-		*/
-		
+		AllocationSites allocationSites = (AllocationSites)env.getStore().get(new Variable(ctx.ID().getText()));
+		for (AllocationSite l : allocationSites.getAllocationSites()) {
+			AbstractObject obj = (AbstractObject)env.getHeap().get(l);
+			
+			FA key = new FA(ctx.expression(0).getText());
+			AbstractValue value = visit(ctx.expression(1));
+			
+			AbstractValue lubAbs = obj.get(key).leastUpperBound(value);
+			obj.put(key, lubAbs);
+			obj.normalize();
+		}
 		
 		return visitChildren(ctx); 
 	}
@@ -142,8 +126,14 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		int row = ctx.getStart().getLine();
 		int col = ctx.getStart().getCharPositionInLine();
 		AllocationSite l = new AllocationSite(row, col);
+		Variable var = new Variable(ctx.ID().getText());
 		
-		env.getStore().put(new Variable("x"), new AllocationSites(l));
+		AllocationSites allocationSites = (AllocationSites)env.getStore().get(var);
+		if (allocationSites == null)
+			allocationSites = new AllocationSites();
+		allocationSites.getAllocationSites().add(l);
+		
+		env.getStore().put(var, (AbstractValue)allocationSites);
 		env.getHeap().put(l, visit(ctx.object()));
 		
 		return new Bottom();
