@@ -67,6 +67,35 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	@Override 
 	public AbstractValue visitPropUpdate(MuJsParser.PropUpdateContext ctx) { 
 		// TODO: Marin
+		
+		
+		AbstractObject obj = (AbstractObject)visit(ctx.ID());
+		FA key = new FA(ctx.expression(0).toString());
+		
+		//if (env.getHeap().containsKey(ctx.expression(0)))
+		//	env.getHeap().get(ctx.expression(0))
+		
+		AbstractValue value = visit(ctx.expression(1));
+		AbstractValue lubAbs = obj.get(key).leastUpperBound(value);
+		obj.getAbstractObjectMap().put(key, lubAbs);
+		
+		System.out.println("\n" + obj);
+		
+		/*
+		int row = ctx.getStart().getLine();
+		int col = ctx.getStart().getCharPositionInLine();
+		AllocationSite l = new AllocationSite(row, col);
+		*/
+		/*
+		int row = ctx.getStart().getLine();
+		int col = ctx.getStart().getCharPositionInLine();
+		AllocationSite l = new AllocationSite(row, col);
+		
+		env.getStore().put(new Variable("x"), new AllocationSites(l));
+		env.getHeap().put(l, visit(ctx.object()));
+		*/
+		
+		
 		return visitChildren(ctx); 
 	}
 
