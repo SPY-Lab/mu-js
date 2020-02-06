@@ -90,7 +90,7 @@ public class AbstractHeap extends HashMap<AllocationSite, AbstractValue> {
 
 	@Override
 	public String toString() {
-		String result = "*******************\n";
+		String result = "\n";
 
 		for (AllocationSite v : keySet())
 			result += v.toString() + " -> " + getValue(v) + "\n";
@@ -98,7 +98,6 @@ public class AbstractHeap extends HashMap<AllocationSite, AbstractValue> {
 		if (isEmpty())
 			result += "Empty abstract heap.\n";
 
-		result += "*******************\n";
 		return result;
 	}
 

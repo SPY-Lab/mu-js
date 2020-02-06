@@ -79,15 +79,15 @@ public class AbstractEnvironment  {
 
 	@Override
 	public String toString() {
-		String result = "Abstract store\n*******************\n";
+		String result = "Abstract store\n*******************";
 
 		result += getStore().toString();
 
-		result += "*******************\n\n";
+		result += "\n\n";
 		
-		result = "Abstract heap\n*******************\n";
+		result += "Abstract heap\n*******************";
 
-		result += getStore().toString();
+		result += getHeap().toString();
 
 		result += "*******************\n";
 		return result;

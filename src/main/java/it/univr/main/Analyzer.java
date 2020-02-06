@@ -15,7 +15,6 @@ import it.univr.domain.coalasced.CoalascedAbstractDomain;
 import it.univr.domain.coalasced.FA;
 import it.univr.domain.lifted.LiftedUnionAbstractDomain;
 import it.univr.state.AbstractEnvironment;
-import it.univr.state.AbstractMemory;
 import it.univr.state.AbstractState;
 
 public class Analyzer {
@@ -67,7 +66,7 @@ public class Analyzer {
 				System.out.println(memory);
 			}
 		} catch (FileNotFoundException f) {
-			System.out.println(printHelp());
+			System.err.println(file + ": file does not exists!");
 		}
 	}
 
