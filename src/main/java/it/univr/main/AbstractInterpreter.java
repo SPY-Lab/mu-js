@@ -1,5 +1,6 @@
 package it.univr.main;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import org.apache.commons.collections15.multimap.MultiHashMap;
@@ -102,7 +103,19 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	@Override 
 	public AbstractValue visitPropLookup(MuJsParser.PropLookupContext ctx) { 
 		// TODO: Marin
-		return visitChildren(ctx); 
+		
+		Variable v = new Variable(ctx.ID().getText());
+		AbstractValue abstractValue = new Bottom();
+		if (env.getStore().containsKey(v)) {
+			AllocationSites sites = (AllocationSites)env.getStore().get(v);
+			for (AllocationSite site: sites.getAllocationSites()) {
+				FA key = new FA(ctx.expression().getText());
+				AbstractObject obj = (AbstractObject)env.getHeap().get(site);
+				abstractValue = abstractValue.leastUpperBound(obj.get(key));
+			}
+		}
+		
+		return abstractValue;
 	}
 	
 	@Override 
@@ -143,7 +156,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		int col = ctx.getStart().getCharPositionInLine();
 		AllocationSite l = new AllocationSite(row, col);
 		
-		env.getStore().put(new Variable("x"), new AllocationSites(l));
+		env.getStore().put(new Variable(ctx.ID().getText()), new AllocationSites(l));
 		env.getHeap().put(l, visit(ctx.object()));
 		
 		return new Bottom();
