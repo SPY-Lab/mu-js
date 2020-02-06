@@ -95,7 +95,7 @@ public class AbstractStore extends HashMap<Variable, AbstractValue> {
 
 	@Override
 	public String toString() {
-		String result = "*******************\n";
+		String result = "\n";
 
 		for (Variable v : keySet())
 			result += v.toString() + " -> " + getValue(v) + "\n";
