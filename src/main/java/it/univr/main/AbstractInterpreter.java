@@ -95,7 +95,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		if (env.getStore().containsKey(v)) {
 			AbstractValue sites = env.getStore().get(v);
 			
-			if (sites instanceof AllocationSite) {
+			if (sites instanceof AllocationSites) {
 				for (AllocationSite site: ((AllocationSites)sites).getAllocationSites()) {
 					FA key = new FA(ctx.expression().getText());
 					AbstractValue obj = env.getHeap().get(site);
