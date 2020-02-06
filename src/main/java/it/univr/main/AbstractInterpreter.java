@@ -128,12 +128,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		AllocationSite l = new AllocationSite(row, col);
 		Variable var = new Variable(ctx.ID().getText());
 		
-		AllocationSites allocationSites = (AllocationSites)env.getStore().get(var);
-		if (allocationSites == null)
-			allocationSites = new AllocationSites();
-		allocationSites.getAllocationSites().add(l);
-		
-		env.getStore().put(var, (AbstractValue)allocationSites);
+		env.getStore().put(var, new AllocationSites(l));
 		env.getHeap().put(l, visit(ctx.object()));
 		
 		return new Bottom();
