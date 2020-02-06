@@ -1,6 +1,5 @@
 package it.univr.main;
 
-import java.util.Collection;
 import java.util.HashMap;
 
 import org.apache.commons.collections15.multimap.MultiHashMap;
@@ -15,7 +14,6 @@ import it.univr.domain.coalasced.Bottom;
 import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
 import it.univr.domain.coalasced.NaN;
-import it.univr.main.MuJsParser.ExpressionContext;
 import it.univr.main.MuJsParser.IdentifierContext;
 import it.univr.main.MuJsParser.PrimitiveValueContext;
 import it.univr.state.AbstractEnvironment;
@@ -66,36 +64,47 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	 * 
 	 */
 	@Override 
-	public AbstractValue visitPropUpdate(MuJsParser.PropUpdateContext ctx) { 
-		// TODO: Marin
+	public AbstractValue visitPropUpdate(MuJsParser.PropUpdateContext ctx) {
 		
-		AllocationSites allocationSites = (AllocationSites)env.getStore().get(new Variable(ctx.ID().getText()));
-		for (AllocationSite l : allocationSites.getAllocationSites()) {
-			AbstractObject obj = (AbstractObject)env.getHeap().get(l);
-			
-			FA key = new FA(ctx.expression(0).getText());
-			AbstractValue value = visit(ctx.expression(1));
-			
-			AbstractValue lubAbs = obj.get(key).leastUpperBound(value);
-			obj.put(key, lubAbs);
-			obj.normalize();
+		Variable var = new Variable(ctx.ID().getText());
+		AbstractValue allocationSites = env.getStore().get(var);
+		
+		if (allocationSites instanceof AllocationSites) {
+			for (AllocationSite l : ((AllocationSites)allocationSites).getAllocationSites()) {
+
+				FA key = new FA(ctx.expression(0).getText());
+				AbstractValue value = visit(ctx.expression(1));
+				
+				AbstractValue obj = env.getHeap().get(l);
+				if (obj instanceof AbstractObject) {	
+					AbstractObject object = (AbstractObject)obj;
+					object.put(key, object.get(key).leastUpperBound(value));
+					object.normalize();
+				}
+			}
 		}
-		
-		return visitChildren(ctx); 
+		return new Bottom();
 	}
 
 	@Override 
 	public AbstractValue visitPropLookup(MuJsParser.PropLookupContext ctx) { 
-		// TODO: Marin
 		
 		Variable v = new Variable(ctx.ID().getText());
 		AbstractValue abstractValue = new Bottom();
+		
 		if (env.getStore().containsKey(v)) {
-			AllocationSites sites = (AllocationSites)env.getStore().get(v);
-			for (AllocationSite site: sites.getAllocationSites()) {
-				FA key = new FA(ctx.expression().getText());
-				AbstractObject obj = (AbstractObject)env.getHeap().get(site);
-				abstractValue = abstractValue.leastUpperBound(obj.get(key));
+			AbstractValue sites = env.getStore().get(v);
+			
+			if (sites instanceof AllocationSite) {
+				for (AllocationSite site: ((AllocationSites)sites).getAllocationSites()) {
+					FA key = new FA(ctx.expression().getText());
+					AbstractValue obj = env.getHeap().get(site);
+					
+					if (obj instanceof AbstractObject) {
+						AbstractValue val = ((AbstractObject)obj).get(key);
+						abstractValue = abstractValue.leastUpperBound(val);
+					}
+				}
 			}
 		}
 		
@@ -103,15 +112,14 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	}
 	
 	@Override 
-	public AbstractValue visitEmptyObject(MuJsParser.EmptyObjectContext ctx) { 
-		// TODO: Marin
-		return visitChildren(ctx); 
+	public AbstractValue visitEmptyObject(MuJsParser.EmptyObjectContext ctx) {
+		return new AbstractObject(); 
 	}
 
 	@Override 
 	public AbstractValue visitObj(MuJsParser.ObjContext ctx) {
 		HashMap<FA, AbstractValue> objectMap = new HashMap<>();
-		// TODO: Marin
+		
 		for (int i = 0; i < ctx.ID().size(); i++) {
 			AbstractValue expression = visit(ctx.expression(i));
 			FA id = new FA(ctx.ID(i).toString());
@@ -133,8 +141,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	}
 	
 	@Override 
-	public AbstractValue visitObjectAsg(MuJsParser.ObjectAsgContext ctx) { 
-		// TODO: Marin
+	public AbstractValue visitObjectAsg(MuJsParser.ObjectAsgContext ctx) {
 		
 		int row = ctx.getStart().getLine();
 		int col = ctx.getStart().getCharPositionInLine();
