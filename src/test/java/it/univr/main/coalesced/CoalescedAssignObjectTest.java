@@ -117,7 +117,7 @@ public class CoalescedAssignObjectTest {
 	}
 	
 	@Test
-	public void testObjectAssing004() throws Exception {
+	public void testObjectAssign004() throws Exception {
 		String file = dir + "assign004.js";
 		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
