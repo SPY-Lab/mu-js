@@ -12,24 +12,24 @@ import it.univr.fsm.machine.Automaton;
 
 public class AbstractObject implements AbstractValue {
 
-	private MultiHashMap<FA, AbstractValue> abstractObject;
+	private MultiHashMap<FA, AbstractValue> properties;
 
 	public AbstractObject(FA fa, AbstractValue abstractValue) {
-		this.abstractObject = new MultiHashMap<>();
-		this.abstractObject.put(fa, abstractValue);
+		this.properties = new MultiHashMap<>();
+		this.properties.put(fa, abstractValue);
 	}
 
 	public AbstractObject() {
-		this.abstractObject = new MultiHashMap<>();
+		this.properties = new MultiHashMap<>();
 	}
 
 	public MultiHashMap<FA, AbstractValue> getAbstractObjectMap() {
-		return this.abstractObject;
+		return this.properties;
 	}
 
 	public AbstractObject(MultiHashMap<FA, AbstractValue> abstractObject) {
-		this.abstractObject = new MultiHashMap<>();
-		this.abstractObject.putAll(abstractObject);
+		this.properties = new MultiHashMap<>();
+		this.properties.putAll(abstractObject);
 	}
 
 	@Override
@@ -103,36 +103,36 @@ public class AbstractObject implements AbstractValue {
 
 	@Override
 	public String toString() {
-		return abstractObject.toString();
+		return properties.toString();
 	}
 
 	@Override
 	public int hashCode() {
 		// TODO: Marin
-		return this.abstractObject.hashCode();
+		return this.properties.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof AbstractObject)
-			return this.abstractObject.equals(((AbstractObject)other).getAbstractObjectMap());
+			return this.properties.equals(((AbstractObject)other).getAbstractObjectMap());
 
 		return false;
 	}
 
 	public void put(FA k, AbstractValue v) {
-		if (this.abstractObject.containsKey(k)) {
+		if (this.properties.containsKey(k)) {
 			AbstractValue toPut = new Bottom();
-			ArrayList<AbstractValue> other = (ArrayList<AbstractValue>) this.abstractObject.get(k);
-			abstractObject.remove(k);
+			ArrayList<AbstractValue> other = (ArrayList<AbstractValue>) this.properties.get(k);
+			properties.remove(k);
 
 			for (AbstractValue o : other)
 				toPut = toPut.leastUpperBound(o);
 
-			abstractObject.put(k, v.leastUpperBound(toPut));
+			properties.put(k, v.leastUpperBound(toPut));
 
 		} else {
-			this.abstractObject.put(k, v);
+			this.properties.put(k, v);
 
 		}
 
@@ -145,7 +145,7 @@ public class AbstractObject implements AbstractValue {
 	public void normalize() {
 		HashSet<FA> keys = new HashSet<FA>();
 
-		for (FA k : this.abstractObject.keySet()) {
+		for (FA k : this.properties.keySet()) {
 			keys.add(k.clone());
 		}
 
@@ -156,7 +156,7 @@ public class AbstractObject implements AbstractValue {
 			if (!abstractProperty.isInfinite() && (!abstractProperty.isSingleString() || abstractProperty.getLanguage().size() != 1)) {
 				// this means that the abstract property recognizes only finite languages (not equals to 1)
 
-				abstractObject.remove(abstractProperty);
+				properties.remove(abstractProperty);
 				for (String s: abstractProperty.getLanguage())
 					for(AbstractValue a: abstractValue)
 						put(new FA(s), a);
@@ -168,10 +168,10 @@ public class AbstractObject implements AbstractValue {
 		do {
 			HashSet<Pair<FA, FA>> visited = new HashSet<Pair<FA,FA>>();
 
-			previousHash = abstractObject.hashCode();
+			previousHash = properties.hashCode();
 			keys = new HashSet<FA>();
 
-			for (FA k : this.abstractObject.keySet()) 
+			for (FA k : this.properties.keySet()) 
 				keys.add(k.clone());
 
 			for (FA k1 : keys)  {
@@ -189,8 +189,8 @@ public class AbstractObject implements AbstractValue {
 					if ((!Automaton.isEmptyLanguageAccepted(intersectionAutomaton)) && !k1.equals(k2) && !visited.contains(toCheck1) && !visited.contains(toCheck2)) {
 
 						FA intersectionProperty = new FA(intersectionAutomaton);
-						this.abstractObject.remove(k1);
-						this.abstractObject.remove(k2);
+						this.properties.remove(k1);
+						this.properties.remove(k2);
 
 						FA minusP1P2 = k1.minus(k2); AbstractValue minusP1P2Value = get(minusP1P2).leastUpperBound(v1);
 						FA minusP2P1 = k2.minus(k1); AbstractValue minusP2P1Value = get(minusP2P1).leastUpperBound(v2);
@@ -217,7 +217,7 @@ public class AbstractObject implements AbstractValue {
 				}
 			}
 
-		} while (previousHash != abstractObject.hashCode());
+		} while (previousHash != properties.hashCode());
 	}
 
 
@@ -242,7 +242,7 @@ public class AbstractObject implements AbstractValue {
 
 	public AbstractValue get(FA k) {
 		AbstractValue v2 = new Bottom();
-		ArrayList<AbstractValue> s = (ArrayList<AbstractValue>) abstractObject.get(k);
+		ArrayList<AbstractValue> s = (ArrayList<AbstractValue>) properties.get(k);
 		if (s != null)
 			for (AbstractValue v : s)
 				v2 = v;
