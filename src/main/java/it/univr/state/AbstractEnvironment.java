@@ -2,6 +2,7 @@ package it.univr.state;
 
 import it.univr.domain.AbstractDomain;
 import it.univr.domain.AbstractValue;
+import it.univr.domain.AllocationSite;
 
 
 public class AbstractEnvironment  {
@@ -69,6 +70,10 @@ public class AbstractEnvironment  {
 	
 	public AbstractValue getValue(Variable v) {
 		return getStore().get(v);
+	}
+	
+	public AbstractValue getValue(AllocationSite l) {
+		return getHeap().get(l);
 	}
 
 

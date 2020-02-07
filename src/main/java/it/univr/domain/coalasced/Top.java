@@ -46,7 +46,7 @@ public class Top implements AbstractValue {
 	}
 	
 	@Override
-	public Object clone() {
+	public AbstractValue clone() {
 		return new Top();
 	}
 

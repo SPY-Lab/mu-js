@@ -53,29 +53,29 @@ public class AbstractObject implements AbstractValue {
 	@Override
 	public AbstractValue leastUpperBound(AbstractValue other) {
 		// TODO: Marin
-		
+
 		if(other instanceof AbstractObject) {
 			AbstractObject otherAbstractObject = (AbstractObject)other;
 			MultiHashMap<FA, AbstractValue> resultAbstractObjectMap = new MultiHashMap<>();
-			
+
 			for (FA abstractProperty: getAbstractObjectMap().keySet()) {
 				resultAbstractObjectMap.put(abstractProperty, this.lookupAbstractObject(abstractProperty));
 			}
-			
+
 			for (FA abstractProperty: otherAbstractObject.getAbstractObjectMap().keySet()) {
 				resultAbstractObjectMap.put(abstractProperty, otherAbstractObject.lookupAbstractObject(abstractProperty));
 			}
-			
+
 			AbstractObject abstractObject = new AbstractObject(resultAbstractObjectMap);
 			abstractObject.normalize();
-			
+
 			return abstractObject;
 		} else if (other instanceof Bottom)
 			return clone();
 
 		return new Top();
 	}
-	
+
 	@Override
 	public AbstractObject clone() {
 		return new AbstractObject(getAbstractObjectMap());
@@ -84,10 +84,7 @@ public class AbstractObject implements AbstractValue {
 	@Override
 	public AbstractValue widening(AbstractValue other) {
 		// TODO: Marin
-		if(other instanceof AbstractObject) {
-			return null;
-		}
-		return new Top();
+		return leastUpperBound(other);
 	}
 
 	@Override
@@ -176,7 +173,7 @@ public class AbstractObject implements AbstractValue {
 
 			for (FA k : this.abstractObject.keySet()) 
 				keys.add(k.clone());
-									
+
 			for (FA k1 : keys)  {
 
 				AbstractValue v1 = get(k1);
@@ -194,10 +191,10 @@ public class AbstractObject implements AbstractValue {
 						FA intersectionProperty = new FA(intersectionAutomaton);
 						this.abstractObject.remove(k1);
 						this.abstractObject.remove(k2);
-						
+
 						FA minusP1P2 = k1.minus(k2); AbstractValue minusP1P2Value = get(minusP1P2).leastUpperBound(v1);
 						FA minusP2P1 = k2.minus(k1); AbstractValue minusP2P1Value = get(minusP2P1).leastUpperBound(v2);
-						
+
 						MultiHashMap<FA, AbstractValue> toAdd = new MultiHashMap<FA, AbstractValue>();
 
 						toAdd.put(intersectionProperty, lookupAbstractObject(intersectionProperty).leastUpperBound(v1).leastUpperBound(v2));
@@ -205,11 +202,11 @@ public class AbstractObject implements AbstractValue {
 
 						if (!Automaton.isEmptyLanguageAccepted(minusP1P2.getAutomaton()) && !minusP1P2Value.equals(new Bottom())) 
 							toAdd.put(minusP1P2, minusP1P2Value);
-												
+
 						if (!Automaton.isEmptyLanguageAccepted(minusP2P1.getAutomaton()) && !minusP2P1Value.equals(new Bottom())) 
 							toAdd.put(minusP2P1, minusP2P1Value);
-						
-						
+
+
 						for (FA k : toAdd.keySet()) 
 							for (AbstractValue v : toAdd.get(k))
 								put(k, v); 
@@ -219,7 +216,7 @@ public class AbstractObject implements AbstractValue {
 					visited.add(new Pair<FA, FA>(k2, k1));
 				}
 			}
-			
+
 		} while (previousHash != abstractObject.hashCode());
 	}
 
@@ -234,7 +231,7 @@ public class AbstractObject implements AbstractValue {
 			if (!Automaton.intersection(p.getAutomaton(), abstractProperty.getAutomaton()).equals(Automaton.makeEmptyLanguage())) {
 
 				for(AbstractValue currentValue: getAbstractObjectMap().get(abstractProperty)) {
-					
+
 					resultAbstractValue = resultAbstractValue.leastUpperBound(currentValue);
 				}
 			}

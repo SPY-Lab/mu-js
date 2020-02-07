@@ -9,14 +9,18 @@ public class AllocationSites implements AbstractValue {
 
 	private HashSet<AllocationSite> sites;
 
+	public AllocationSites clone() {
+		return new AllocationSites((HashSet<AllocationSite>) sites.clone());
+	}
 
 	public AllocationSites() {
 		this.sites = new HashSet<AllocationSite>();
 	}
-
-	public AllocationSites(AllocationSite l) {
+	
+	public AllocationSites(AllocationSite ... ls) {
 		this.sites = new HashSet<AllocationSite>();
-		this.sites.add(l);
+		for (AllocationSite l : ls)
+			sites.add(l);
 	}
 
 	public AllocationSites(HashSet<AllocationSite> s) {

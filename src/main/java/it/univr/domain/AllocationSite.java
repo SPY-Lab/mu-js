@@ -40,6 +40,6 @@ public class AllocationSite {
 
 	@Override
 	public String toString() {
-		return "#" +  row;
+		return "#" +  row +  col;
 	}
 }
