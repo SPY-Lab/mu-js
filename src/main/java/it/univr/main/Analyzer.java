@@ -22,12 +22,13 @@ public class Analyzer {
 	public static void main(String[] args) throws IOException {
 		System.out.println(potd());
 		String file = args[0];
-		
+
 		boolean narrowing = false;
 		boolean printInvariants = false;
+		String program = null;
 
 		AbstractDomain domain = new CoalascedAbstractDomain();
-		
+
 		for (int i = 0; i < args.length; ++i) {
 			if (args[i].equals("-narr"))
 				narrowing = true;
@@ -50,11 +51,15 @@ public class Analyzer {
 			else if (args[i].equals("-invariants")) {
 				printInvariants = true;
 			}
+
+			else if (args[i].equals("-p")) {
+				program = args[i+1];
+			}
 		}
 
 		AbstractEnvironment memory = null;
 		AbstractState state = null;
-		
+
 		try {
 			if (printInvariants) {
 				state = Analyzer.analyzeInvariants(file, domain, narrowing);
@@ -75,7 +80,7 @@ public class Analyzer {
 
 		interpreter.setAbstractDomain(domain);
 		InputStream stream = new FileInputStream(file);
-				
+
 		MuJsLexer lexer = new MuJsLexer(CharStreams.fromStream(stream, StandardCharsets.UTF_8));
 
 		MuJsParser parser = new MuJsParser(new CommonTokenStream(lexer));
@@ -84,7 +89,7 @@ public class Analyzer {
 
 		return interpreter.getFinalAbstractMemory();
 	}
-	
+
 	public static AbstractState analyzeInvariants(String file, AbstractDomain domain, boolean narrowing) throws IOException {
 		AbstractInterpreter interpreter = new AbstractInterpreter(domain, narrowing, true);
 
@@ -93,6 +98,7 @@ public class Analyzer {
 		MuJsLexer lexer = new MuJsLexer(CharStreams.fromStream(stream, StandardCharsets.UTF_8));
 
 		MuJsParser parser = new MuJsParser(new CommonTokenStream(lexer));
+
 		ParseTree tree = parser.program();
 		interpreter.visit(tree);
 

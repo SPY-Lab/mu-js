@@ -2,7 +2,6 @@ package it.univr.main.coalesced;
 
 import org.apache.commons.collections15.multimap.MultiHashMap;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import it.univr.domain.AbstractValue;

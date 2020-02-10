@@ -166,7 +166,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 	@Override 
 	public AbstractValue visitAssignmentStmt(MuJsParser.AssignmentStmtContext ctx) { 
-
+		
 		Variable v = new Variable(ctx.getChild(0).getText());
 		env.put(v, visit(ctx.expression()));
 

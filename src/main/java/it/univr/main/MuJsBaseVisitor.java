@@ -1,6 +1,7 @@
-// Generated from MuJs.g4 by ANTLR 4.4
+// Generated from ./ictac/mu-js/src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
+
 package it.univr.main;
-import org.antlr.v4.runtime.misc.NotNull;
+
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
@@ -18,236 +19,236 @@ public class MuJsBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPropUpdate(@NotNull MuJsParser.PropUpdateContext ctx) { return visitChildren(ctx); }
+	@Override public T visitProgramExecution(MuJsParser.ProgramExecutionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitOr(@NotNull MuJsParser.OrContext ctx) { return visitChildren(ctx); }
+	@Override public T visitInteger(MuJsParser.IntegerContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDiff(@NotNull MuJsParser.DiffContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBoolean(MuJsParser.BooleanContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitString(@NotNull MuJsParser.StringContext ctx) { return visitChildren(ctx); }
+	@Override public T visitString(MuJsParser.StringContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParenthesis(@NotNull MuJsParser.ParenthesisContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNaN(MuJsParser.NaNContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIdentifier(@NotNull MuJsParser.IdentifierContext ctx) { return visitChildren(ctx); }
+	@Override public T visitEmptyObject(MuJsParser.EmptyObjectContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPropLookup(@NotNull MuJsParser.PropLookupContext ctx) { return visitChildren(ctx); }
+	@Override public T visitObj(MuJsParser.ObjContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitEmptyObject(@NotNull MuJsParser.EmptyObjectContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSubstring(MuJsParser.SubstringContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitWhileStmt(@NotNull MuJsParser.WhileStmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitOr(MuJsParser.OrContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitObj(@NotNull MuJsParser.ObjContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDiff(MuJsParser.DiffContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNaN(@NotNull MuJsParser.NaNContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMul(MuJsParser.MulContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBlock(@NotNull MuJsParser.BlockContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIndexOf(MuJsParser.IndexOfContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBoolean(@NotNull MuJsParser.BooleanContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSum(MuJsParser.SumContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLess(@NotNull MuJsParser.LessContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPrimitiveValue(MuJsParser.PrimitiveValueContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSubstring(@NotNull MuJsParser.SubstringContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDiv(MuJsParser.DivContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitComposition(@NotNull MuJsParser.CompositionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitParenthesis(MuJsParser.ParenthesisContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMul(@NotNull MuJsParser.MulContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNot(MuJsParser.NotContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIndexOf(@NotNull MuJsParser.IndexOfContext ctx) { return visitChildren(ctx); }
+	@Override public T visitEquals(MuJsParser.EqualsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBlockStmt(@NotNull MuJsParser.BlockStmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIdentifier(MuJsParser.IdentifierContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSum(@NotNull MuJsParser.SumContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPropLookup(MuJsParser.PropLookupContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPrimitiveValue(@NotNull MuJsParser.PrimitiveValueContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCharAt(MuJsParser.CharAtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitInteger(@NotNull MuJsParser.IntegerContext ctx) { return visitChildren(ctx); }
+	@Override public T visitLength(MuJsParser.LengthContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDiv(@NotNull MuJsParser.DivContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAnd(MuJsParser.AndContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNot(@NotNull MuJsParser.NotContext ctx) { return visitChildren(ctx); }
+	@Override public T visitGreater(MuJsParser.GreaterContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitEquals(@NotNull MuJsParser.EqualsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitObjectExpression(MuJsParser.ObjectExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIfStmt(@NotNull MuJsParser.IfStmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitLess(MuJsParser.LessContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitProgramExecution(@NotNull MuJsParser.ProgramExecutionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPropUpdate(MuJsParser.PropUpdateContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCharAt(@NotNull MuJsParser.CharAtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitComposition(MuJsParser.CompositionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLength(@NotNull MuJsParser.LengthContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIfStmt(MuJsParser.IfStmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAnd(@NotNull MuJsParser.AndContext ctx) { return visitChildren(ctx); }
+	@Override public T visitWhileStmt(MuJsParser.WhileStmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitGreater(@NotNull MuJsParser.GreaterContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBlockStmt(MuJsParser.BlockStmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAssignmentStmt(@NotNull MuJsParser.AssignmentStmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAssignmentStmt(MuJsParser.AssignmentStmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitObjectExpression(@NotNull MuJsParser.ObjectExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitObjectAsg(MuJsParser.ObjectAsgContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitObjectAsg(@NotNull MuJsParser.ObjectAsgContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBlock(MuJsParser.BlockContext ctx) { return visitChildren(ctx); }
 }
