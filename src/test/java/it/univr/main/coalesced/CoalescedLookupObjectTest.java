@@ -1,16 +1,10 @@
 package it.univr.main.coalesced;
 
-import org.apache.commons.collections15.multimap.MultiHashMap;
 import org.junit.Assert;
 import org.junit.Test;
 
-import it.univr.domain.AbstractValue;
-import it.univr.domain.AllocationSite;
-import it.univr.domain.coalasced.AbstractObject;
-import it.univr.domain.coalasced.AllocationSites;
 import it.univr.domain.coalasced.Bottom;
 import it.univr.domain.coalasced.CoalascedAbstractDomain;
-import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
 import it.univr.main.Analyzer;
 import it.univr.state.AbstractEnvironment;
