@@ -1,6 +1,6 @@
 // Generated from ./ictac/mu-js/src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
 
-package it.univr.main;
+    package it.univr.main;
 
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -181,6 +181,13 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitGreater(MuJsParser.GreaterContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code FunctionCall}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionCall(MuJsParser.FunctionCallContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code ObjectExpression}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
@@ -194,6 +201,13 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitLess(MuJsParser.LessContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code FunctionDeclaration}
+	 * labeled alternative in {@link MuJsParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionDeclaration(MuJsParser.FunctionDeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code PropUpdate}
 	 * labeled alternative in {@link MuJsParser#stmt}.
@@ -215,6 +229,13 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIfStmt(MuJsParser.IfStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Return}
+	 * labeled alternative in {@link MuJsParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturn(MuJsParser.ReturnContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code WhileStmt}
 	 * labeled alternative in {@link MuJsParser#stmt}.
@@ -243,6 +264,13 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitObjectAsg(MuJsParser.ObjectAsgContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BodyFunction}
+	 * labeled alternative in {@link MuJsParser#body}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBodyFunction(MuJsParser.BodyFunctionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MuJsParser#block}.
 	 * @param ctx the parse tree

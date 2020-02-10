@@ -18,7 +18,7 @@ public class LiftedUnionNanTest {
 	@Test
 	public void testNan001() throws Exception {
 		String file = dir + "nan001.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -34,7 +34,7 @@ public class LiftedUnionNanTest {
 	@Test
 	public void testNan002() throws Exception {
 		String file = dir + "nan002.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -50,7 +50,7 @@ public class LiftedUnionNanTest {
 	@Test
 	public void testNan003() throws Exception {
 		String file = dir + "nan003.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -66,7 +66,7 @@ public class LiftedUnionNanTest {
 	@Test
 	public void testNan004() throws Exception {
 		String file = dir + "nan004.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 3);

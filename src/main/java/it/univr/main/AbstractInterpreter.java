@@ -1,6 +1,7 @@
 package it.univr.main;
 
 import java.util.HashMap;
+import java.util.Vector;
 
 import org.apache.commons.collections15.multimap.MultiHashMap;
 
@@ -14,10 +15,12 @@ import it.univr.domain.coalasced.Bottom;
 import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
 import it.univr.domain.coalasced.NaN;
+import it.univr.main.MuJsParser.BodyContext;
 import it.univr.main.MuJsParser.IdentifierContext;
 import it.univr.main.MuJsParser.PrimitiveValueContext;
 import it.univr.state.AbstractEnvironment;
 import it.univr.state.AbstractState;
+import it.univr.state.Function;
 import it.univr.state.KeyAbstractState;
 import it.univr.state.Variable;
 
@@ -26,6 +29,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	private AbstractEnvironment env;
 	private AbstractDomain domain;
 	private AbstractState state;
+
 
 	private boolean narrowingIsEnabled;
 	private boolean printInvariants;
@@ -56,8 +60,19 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public void setAbstractDomain(AbstractDomain domain) {
 		this.domain = domain;
 	}
-
 	
+	public HashMap<Variable, Function> getFunctions() {
+		return state.getFunctions();
+	}
+
+	public void printFunctions() {
+		System.out.println("Declared function:");
+		
+		for (Function f : state.getFunctions().values())
+			System.out.println(f);
+	}
+	
+
 	/**
 	 * 
 	 * MuJS Objects
@@ -65,16 +80,16 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	 */
 	@Override 
 	public AbstractValue visitPropUpdate(MuJsParser.PropUpdateContext ctx) {
-		
+
 		Variable var = new Variable(ctx.ID().getText());
 		AbstractValue allocationSites = env.getStore().get(var);
-		
+
 		if (allocationSites instanceof AllocationSites) {
 			for (AllocationSite l : ((AllocationSites)allocationSites).getAllocationSites()) {
 
 				FA key = new FA(ctx.expression(0).getText());
 				AbstractValue value = visit(ctx.expression(1));
-				
+
 				AbstractValue obj = env.getHeap().get(l);
 				if (obj instanceof AbstractObject) {	
 					AbstractObject object = (AbstractObject)obj;
@@ -88,18 +103,18 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 	@Override 
 	public AbstractValue visitPropLookup(MuJsParser.PropLookupContext ctx) { 
-		
+
 		Variable v = new Variable(ctx.ID().getText());
 		AbstractValue abstractValue = new Bottom();
-		
+
 		if (env.getStore().containsKey(v)) {
 			AbstractValue sites = env.getStore().get(v);
-			
+
 			if (sites instanceof AllocationSites) {
 				for (AllocationSite site: ((AllocationSites)sites).getAllocationSites()) {
 					FA key = new FA(ctx.expression().getText());
 					AbstractValue obj = env.getHeap().get(site);
-					
+
 					if (obj instanceof AbstractObject) {
 						AbstractValue val = ((AbstractObject)obj).get(key);
 						abstractValue = abstractValue.leastUpperBound(val);
@@ -107,10 +122,10 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 				}
 			}
 		}
-		
+
 		return abstractValue;
 	}
-	
+
 	@Override 
 	public AbstractValue visitEmptyObject(MuJsParser.EmptyObjectContext ctx) {
 		return new AbstractObject(); 
@@ -119,18 +134,18 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	@Override 
 	public AbstractValue visitObj(MuJsParser.ObjContext ctx) {
 		HashMap<FA, AbstractValue> objectMap = new HashMap<>();
-		
+
 		for (int i = 0; i < ctx.ID().size(); i++) {
 			AbstractValue expression = visit(ctx.expression(i));
 			FA id = new FA(ctx.ID(i).toString());
 			objectMap.put(id, expression);
 		}
-		
+
 		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
 		for (FA key : objectMap.keySet()) {
 			abstractObjectMap.put(key, objectMap.get(key));
 		}
-		
+
 		AbstractObject obj = new AbstractObject(abstractObjectMap);
 		return obj;
 	}
@@ -139,21 +154,21 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitObjectExpression(MuJsParser.ObjectExpressionContext ctx) { 
 		return visitChildren(ctx);
 	}
-	
+
 	@Override 
 	public AbstractValue visitObjectAsg(MuJsParser.ObjectAsgContext ctx) {
-		
+
 		int row = ctx.getStart().getLine();
 		int col = ctx.getStart().getCharPositionInLine();
 		AllocationSite l = new AllocationSite(row, col);
 		Variable var = new Variable(ctx.ID().getText());
-		
+
 		env.getStore().put(var, new AllocationSites(l));
 		env.getHeap().put(l, visit(ctx.object()));
-		
+
 		return new Bottom();
 	}
-	
+
 	/**
 	 * 
 	 * MuJS Statements
@@ -166,7 +181,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 	@Override 
 	public AbstractValue visitAssignmentStmt(MuJsParser.AssignmentStmtContext ctx) { 
-		
+
 		Variable v = new Variable(ctx.getChild(0).getText());
 		env.put(v, visit(ctx.expression()));
 
@@ -262,7 +277,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 			else if (domain.isTopBool(domain.juggleToBool(visit(ctx.expression())))) {
 				if (narrowingIsEnabled)
 					env.intersect(projectTrueState(ctx.expression()));
-				
+
 				visit(ctx.block());
 				if (narrowingIsEnabled)
 					lastExecution = env.clone();
@@ -448,6 +463,50 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		return domain.makeNaN(new NaN());
 	}
 
+	@Override 
+	public AbstractValue visitBodyFunction(MuJsParser.BodyFunctionContext ctx) {
+		return visit(ctx.stmt());
+	}
+
+	@Override
+	public AbstractValue visitReturn(MuJsParser.ReturnContext ctx) {
+		return visit(ctx.expression()); 
+	}
+
+	@Override 
+	public AbstractValue visitFunctionDeclaration(MuJsParser.FunctionDeclarationContext ctx) { 
+
+		Variable name = new Variable(ctx.ID(0).getText());
+		BodyContext body = ctx.body();
+		Vector<Variable> formalParameters = new Vector<Variable>();
+
+		for (int i = 1; i < ctx.ID().size(); i++)
+			formalParameters.add(new Variable(ctx.ID(i).getText()));
+
+		Function function = new Function(name, formalParameters, body);
+
+		state.addFunction(name, function);
+		return new Bottom();
+	}
+
+	@Override 
+	public AbstractValue visitFunctionCall(MuJsParser.FunctionCallContext ctx) { 
+		// TODO: function call
+		
+		Function f = state.getFunction(new Variable(ctx.ID().getText()));
+		
+		for (int i = 0; i < f.getFormalParameters().size(); i++)
+			env.put(f.getFormalParameters().get(i), visit(ctx.expression(i)));
+		
+		AbstractValue returnValue = visit(f.getBody());
+		
+		for (int i = 0; i < f.getFormalParameters().size(); i++)
+			env.removeVariable(f.getFormalParameters().get(i));
+		
+
+		return returnValue; 
+	}
+
 	public AbstractEnvironment projectTrueState(MuJsParser.ExpressionContext exp) {
 		AbstractEnvironment state = new AbstractEnvironment(domain);
 
@@ -527,7 +586,6 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 		return new AbstractEnvironment(domain);
 	}
-
 	public AbstractEnvironment projectFalseState(MuJsParser.ExpressionContext exp) {
 		AbstractEnvironment state = new AbstractEnvironment(domain);
 

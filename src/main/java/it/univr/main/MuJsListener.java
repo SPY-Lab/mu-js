@@ -1,6 +1,6 @@
 // Generated from ./ictac/mu-js/src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
 
-package it.univr.main;
+    package it.univr.main;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -298,6 +298,18 @@ public interface MuJsListener extends ParseTreeListener {
 	 */
 	void exitGreater(MuJsParser.GreaterContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code FunctionCall}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionCall(MuJsParser.FunctionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FunctionCall}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionCall(MuJsParser.FunctionCallContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code ObjectExpression}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
@@ -321,6 +333,18 @@ public interface MuJsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLess(MuJsParser.LessContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code FunctionDeclaration}
+	 * labeled alternative in {@link MuJsParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionDeclaration(MuJsParser.FunctionDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FunctionDeclaration}
+	 * labeled alternative in {@link MuJsParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionDeclaration(MuJsParser.FunctionDeclarationContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code PropUpdate}
 	 * labeled alternative in {@link MuJsParser#stmt}.
@@ -357,6 +381,18 @@ public interface MuJsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIfStmt(MuJsParser.IfStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Return}
+	 * labeled alternative in {@link MuJsParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturn(MuJsParser.ReturnContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Return}
+	 * labeled alternative in {@link MuJsParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturn(MuJsParser.ReturnContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code WhileStmt}
 	 * labeled alternative in {@link MuJsParser#stmt}.
@@ -405,6 +441,18 @@ public interface MuJsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitObjectAsg(MuJsParser.ObjectAsgContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code BodyFunction}
+	 * labeled alternative in {@link MuJsParser#body}.
+	 * @param ctx the parse tree
+	 */
+	void enterBodyFunction(MuJsParser.BodyFunctionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BodyFunction}
+	 * labeled alternative in {@link MuJsParser#body}.
+	 * @param ctx the parse tree
+	 */
+	void exitBodyFunction(MuJsParser.BodyFunctionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MuJsParser#block}.
 	 * @param ctx the parse tree

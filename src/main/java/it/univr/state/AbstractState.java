@@ -2,29 +2,45 @@ package it.univr.state;
 
 import java.util.HashMap;
 
-public class AbstractState extends HashMap<KeyAbstractState, AbstractEnvironment>{
+public class AbstractState {
 
+	private HashMap<Variable, Function> functions;
+	private HashMap<KeyAbstractState, AbstractEnvironment> state;
+	
 	public AbstractState() {
-		super();
+		this.functions = new HashMap<Variable, Function>();
+		this.state = new HashMap<KeyAbstractState, AbstractEnvironment>();
 	}
 
 	public void add(KeyAbstractState key, AbstractEnvironment m) {
-		if (containsKey(key))
-			put(key, get(key).leastUpperBound(m));
+		if (state.containsKey(key))
+			state.put(key, state.get(key).leastUpperBound(m));
 		else
-			put(key, m);
+			state.put(key, m);
+	}
+
+	public HashMap<Variable, Function> getFunctions() {
+		return functions;
+	}
+	
+	public void addFunction(Variable name, Function function) {
+		functions.put(name, function);
 	}
 
 	@Override
 	public String toString() {
 		String result = "";
-
-		for (KeyAbstractState k : keySet()) {
+		
+		for (KeyAbstractState k : state.keySet()) {
 			result += "\n*******************\n";
 			result += "Line " + k.getRow() +", Column " + k.getCol() + "\n";
-			result += get(k).toString();
+			result += state.get(k).toString();
 		}
 		
 		return result;
+	}
+
+	public Function getFunction(Variable variable) {
+		return functions.get(variable);
 	}
 }

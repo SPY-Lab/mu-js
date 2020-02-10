@@ -24,7 +24,7 @@ public class CoalescedIfTest {
 	@Test
 	public void testIf001() throws Exception {
 		String file = "src/test/resources/if/if001.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -37,7 +37,7 @@ public class CoalescedIfTest {
 	@Test
 	public void testIf002() throws Exception {
 		String file = "src/test/resources/if/if002.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 2);
@@ -51,7 +51,7 @@ public class CoalescedIfTest {
 	@Test
 	public void testIf003() throws Exception {
 		String file = "src/test/resources/if/if003.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 2);
@@ -77,7 +77,7 @@ public class CoalescedIfTest {
 	@Test
 	public void testIf004() throws Exception {
 		String file = "src/test/resources/if/if004.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -90,7 +90,7 @@ public class CoalescedIfTest {
 	@Test
 	public void testIf005() throws Exception {
 		String file = "src/test/resources/if/if005.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -103,7 +103,7 @@ public class CoalescedIfTest {
 	@Test
 	public void testIf006() throws Exception {
 		String file = "src/test/resources/if/if006.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -116,7 +116,7 @@ public class CoalescedIfTest {
 	@Test
 	public void testIf007() throws Exception {
 		String file = "src/test/resources/if/if007.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -129,7 +129,7 @@ public class CoalescedIfTest {
 	@Test
 	public void testIf008() throws Exception {
 		String file = "src/test/resources/if/if008.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 3);
@@ -146,7 +146,7 @@ public class CoalescedIfTest {
 	@Test
 	public void testIf009() throws Exception {
 		String file = "src/test/resources/if/if009.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 2);
@@ -162,7 +162,7 @@ public class CoalescedIfTest {
 	@Test
 	public void testIf010() throws Exception {
 		String file = "src/test/resources/if/if010.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 2);

@@ -14,8 +14,6 @@ import it.univr.domain.AbstractDomain;
 import it.univr.domain.coalasced.CoalascedAbstractDomain;
 import it.univr.domain.coalasced.FA;
 import it.univr.domain.lifted.LiftedUnionAbstractDomain;
-import it.univr.state.AbstractEnvironment;
-import it.univr.state.AbstractState;
 
 public class Analyzer {
 
@@ -56,26 +54,24 @@ public class Analyzer {
 				program = args[i+1];
 			}
 		}
-
-		AbstractEnvironment memory = null;
-		AbstractState state = null;
-
 		try {
 			if (printInvariants) {
-				state = Analyzer.analyzeInvariants(file, domain, narrowing);
+				AbstractInterpreter analysis = Analyzer.analyze(file, domain, narrowing);
+				analysis.printFunctions();
 				System.out.println("\n\n\n");
-				System.out.println(state);
+				System.out.println(analysis.getAbstractState());
 			} else {
-				memory = Analyzer.analyze(file, domain, narrowing);
+				AbstractInterpreter analysis = Analyzer.analyze(file, domain, narrowing);
+				analysis.printFunctions();
 				System.out.println("\n\n\n");
-				System.out.println(memory);
+				System.out.println(analysis.getFinalAbstractMemory());
 			}
 		} catch (FileNotFoundException f) {
 			System.err.println(file + ": file does not exists!");
 		}
 	}
 
-	public static AbstractEnvironment analyze(String file, AbstractDomain domain, boolean narrowing) throws IOException {
+	public static AbstractInterpreter analyze(String file, AbstractDomain domain, boolean narrowing) throws IOException {
 		AbstractInterpreter interpreter = new AbstractInterpreter(domain, narrowing, false);
 
 		interpreter.setAbstractDomain(domain);
@@ -87,24 +83,9 @@ public class Analyzer {
 		ParseTree tree = parser.program();
 		interpreter.visit(tree);
 
-		return interpreter.getFinalAbstractMemory();
+		return interpreter;
 	}
-
-	public static AbstractState analyzeInvariants(String file, AbstractDomain domain, boolean narrowing) throws IOException {
-		AbstractInterpreter interpreter = new AbstractInterpreter(domain, narrowing, true);
-
-		interpreter.setAbstractDomain(domain);
-		InputStream stream = new FileInputStream(file);
-		MuJsLexer lexer = new MuJsLexer(CharStreams.fromStream(stream, StandardCharsets.UTF_8));
-
-		MuJsParser parser = new MuJsParser(new CommonTokenStream(lexer));
-
-		ParseTree tree = parser.program();
-		interpreter.visit(tree);
-
-		return interpreter.getAbstractState();
-	}
-
+	
 	private static String printHelp() {
 		String result = "";
 		result += "MuJS static analyzer.\n";

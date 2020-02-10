@@ -1,5 +1,7 @@
 // Generated from ./ictac/mu-js/src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
-package it.univr.main;
+
+    package it.univr.main;
+
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -304,6 +306,18 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterFunctionCall(MuJsParser.FunctionCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunctionCall(MuJsParser.FunctionCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterObjectExpression(MuJsParser.ObjectExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -323,6 +337,18 @@ public class MuJsBaseListener implements MuJsListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLess(MuJsParser.LessContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunctionDeclaration(MuJsParser.FunctionDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunctionDeclaration(MuJsParser.FunctionDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -359,6 +385,18 @@ public class MuJsBaseListener implements MuJsListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIfStmt(MuJsParser.IfStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReturn(MuJsParser.ReturnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReturn(MuJsParser.ReturnContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -407,6 +445,18 @@ public class MuJsBaseListener implements MuJsListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitObjectAsg(MuJsParser.ObjectAsgContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBodyFunction(MuJsParser.BodyFunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBodyFunction(MuJsParser.BodyFunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -19,7 +19,7 @@ public class LiftedUnionIndexOfTest {
 	@Test
 	public void testIndexOf001() throws Exception {
 		String file = "src/test/resources/indexof/io001.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -35,7 +35,7 @@ public class LiftedUnionIndexOfTest {
 	@Test
 	public void testIndexOf002() throws Exception {
 		String file = "src/test/resources/indexof/io002.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 3);

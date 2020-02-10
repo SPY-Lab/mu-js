@@ -24,7 +24,7 @@ public class CoalescedAssignObjectTest {
 	@Test
 	public void testVisitAssigns001() throws Exception {
 		String file = dir + "assign001.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		AbstractObject hObject = new AbstractObject(new FA("a"), new Interval("0", "0"));
 		MultiHashMap<FA, AbstractValue> properties = new MultiHashMap<FA, AbstractValue>();
@@ -52,7 +52,7 @@ public class CoalescedAssignObjectTest {
 	@Test
 	public void testVisitAssigns002() throws Exception {
 		String file = dir + "assign002.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		AbstractObject aObject = new AbstractObject(new FA("a"), new Interval("0", "0"));
 		AbstractObject hObject = new AbstractObject(new FA("b"), new Interval("0", "0"));
@@ -83,7 +83,7 @@ public class CoalescedAssignObjectTest {
 	@Test
 	public void testVisitAssigns003() throws Exception {
 		String file = dir + "assign003.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		AbstractObject aObject = new AbstractObject(new FA("a"), new Bool(1));
 		MultiHashMap<FA, AbstractValue> hProperties = new MultiHashMap<FA, AbstractValue>();
@@ -118,7 +118,7 @@ public class CoalescedAssignObjectTest {
 	@Test
 	public void testObjectAssign004() throws Exception {
 		String file = dir + "assign004.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		AbstractObject trueObj = new AbstractObject(new FA("a"), new Interval("1", "1"));
 		AbstractObject falseObj = new AbstractObject(new FA("a"), new Interval("2", "2"));

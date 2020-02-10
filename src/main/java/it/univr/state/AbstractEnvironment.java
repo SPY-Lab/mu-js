@@ -115,6 +115,10 @@ public class AbstractEnvironment  {
 		return getStore().put(key, v);
 	}
 	
+	public void removeVariable(Variable v) {
+		getStore().remove(v);
+	}
+	
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof AbstractEnvironment) {
