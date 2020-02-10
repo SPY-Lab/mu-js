@@ -450,18 +450,6 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBodyFunction(MuJsParser.BodyFunctionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBodyFunction(MuJsParser.BodyFunctionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterBlock(MuJsParser.BlockContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -73,14 +73,9 @@ stmt:
 	|  ID ASG 'new' object SEMICOLON 									#ObjectAsg
 	|  ID '[' expression ']' ASG expression SEMICOLON 					#PropUpdate
 	|  'return' expression ';'											#Return
-	| 'function' ID '(' ID ( ',' ID)* ')' body							#FunctionDeclaration
+	| 'function' ID '(' ID ( ',' ID)* ')' '{' stmt '}'					#FunctionDeclaration
 	;
 	
-	
-body: 
-	'{' stmt '}'														#BodyFunction
-	;														
-
 	
 block:  '{' '}'
 	|	'{' stmt '}'

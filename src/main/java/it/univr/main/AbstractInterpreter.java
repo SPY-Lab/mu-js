@@ -15,33 +15,33 @@ import it.univr.domain.coalasced.Bottom;
 import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
 import it.univr.domain.coalasced.NaN;
-import it.univr.main.MuJsParser.BodyContext;
 import it.univr.main.MuJsParser.IdentifierContext;
 import it.univr.main.MuJsParser.PrimitiveValueContext;
+import it.univr.main.MuJsParser.StmtContext;
 import it.univr.state.AbstractEnvironment;
 import it.univr.state.AbstractState;
+import it.univr.state.CallString;
+import it.univr.state.CallStringAbstractEnvironment;
 import it.univr.state.Function;
+import it.univr.state.KCallStrings;
 import it.univr.state.KeyAbstractState;
 import it.univr.state.Variable;
 
 public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
-	private AbstractEnvironment env;
+	private CallStringAbstractEnvironment env;
 	private AbstractDomain domain;
 	private AbstractState state;
 
-
-	private boolean narrowingIsEnabled;
-	private boolean printInvariants;
+	private KCallStrings callStrings = new KCallStrings(new CallString(0,0));
 
 	public AbstractInterpreter(AbstractDomain domain, boolean narrowing, boolean invariants) {
-		this.env = new AbstractEnvironment(domain);
-		this.state = new AbstractState();
-		this.narrowingIsEnabled = narrowing;
-		this.printInvariants = invariants;
+		this.env = new CallStringAbstractEnvironment(domain);
+		this.state = new AbstractState(domain);
+		env.put(new CallString(0,0), new AbstractEnvironment(domain));
 	}
 
-	public AbstractEnvironment getFinalAbstractMemory() {
+	public CallStringAbstractEnvironment getFinalAbstractMemory() {
 		return env;
 	}
 
@@ -49,7 +49,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		return state;
 	}
 
-	public void setAbstractState(AbstractEnvironment env) {
+	public void setAbstractEnvironement(CallStringAbstractEnvironment env) {
 		this.env = env;
 	}
 
@@ -60,18 +60,18 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public void setAbstractDomain(AbstractDomain domain) {
 		this.domain = domain;
 	}
-	
+
 	public HashMap<Variable, Function> getFunctions() {
 		return state.getFunctions();
 	}
 
 	public void printFunctions() {
 		System.out.println("Declared function:");
-		
+
 		for (Function f : state.getFunctions().values())
 			System.out.println(f);
 	}
-	
+
 
 	/**
 	 * 
@@ -82,7 +82,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitPropUpdate(MuJsParser.PropUpdateContext ctx) {
 
 		Variable var = new Variable(ctx.ID().getText());
-		AbstractValue allocationSites = env.getStore().get(var);
+		AbstractValue allocationSites = env.getStore(getCurrentCallString()).get(var);
 
 		if (allocationSites instanceof AllocationSites) {
 			for (AllocationSite l : ((AllocationSites)allocationSites).getAllocationSites()) {
@@ -90,7 +90,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 				FA key = new FA(ctx.expression(0).getText());
 				AbstractValue value = visit(ctx.expression(1));
 
-				AbstractValue obj = env.getHeap().get(l);
+				AbstractValue obj = env.getHeap(getCurrentCallString()).get(l);
 				if (obj instanceof AbstractObject) {	
 					AbstractObject object = (AbstractObject)obj;
 					object.put(key, object.get(key).leastUpperBound(value));
@@ -107,13 +107,13 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		Variable v = new Variable(ctx.ID().getText());
 		AbstractValue abstractValue = new Bottom();
 
-		if (env.getStore().containsKey(v)) {
-			AbstractValue sites = env.getStore().get(v);
+		if (env.getStore(getCurrentCallString()).containsKey(v)) {
+			AbstractValue sites = env.getStore(getCurrentCallString()).get(v);
 
 			if (sites instanceof AllocationSites) {
 				for (AllocationSite site: ((AllocationSites)sites).getAllocationSites()) {
 					FA key = new FA(ctx.expression().getText());
-					AbstractValue obj = env.getHeap().get(site);
+					AbstractValue obj = env.getHeap(getCurrentCallString()).get(site);
 
 					if (obj instanceof AbstractObject) {
 						AbstractValue val = ((AbstractObject)obj).get(key);
@@ -163,8 +163,8 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		AllocationSite l = new AllocationSite(row, col);
 		Variable var = new Variable(ctx.ID().getText());
 
-		env.getStore().put(var, new AllocationSites(l));
-		env.getHeap().put(l, visit(ctx.object()));
+		env.getStore(getCurrentCallString()).put(var, new AllocationSites(l));
+		env.getHeap(getCurrentCallString()).put(l, visit(ctx.object()));
 
 		return new Bottom();
 	}
@@ -183,12 +183,11 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitAssignmentStmt(MuJsParser.AssignmentStmtContext ctx) { 
 
 		Variable v = new Variable(ctx.getChild(0).getText());
-		env.put(v, visit(ctx.expression()));
+		env.putVariable(v, visit(ctx.expression()), getCurrentCallString());
 
-		if (printInvariants) {
-			KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
-			state.add(key, env.clone());
-		}
+		KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
+		state.add(key, env.get(getCurrentCallString()).clone(), getCurrentCallString());
+
 		return new Bottom(); 
 	}
 
@@ -218,21 +217,20 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		if (evaluationGuard.isFalse())
 			return visit(ctx.block(1));
 
-		AbstractEnvironment previous = (AbstractEnvironment) env.clone();
+		CallStringAbstractEnvironment previous = (CallStringAbstractEnvironment) env.clone();
 
 		visit(ctx.block(0));
 
-		AbstractEnvironment trueBranch = (AbstractEnvironment) env.clone();
+		CallStringAbstractEnvironment trueBranch = (CallStringAbstractEnvironment) env.clone();
 		env = previous;
 
 		visit(ctx.block(1));
 
 		env = env.leastUpperBound(trueBranch);
 
-		if (printInvariants) {
-			KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
-			state.add(key, env.clone());
-		}		
+		KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
+		state.add(key, env.get(getCurrentCallString()).clone(), getCurrentCallString());
+
 
 		return new Bottom();
 	}
@@ -245,8 +243,8 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	@Override 
 	public AbstractValue visitWhileStmt(MuJsParser.WhileStmtContext ctx) { 
 
-		AbstractEnvironment lastExecution = new AbstractEnvironment(domain);
-		AbstractEnvironment previous = (AbstractEnvironment) env.clone();
+		CallStringAbstractEnvironment lastExecution = new CallStringAbstractEnvironment(domain);
+		CallStringAbstractEnvironment previous = (CallStringAbstractEnvironment) env.clone();
 
 		do {
 
@@ -255,9 +253,6 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 			 */
 			if (domain.isTrue(domain.juggleToBool(visit(ctx.expression())))) {
 				visit(ctx.block());
-
-				if (narrowingIsEnabled)
-					lastExecution =  env.clone();
 				env = previous.widening(env);
 			} 
 
@@ -265,9 +260,6 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 			 * False
 			 */
 			else if (domain.isFalse(domain.juggleToBool(visit(ctx.expression())))) {
-				if (narrowingIsEnabled)
-
-					lastExecution =  env.clone();
 				break;
 			} 
 
@@ -275,18 +267,11 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 			 * Top
 			 */
 			else if (domain.isTopBool(domain.juggleToBool(visit(ctx.expression())))) {
-				if (narrowingIsEnabled)
-					env.intersect(projectTrueState(ctx.expression()));
-
 				visit(ctx.block());
-				if (narrowingIsEnabled)
-					lastExecution = env.clone();
 				env = previous.widening(previous.leastUpperBound(env));
 			}
 
-			AbstractEnvironment s =  env.clone();
-			if (narrowingIsEnabled)
-				s.intersect(projectTrueState(ctx.expression()));	
+			CallStringAbstractEnvironment s =  env.clone();
 
 			if (previous.equals(s))
 				break;
@@ -294,15 +279,9 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 				previous = s.clone();
 		} while (true);
 
-		if (narrowingIsEnabled) {
-			env.intersect(projectFalseState(ctx.expression()));
-			env = env.narrowing(lastExecution);
-		}
+		KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
+		state.add(key, env.get(getCurrentCallString()).clone(), getCurrentCallString());
 
-		if (printInvariants) {
-			KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
-			state.add(key, env.clone());
-		}
 
 		return new Bottom(); 
 	}
@@ -447,8 +426,8 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 		Variable v = new Variable(ctx.ID().getText());
 
-		if (env.getStore().containsKey(v))
-			return env.getStore().get(v);
+		if (env.getStore(getCurrentCallString()).containsKey(v))
+			return env.getStore(getCurrentCallString()).get(v);
 		else
 			return new Bottom();
 	}
@@ -463,10 +442,6 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		return domain.makeNaN(new NaN());
 	}
 
-	@Override 
-	public AbstractValue visitBodyFunction(MuJsParser.BodyFunctionContext ctx) {
-		return visit(ctx.stmt());
-	}
 
 	@Override
 	public AbstractValue visitReturn(MuJsParser.ReturnContext ctx) {
@@ -477,7 +452,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitFunctionDeclaration(MuJsParser.FunctionDeclarationContext ctx) { 
 
 		Variable name = new Variable(ctx.ID(0).getText());
-		BodyContext body = ctx.body();
+		StmtContext body = ctx.stmt();
 		Vector<Variable> formalParameters = new Vector<Variable>();
 
 		for (int i = 1; i < ctx.ID().size(); i++)
@@ -492,177 +467,46 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	@Override 
 	public AbstractValue visitFunctionCall(MuJsParser.FunctionCallContext ctx) { 
 		// TODO: function call
+
+		CallString current = getCurrentCallString();
 		
 		Function f = state.getFunction(new Variable(ctx.ID().getText()));
+		CallString cs = new CallString(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
 		
+		
+		KeyAbstractState key = new KeyAbstractState(f.getBody().getStart().getLine(), f.getBody().getStart().getCharPositionInLine());
+		state.add(key, new AbstractEnvironment(domain, env.getStore(current), env.getHeap(current)), cs);
+		
+		incrementCallString(cs);
+
 		for (int i = 0; i < f.getFormalParameters().size(); i++)
-			env.put(f.getFormalParameters().get(i), visit(ctx.expression(i)));
+			state.getCallStringEnvironment(key).putVariable(f.getFormalParameters().get(i), visit(ctx.expression(i)), cs);
+
+		CallStringAbstractEnvironment old = env.clone();
+		
+		env = state.getCallStringEnvironment(key);
 		
 		AbstractValue returnValue = visit(f.getBody());
-		
-		for (int i = 0; i < f.getFormalParameters().size(); i++)
-			env.removeVariable(f.getFormalParameters().get(i));
-		
 
+//		for (int i = 0; i < f.getFormalParameters().size(); i++)
+//			env.removeVariable(f.getFormalParameters().get(i), cs);
+
+		decreaseCallString();
+
+		env = old;
 		return returnValue; 
 	}
 
-	public AbstractEnvironment projectTrueState(MuJsParser.ExpressionContext exp) {
-		AbstractEnvironment state = new AbstractEnvironment(domain);
-
-		// A > B
-		if (exp instanceof MuJsParser.GreaterContext) {
-			if (((MuJsParser.GreaterContext) exp).expression(0) instanceof IdentifierContext && ((MuJsParser.GreaterContext) exp).expression(1) instanceof PrimitiveValueContext) {
-
-				String bound = ((PrimitiveValueContext) ((MuJsParser.GreaterContext) exp).expression(1)).getText();
-
-				long numericBound = 0;
-
-				try {
-					numericBound = Long.parseLong(bound);
-				} catch (Exception e){
-
-					return new AbstractEnvironment(domain);
-				}
-
-				state.put(new Variable(((MuJsParser.GreaterContext) exp).expression(0).getChild(0).getText()), domain.makeInterval(new Interval(String.valueOf(numericBound + 1), "+Inf")));
-				return state;
-			}
-
-			else if (((MuJsParser.GreaterContext) exp).expression(1) instanceof IdentifierContext && ((MuJsParser.GreaterContext) exp).expression(0) instanceof PrimitiveValueContext) {
-
-				String bound = ((PrimitiveValueContext) ((MuJsParser.GreaterContext) exp).expression(0)).getText();
-				long numericBound = 0;
-
-				try {
-					numericBound = Long.parseLong(bound);
-				} catch (Exception e){
-
-					return new AbstractEnvironment(domain);
-				}
-
-				state.put(new Variable(((MuJsParser.GreaterContext) exp).expression(1).getChild(0).getText()), domain.makeInterval(new Interval("-Inf", String.valueOf(numericBound -1))));
-				return state;
-			}
-
-		}
-
-		// A < B
-		if (exp instanceof MuJsParser.LessContext) {
-			if (((MuJsParser.LessContext) exp).expression(0) instanceof IdentifierContext && ((MuJsParser.LessContext) exp).expression(1) instanceof PrimitiveValueContext) {
-
-				String bound = ((PrimitiveValueContext) ((MuJsParser.LessContext) exp).expression(1)).getText();
-
-				long numericBound = 0;
-
-				try {
-					numericBound = Long.parseLong(bound);
-				} catch (Exception e){
-
-					return new AbstractEnvironment(domain);
-				}
-
-				state.put(new Variable(((MuJsParser.LessContext) exp).expression(0).getChild(0).getText()), domain.makeInterval(new Interval("-Inf", String.valueOf(numericBound - 1))));
-				return state;
-			}
-
-			else if (((MuJsParser.LessContext) exp).expression(1) instanceof IdentifierContext && ((MuJsParser.LessContext) exp).expression(0) instanceof PrimitiveValueContext) {
-
-				String bound = ((PrimitiveValueContext) ((MuJsParser.LessContext) exp).expression(0)).getText();
-				long numericBound = 0;
-
-				try {
-					numericBound = Long.parseLong(bound);
-				} catch (Exception e){
-
-					return new AbstractEnvironment(domain);
-				}
-
-				state.put(new Variable(((MuJsParser.LessContext) exp).expression(1).getChild(0).getText()), domain.makeInterval(new Interval(String.valueOf(numericBound + 1), "+Inf")));
-				return state;
-			}
-
-		}
-
-		return new AbstractEnvironment(domain);
+	private CallString getCurrentCallString() {
+		return callStrings.get(callStrings.size() -1);
 	}
-	public AbstractEnvironment projectFalseState(MuJsParser.ExpressionContext exp) {
-		AbstractEnvironment state = new AbstractEnvironment(domain);
 
-		// A < B
-		if (exp instanceof MuJsParser.LessContext) {
-			if (((MuJsParser.LessContext) exp).expression(0) instanceof IdentifierContext && ((MuJsParser.LessContext) exp).expression(1) instanceof PrimitiveValueContext) {
-
-				String bound = ((PrimitiveValueContext) ((MuJsParser.LessContext) exp).expression(1)).getText();
-
-				long numericBound = 0;
-
-				try {
-					numericBound = Long.parseLong(bound);
-				} catch (Exception e){
-
-					return new AbstractEnvironment(domain);
-				}
-
-				state.put(new Variable(((MuJsParser.LessContext) exp).expression(0).getChild(0).getText()), domain.makeInterval(new Interval(String.valueOf(numericBound), "+Inf")));
-				return state;
-			}
-
-			else if (((MuJsParser.LessContext) exp).expression(1) instanceof IdentifierContext && ((MuJsParser.LessContext) exp).expression(0) instanceof PrimitiveValueContext) {
-
-				String bound = ((PrimitiveValueContext) ((MuJsParser.LessContext) exp).expression(0)).getText();
-				long numericBound = 0;
-
-				try {
-					numericBound = Long.parseLong(bound);
-				} catch (Exception e){
-
-					return new AbstractEnvironment(domain);
-				}
-
-				state.put(new Variable(((MuJsParser.LessContext) exp).expression(1).getChild(0).getText()), domain.makeInterval(new Interval("-Inf", String.valueOf(numericBound))));
-				return state;
-			}
-
-		}
-
-		// A > B
-		if (exp instanceof MuJsParser.GreaterContext) {
-			if (((MuJsParser.GreaterContext) exp).expression(0) instanceof IdentifierContext && ((MuJsParser.GreaterContext) exp).expression(1) instanceof PrimitiveValueContext) {
-
-				String bound = ((PrimitiveValueContext) ((MuJsParser.GreaterContext) exp).expression(1)).getText();
-
-				long numericBound = 0;
-
-				try {
-					numericBound = Long.parseLong(bound);
-				} catch (Exception e){
-
-					return new AbstractEnvironment(domain);
-				}
-
-				state.put(new Variable(((MuJsParser.GreaterContext) exp).expression(0).getChild(0).getText()), domain.makeInterval(new Interval("-Inf", String.valueOf(numericBound))));
-				return state;
-			}
-
-			else if (((MuJsParser.GreaterContext) exp).expression(1) instanceof IdentifierContext && ((MuJsParser.GreaterContext) exp).expression(0) instanceof PrimitiveValueContext) {
-
-				String bound = ((PrimitiveValueContext) ((MuJsParser.GreaterContext) exp).expression(0)).getText();
-				long numericBound = 0;
-
-				try {
-					numericBound = Long.parseLong(bound);
-				} catch (Exception e){
-
-					return new AbstractEnvironment(domain);
-				}
-
-				state.put(new Variable(((MuJsParser.GreaterContext) exp).expression(1).getChild(0).getText()), domain.makeInterval(new Interval(String.valueOf(numericBound), "+Inf")));
-				return state;
-			}
-
-		}
-
-		return new AbstractEnvironment(domain);
+	private void incrementCallString(CallString cs) {
+		callStrings.add(cs);
 	}
+
+	private void decreaseCallString() {
+		callStrings.removeElementAt(callStrings.size() -1);
+	}
+
 }

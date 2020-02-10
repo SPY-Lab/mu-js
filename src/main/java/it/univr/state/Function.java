@@ -8,9 +8,9 @@ public class Function {
 	
 	private Variable name; 
 	private Vector<Variable> formalParameters;
-	private MuJsParser.BodyContext body;
+	private MuJsParser.StmtContext body;
 	
-	public Function(Variable name, Vector<Variable> formalParameters, MuJsParser.BodyContext body) {
+	public Function(Variable name, Vector<Variable> formalParameters, MuJsParser.StmtContext body) {
 		this.name = name;
 		this.formalParameters = formalParameters;
 		this.body = body;
@@ -24,11 +24,11 @@ public class Function {
 		this.formalParameters = formalParameters;
 	}
 
-	public MuJsParser.BodyContext getBody() {
+	public MuJsParser.StmtContext getBody() {
 		return body;
 	}
 
-	public void setBody(MuJsParser.BodyContext body) {
+	public void setBody(MuJsParser.StmtContext body) {
 		this.body = body;
 	}
 

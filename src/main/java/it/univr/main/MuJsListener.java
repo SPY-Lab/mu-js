@@ -442,18 +442,6 @@ public interface MuJsListener extends ParseTreeListener {
 	 */
 	void exitObjectAsg(MuJsParser.ObjectAsgContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code BodyFunction}
-	 * labeled alternative in {@link MuJsParser#body}.
-	 * @param ctx the parse tree
-	 */
-	void enterBodyFunction(MuJsParser.BodyFunctionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code BodyFunction}
-	 * labeled alternative in {@link MuJsParser#body}.
-	 * @param ctx the parse tree
-	 */
-	void exitBodyFunction(MuJsParser.BodyFunctionContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MuJsParser#block}.
 	 * @param ctx the parse tree
 	 */

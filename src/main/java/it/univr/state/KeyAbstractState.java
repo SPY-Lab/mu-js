@@ -37,4 +37,9 @@ public class KeyAbstractState {
 	public int hashCode() {
 	    return getCol() * 31 + getRow();
 	}
+	
+	@Override
+	public String toString() {
+		return row + "-" + col;
+	}
 }

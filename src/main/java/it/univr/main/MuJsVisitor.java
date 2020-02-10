@@ -265,13 +265,6 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitObjectAsg(MuJsParser.ObjectAsgContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code BodyFunction}
-	 * labeled alternative in {@link MuJsParser#body}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBodyFunction(MuJsParser.BodyFunctionContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MuJsParser#block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
