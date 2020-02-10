@@ -11,7 +11,20 @@ public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractE
 
 	public CallStringAbstractEnvironment(AbstractDomain domain) {
 		super();
-		this.setAbstractDomain(domain);
+		this.domain = domain;
+	}
+	
+	
+	@Override
+	public AbstractEnvironment get(Object cs) {
+		if (cs instanceof CallString) {
+			if (containsKey(cs))
+				return super.get(cs);
+			else
+				return new AbstractEnvironment(domain);
+		}
+		
+		throw new NullPointerException();
 	}
 	
 	public CallStringAbstractEnvironment(AbstractDomain domain, AbstractStore store, AbstractHeap heap, CallString cs) {

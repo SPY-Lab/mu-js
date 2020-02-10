@@ -13,6 +13,7 @@ public class AbstractState {
 	public AbstractState(AbstractDomain domain) {
 		this.functions = new HashMap<Variable, Function>();
 		this.state = new HashMap<KeyAbstractState, CallStringAbstractEnvironment>();
+		this.domain = domain;
 	}
 
 	public void add(KeyAbstractState key, AbstractEnvironment m, CallString cs) {
@@ -54,6 +55,17 @@ public class AbstractState {
 		
 		return result;
 	}
+	
+	public boolean contains(KeyAbstractState key) {
+		return state.containsKey(key);
+	}
+	
+	public void createAbstractEnvironment(KeyAbstractState key, CallString cs) {
+		state.put(key, new CallStringAbstractEnvironment(domain));
+		state.get(key).put(cs, new AbstractEnvironment(domain));
+	}
+	
+		
 
 	public Function getFunction(Variable variable) {
 		return functions.get(variable);

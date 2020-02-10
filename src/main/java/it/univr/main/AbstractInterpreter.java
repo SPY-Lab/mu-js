@@ -15,8 +15,6 @@ import it.univr.domain.coalasced.Bottom;
 import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
 import it.univr.domain.coalasced.NaN;
-import it.univr.main.MuJsParser.IdentifierContext;
-import it.univr.main.MuJsParser.PrimitiveValueContext;
 import it.univr.main.MuJsParser.StmtContext;
 import it.univr.state.AbstractEnvironment;
 import it.univr.state.AbstractState;
@@ -41,8 +39,8 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		env.put(new CallString(0,0), new AbstractEnvironment(domain));
 	}
 
-	public CallStringAbstractEnvironment getFinalAbstractMemory() {
-		return env;
+	public AbstractEnvironment getFinalAbstractMemory() {
+		return env.get(new CallString(0,0));
 	}
 
 	public AbstractState getAbstractState() {
@@ -183,11 +181,16 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitAssignmentStmt(MuJsParser.AssignmentStmtContext ctx) { 
 
 		Variable v = new Variable(ctx.getChild(0).getText());
-		env.putVariable(v, visit(ctx.expression()), getCurrentCallString());
-
 		KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
-		state.add(key, env.get(getCurrentCallString()).clone(), getCurrentCallString());
-
+		CallString currentCallString = getCurrentCallString();
+		
+		if (!state.contains(key))
+			state.createAbstractEnvironment(key, currentCallString);
+		
+		state.getCallStringEnvironment(key).putVariable(v, visit(ctx.expression()), currentCallString);
+		env = state.getCallStringEnvironment(key).clone();
+		System.out.println(state);
+		
 		return new Bottom(); 
 	}
 
@@ -201,8 +204,16 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 	@Override 
 	public AbstractValue visitComposition(MuJsParser.CompositionContext ctx) { 
+		
+		KeyAbstractState keyFirst = new KeyAbstractState(ctx.stmt(0).getStart().getLine(), ctx.stmt(0).getStart().getCharPositionInLine());
+		KeyAbstractState keySecond = new KeyAbstractState(ctx.stmt(1).getStart().getLine(), ctx.stmt(1).getStart().getCharPositionInLine());
+
 		visit(ctx.stmt(0));	
+		state.add(keySecond, state.getCallStringEnvironment(keyFirst).get(getCurrentCallString()).clone(), getCurrentCallString());
+
 		visit(ctx.stmt(1));
+		env = state.getCallStringEnvironment(keySecond).clone();
+
 		return new Bottom();
 	}
 
@@ -243,7 +254,6 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	@Override 
 	public AbstractValue visitWhileStmt(MuJsParser.WhileStmtContext ctx) { 
 
-		CallStringAbstractEnvironment lastExecution = new CallStringAbstractEnvironment(domain);
 		CallStringAbstractEnvironment previous = (CallStringAbstractEnvironment) env.clone();
 
 		do {
@@ -271,12 +281,12 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 				env = previous.widening(previous.leastUpperBound(env));
 			}
 
-			CallStringAbstractEnvironment s =  env.clone();
-
-			if (previous.equals(s))
+			
+			System.err.println(env);
+			if (previous.equals(env))
 				break;
 			else
-				previous = s.clone();
+				previous = env.clone();
 		} while (true);
 
 		KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
@@ -508,5 +518,5 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	private void decreaseCallString() {
 		callStrings.removeElementAt(callStrings.size() -1);
 	}
-
+	
 }

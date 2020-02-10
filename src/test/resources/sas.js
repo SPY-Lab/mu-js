@@ -1,6 +1,3 @@
-
-function f(x) {
-	return x;
-}
-
-y = f(5);
+x = 0;
+y = x;
+z = y;

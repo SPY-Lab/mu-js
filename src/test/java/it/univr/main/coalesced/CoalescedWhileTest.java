@@ -23,14 +23,15 @@ public class CoalescedWhileTest {
 	@Test
 	public void testWhile001() throws Exception {
 		String file = "src/test/resources/while/while001.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, true).getFinalAbstractMemory();
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
 
 		// State size
-		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeStore(), 2);
 		Assert.assertEquals(state.sizeHeap(), 0);
 
 		// State values
-		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("100", "100"));
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("0", "+Inf"));
+		Assert.assertEquals(state.getValue(new Variable("y")), new Interval("0", "+Inf"));
 	}
 
 	@Test

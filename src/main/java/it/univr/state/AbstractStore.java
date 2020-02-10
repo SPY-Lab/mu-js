@@ -51,9 +51,10 @@ public class AbstractStore extends HashMap<Variable, AbstractValue> {
 	public AbstractStore widening(AbstractStore other) {
 		AbstractStore lub = new AbstractStore(domain);
 
-		for (Variable v: keySet()) 
-			lub.put(v, domain.widening(getValue(v),other.getValue(v)));
-
+		for (Variable v: keySet()) {
+			lub.put(v, domain.widening(getValue(v), other.getValue(v)));
+		}
+		
 		for (Variable v: other.keySet()) 
 			if (!containsKey(v))
 				lub.put(v, domain.widening(getValue(v),other.getValue(v)));
