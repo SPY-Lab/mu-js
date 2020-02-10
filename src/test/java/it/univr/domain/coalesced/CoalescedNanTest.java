@@ -9,7 +9,6 @@ import it.univr.domain.coalasced.NaN;
 import it.univr.domain.coalasced.Top;
 import it.univr.main.Analyzer;
 import it.univr.state.AbstractEnvironment;
-import it.univr.state.AbstractMemory;
 import it.univr.state.Variable;
 
 public class CoalescedNanTest {
