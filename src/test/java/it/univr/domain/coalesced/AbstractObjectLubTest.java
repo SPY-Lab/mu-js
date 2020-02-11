@@ -195,21 +195,21 @@ public class AbstractObjectLubTest {
 	public void testLeastUpperBound011() throws Exception {
 		MultiHashMap<FA, AbstractValue> abstractObjectMap1 = new MultiHashMap<>();
 		MultiHashMap<FA, AbstractValue> abstractObjectMap2 = new MultiHashMap<>();
-		
+
 		abstractObjectMap1.put(FA.star("a"), new Interval("1", "2"));
 		abstractObjectMap1.put(new FA("b"), new Bool(1));
 		AbstractObject obj1 = new AbstractObject(abstractObjectMap1);
-		
+
 		abstractObjectMap2.put(FA.star("a"), new Interval("3", "4"));
 		abstractObjectMap2.put(new FA("b"), new Bool(0));
 		AbstractObject obj2 = new AbstractObject(abstractObjectMap2);
-		
+
 		AbstractValue lub = obj1.leastUpperBound(obj2);
-		
+		System.out.println(lub);
 		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
 		expectedAbstractObjectMap.put(FA.star("a"), new Interval("1", "4"));
 		expectedAbstractObjectMap.put(new FA("b"), new Bool(2));
-		
+
 		AbstractObject expectedLub = new AbstractObject(expectedAbstractObjectMap);
 		assertEquals(expectedLub, lub);
 	}

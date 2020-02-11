@@ -52,21 +52,28 @@ public class AbstractObject implements AbstractValue {
 
 	@Override
 	public AbstractValue leastUpperBound(AbstractValue other) {
-		// TODO: Marin
-
+		
 		if(other instanceof AbstractObject) {
-			AbstractObject otherAbstractObject = (AbstractObject)other;
+			
 			MultiHashMap<FA, AbstractValue> resultAbstractObjectMap = new MultiHashMap<>();
 
-			for (FA abstractProperty: getAbstractObjectMap().keySet()) {
-				resultAbstractObjectMap.put(abstractProperty, this.lookupAbstractObject(abstractProperty));
-			}
-
-			for (FA abstractProperty: otherAbstractObject.getAbstractObjectMap().keySet()) {
-				resultAbstractObjectMap.put(abstractProperty, otherAbstractObject.lookupAbstractObject(abstractProperty));
+			for (FA abstractProperty: getAbstractObjectMap().keySet())
+				resultAbstractObjectMap.put(abstractProperty, this.lookupAbstractObject(abstractProperty));//this.get(abstractProperty));
+			
+			for (FA abstractProperty: ((AbstractObject) other).getAbstractObjectMap().keySet()) {
+				if (resultAbstractObjectMap.containsKey(abstractProperty)) {
+					AbstractObject tempAbstractObject = new AbstractObject(resultAbstractObjectMap);
+					tempAbstractObject.normalize();
+					AbstractValue tempAbstractValue = tempAbstractObject.lookupAbstractObject(abstractProperty);
+					resultAbstractObjectMap.remove(abstractProperty);
+					resultAbstractObjectMap.put(abstractProperty, tempAbstractValue.leastUpperBound(((AbstractObject) other).lookupAbstractObject(abstractProperty)));
+				} else {
+					resultAbstractObjectMap.put(abstractProperty, ((AbstractObject) other).lookupAbstractObject(abstractProperty));
+				}
 			}
 
 			AbstractObject abstractObject = new AbstractObject(resultAbstractObjectMap);
+			
 			abstractObject.normalize();
 
 			return abstractObject;
