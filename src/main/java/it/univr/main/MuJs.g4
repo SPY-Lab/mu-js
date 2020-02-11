@@ -69,7 +69,7 @@ stmt:
 	| 'if' '(' expression ')' block 'else' block						#IfStmt
 	| 'while' '(' expression ')' block									#WhileStmt
 	|  block															#BlockStmt
-	|  stmt stmt														#Composition
+	|  <assoc=right> stmt stmt											#Composition
 	|  ID ASG 'new' object SEMICOLON 									#ObjectAsg
 	|  ID '[' expression ']' ASG expression SEMICOLON 					#PropUpdate
 	|  'return' expression ';'											#Return

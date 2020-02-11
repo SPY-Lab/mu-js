@@ -19,7 +19,7 @@ public class CoalescedNanTest {
 	@Test
 	public void testNan001() throws Exception {
 		String file = dir + "nan001.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -32,7 +32,7 @@ public class CoalescedNanTest {
 	@Test
 	public void testNan002() throws Exception {
 		String file = dir + "nan002.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -45,7 +45,7 @@ public class CoalescedNanTest {
 	@Test
 	public void testNan003() throws Exception {
 		String file = dir + "nan003.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -58,7 +58,7 @@ public class CoalescedNanTest {
 	@Test
 	public void testNan004() throws Exception {
 		String file = dir + "nan004.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 3);

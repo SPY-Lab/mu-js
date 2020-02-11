@@ -19,18 +19,13 @@ public class Analyzer {
 
 	public static void main(String[] args) throws IOException {
 		System.out.println(potd());
-		String file = "src/test/resources/sas.js"; //args[0];
+		String file = "src/test/resources/functions/fun003.js"; //args[0];
 
-		boolean narrowing = false;
 		boolean printInvariants = false;
-		String program = null;
 
 		AbstractDomain domain = new CoalascedAbstractDomain();
 
-		for (int i = 0; i < args.length; ++i) {
-			if (args[i].equals("-narr"))
-				narrowing = true;
-			else if (args[i].equals("-coalesced"))
+		for (int i = 0; i < args.length; ++i) {if (args[i].equals("-coalesced"))
 				domain = new CoalascedAbstractDomain();
 			else if (args[i].equals("-lifted"))
 				domain = new LiftedUnionAbstractDomain();
@@ -49,30 +44,28 @@ public class Analyzer {
 			else if (args[i].equals("-invariants")) {
 				printInvariants = true;
 			}
-
-			else if (args[i].equals("-p")) {
-				program = args[i+1];
-			}
 		}
+		
+		
 		try {
 			if (printInvariants) {
-				AbstractInterpreter analysis = Analyzer.analyze(file, domain, narrowing);
+				AbstractInterpreter analysis = Analyzer.analyze(file, domain);
 				analysis.printFunctions();
-				System.out.println("\n\n\n");
+				System.out.println("\n");
 				System.out.println(analysis.getAbstractState());
 			} else {
-				AbstractInterpreter analysis = Analyzer.analyze(file, domain, narrowing);
+				AbstractInterpreter analysis = Analyzer.analyze(file, domain);
 				analysis.printFunctions();
-				System.out.println("\n\n\n");
-				System.out.println(analysis.getFinalAbstractMemory());
+				System.out.println("\n");
+				analysis.getCallStringAbstractEnvironment().printTable();
 			}
 		} catch (FileNotFoundException f) {
 			System.err.println(file + ": file does not exists!");
 		}
 	}
 
-	public static AbstractInterpreter analyze(String file, AbstractDomain domain, boolean narrowing) throws IOException {
-		AbstractInterpreter interpreter = new AbstractInterpreter(domain, narrowing, false);
+	public static AbstractInterpreter analyze(String file, AbstractDomain domain) throws IOException {
+		AbstractInterpreter interpreter = new AbstractInterpreter(domain, false);
 
 		interpreter.setAbstractDomain(domain);
 		InputStream stream = new FileInputStream(file);

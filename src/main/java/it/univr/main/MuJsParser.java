@@ -1579,7 +1579,7 @@ public class MuJsParser extends Parser {
 					setState(185);
 					if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
 					setState(186);
-					stmt(6);
+					stmt(5);
 					}
 					} 
 				}
@@ -1768,7 +1768,7 @@ public class MuJsParser extends Parser {
 		"\2\2\u00b8\u00ba\3\2\2\2\u00b9\u0082\3\2\2\2\u00b9\u0088\3\2\2\2\u00b9"+
 		"\u0090\3\2\2\2\u00b9\u0096\3\2\2\2\u00b9\u0097\3\2\2\2\u00b9\u009d\3\2"+
 		"\2\2\u00b9\u00a5\3\2\2\2\u00b9\u00a9\3\2\2\2\u00ba\u00bf\3\2\2\2\u00bb"+
-		"\u00bc\f\7\2\2\u00bc\u00be\5\n\6\b\u00bd\u00bb\3\2\2\2\u00be\u00c1\3\2"+
+		"\u00bc\f\7\2\2\u00bc\u00be\5\n\6\7\u00bd\u00bb\3\2\2\2\u00be\u00c1\3\2"+
 		"\2\2\u00bf\u00bd\3\2\2\2\u00bf\u00c0\3\2\2\2\u00c0\13\3\2\2\2\u00c1\u00bf"+
 		"\3\2\2\2\u00c2\u00c3\7\3\2\2\u00c3\u00c9\7\4\2\2\u00c4\u00c5\7\3\2\2\u00c5"+
 		"\u00c6\5\n\6\2\u00c6\u00c7\7\4\2\2\u00c7\u00c9\3\2\2\2\u00c8\u00c2\3\2"+

@@ -1,5 +1,6 @@
-function f() {
-	return 2 + 2;
+
+function f(y) {
+	return  y + y;
 }
 
-x = 5;
+x = f(5);

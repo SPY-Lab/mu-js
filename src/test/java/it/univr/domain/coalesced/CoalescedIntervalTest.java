@@ -19,7 +19,7 @@ public class CoalescedIntervalTest {
 	@Test
 	public void testSum001() throws Exception {
 		String file = "src/test/resources/intervals/sum001.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 3);
@@ -34,7 +34,7 @@ public class CoalescedIntervalTest {
 	@Test
 	public void testSum002() throws Exception {
 		String file = "src/test/resources/intervals/sum002.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -47,7 +47,7 @@ public class CoalescedIntervalTest {
 	@Test
 	public void testSum003() throws Exception {
 		String file = "src/test/resources/intervals/sum003.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -60,7 +60,7 @@ public class CoalescedIntervalTest {
 	@Test
 	public void testSum004() throws Exception {
 		String file = "src/test/resources/intervals/sum004.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);
@@ -73,7 +73,7 @@ public class CoalescedIntervalTest {
 	@Test
 	public void testSum005() throws Exception {
 		String file = "src/test/resources/intervals/sum005.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 3);
@@ -88,7 +88,7 @@ public class CoalescedIntervalTest {
 	@Test
 	public void testMul001() throws Exception {
 		String file = "src/test/resources/intervals/mul001.js";
-		AbstractEnvironment state = Analyzer.analyze(file, domain, false).getFinalAbstractMemory();
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 1);

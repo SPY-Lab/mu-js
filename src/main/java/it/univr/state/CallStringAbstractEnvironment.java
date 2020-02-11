@@ -2,8 +2,10 @@ package it.univr.state;
 
 import java.util.HashMap;
 
+import dnl.utils.text.table.TextTable;
 import it.univr.domain.AbstractDomain;
 import it.univr.domain.AbstractValue;
+import it.univr.domain.AllocationSite;
 
 public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractEnvironment> {
 
@@ -13,8 +15,8 @@ public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractE
 		super();
 		this.domain = domain;
 	}
-	
-	
+
+
 	@Override
 	public AbstractEnvironment get(Object cs) {
 		if (cs instanceof CallString) {
@@ -23,10 +25,10 @@ public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractE
 			else
 				return new AbstractEnvironment(domain);
 		}
-		
+
 		throw new NullPointerException();
 	}
-	
+
 	public CallStringAbstractEnvironment(AbstractDomain domain, AbstractStore store, AbstractHeap heap, CallString cs) {
 		super();
 		this.setAbstractDomain(domain);
@@ -35,11 +37,44 @@ public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractE
 		env.setStore(store);
 		put(cs, env);
 	}
-	
+
 	public CallStringAbstractEnvironment(AbstractDomain domain, AbstractEnvironment env, CallString cs) {
 		super();
 		this.setAbstractDomain(domain);
 		put(cs, env);
+	}
+
+
+	public void printTable() {
+		String[] columns = {"Call String", "Abstract environment", "Abstract Value"};
+
+		int i = 0;
+		int n = keySet().size();
+		String[][] t = new String[n][3];
+
+		for (CallString cs : keySet()) {
+
+			AbstractStore store = getStore(cs);
+			AbstractHeap heap = getHeap(cs);
+
+			t[i][0] = cs.toString();
+
+			for (Variable v : store.keySet()) {
+				t[i][1] = v.toString();
+				t[i][2] = store.getValue(v).toString();
+			}
+
+			if (!heap.keySet().isEmpty()) {
+				for (AllocationSite l : heap.keySet()) {
+					t[i][1] = l.toString();
+					t[i][2] = heap.getValue(l).toString();
+				}
+			}
+			i++;
+		}
+
+		TextTable table = new TextTable(columns, t);
+		table.printTable();
 	}
 
 	public AbstractDomain getAbstractDomain() {
@@ -49,28 +84,33 @@ public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractE
 	public void setAbstractDomain(AbstractDomain domain) {
 		this.domain = domain;
 	}
-	
+
 	public AbstractStore getStore(CallString cs) {
 		return get(cs).getStore();
 	}
-	
+
 	public AbstractHeap getHeap(CallString cs) {
 		return get(cs).getHeap();
 	}
-	
+
 	public void putVariable(Variable var, AbstractValue v, CallString cs) {
 		get(cs).getStore().put(var, v);
 	}
-	
+
 	public void removeVariable(Variable var, CallString cs) {
 		get(cs).getStore().remove(var);
 	}
-	
+
 	@Override
 	public CallStringAbstractEnvironment clone() {
-		return (CallStringAbstractEnvironment) super.clone();
+		CallStringAbstractEnvironment clone = new CallStringAbstractEnvironment(domain);
+
+		for (CallString cs : this.keySet())
+			clone.put(cs, get(cs).clone());
+
+		return clone;
 	}
-	
+
 	public  CallStringAbstractEnvironment leastUpperBound(CallStringAbstractEnvironment other) {
 		CallStringAbstractEnvironment lub = new CallStringAbstractEnvironment(domain);
 
@@ -83,7 +123,7 @@ public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractE
 
 		return lub;
 	}
-	
+
 	public  CallStringAbstractEnvironment widening(CallStringAbstractEnvironment other) {
 		CallStringAbstractEnvironment lub = new CallStringAbstractEnvironment(domain);
 
