@@ -130,5 +130,35 @@ public class CoalescedFunctionTest {
 		// State values
 		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("9", "9"));
 	}
+	
+
+	
+	@Test
+	public void testFun010() throws Exception {
+		String file = dir + "fun010.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("1", "+Inf"));
+	}
+	
+
+	
+	@Test
+	public void testFun011() throws Exception {
+		String file = dir + "fun011.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("1", "+Inf"));
+	}
 
 }
