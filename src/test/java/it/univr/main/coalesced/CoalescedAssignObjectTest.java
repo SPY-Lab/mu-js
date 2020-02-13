@@ -25,7 +25,7 @@ public class CoalescedAssignObjectTest {
 	public void testVisitAssigns001() throws Exception {
 		String file = dir + "assign001.js";
 		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
-		System.out.println(state);
+
 		AbstractObject hObject = new AbstractObject(new FA("a"), new Interval("0", "0"));
 		MultiHashMap<FA, AbstractValue> properties = new MultiHashMap<FA, AbstractValue>();
 		properties.put(new FA("b"), new Interval("1", "1"));
