@@ -15,7 +15,7 @@ import it.univr.domain.coalasced.Bottom;
 import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
 import it.univr.domain.coalasced.NaN;
-import it.univr.main.MuJsParser.StmtContext;
+import it.univr.main.MuJsParser.BodyFunctionContext;
 import it.univr.state.AbstractEnvironment;
 import it.univr.state.AbstractState;
 import it.univr.state.CallString;
@@ -195,11 +195,11 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
 		CallString currentCallString = getCurrentCallString();
 
-//		if (!state.contains(key)) {
-//			state.createAbstractEnvironment(key, currentCallString);
-//			state.getCallStringEnvironment(key).put(currentCallString, currentEnvironment.get(currentCallString).clone());
-//		}
-		
+		//		if (!state.contains(key)) {
+		//			state.createAbstractEnvironment(key, currentCallString);
+		//			state.getCallStringEnvironment(key).put(currentCallString, currentEnvironment.get(currentCallString).clone());
+		//		}
+
 		state.add(key, currentEnvironment.get(currentCallString).clone(), currentCallString);
 
 		state.getCallStringEnvironment(key).putVariable(v, visit(ctx.expression()), currentCallString);
@@ -470,7 +470,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitFunctionDeclaration(MuJsParser.FunctionDeclarationContext ctx) { 
 
 		Variable name = new Variable(ctx.ID(0).getText());
-		StmtContext body = ctx.stmt();
+		BodyFunctionContext body = (BodyFunctionContext) ctx.bodyfunction();
 		Vector<Variable> formalParameters = new Vector<Variable>();
 
 		for (int i = 1; i < ctx.ID().size(); i++)
@@ -481,6 +481,14 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		state.addFunction(name, function);
 		return new Bottom();
 	}
+
+	@Override 
+	public AbstractValue visitBodyFunction(MuJsParser.BodyFunctionContext ctx) { 
+		if (ctx.stmt() != null)
+			visit(ctx.stmt());
+		return visit(ctx.ret());
+	}
+
 
 	@Override 
 	public AbstractValue visitFunctionCall(MuJsParser.FunctionCallContext ctx) { 
@@ -507,7 +515,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 		for (int i = 0; i < f.getFormalParameters().size(); i++) 
 			currentEnvironment.removeVariable(f.getFormalParameters().get(i), newCallString);
-		
+
 
 		currentEnvironment = old;
 		return returnValue; 

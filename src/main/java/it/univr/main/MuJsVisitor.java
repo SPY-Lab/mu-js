@@ -202,6 +202,13 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLess(MuJsParser.LessContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Return}
+	 * labeled alternative in {@link MuJsParser#ret}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturn(MuJsParser.ReturnContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code FunctionDeclaration}
 	 * labeled alternative in {@link MuJsParser#stmt}.
 	 * @param ctx the parse tree
@@ -230,13 +237,6 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIfStmt(MuJsParser.IfStmtContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Return}
-	 * labeled alternative in {@link MuJsParser#stmt}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitReturn(MuJsParser.ReturnContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code WhileStmt}
 	 * labeled alternative in {@link MuJsParser#stmt}.
 	 * @param ctx the parse tree
@@ -264,6 +264,13 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitObjectAsg(MuJsParser.ObjectAsgContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BodyFunction}
+	 * labeled alternative in {@link MuJsParser#bodyfunction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBodyFunction(MuJsParser.BodyFunctionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MuJsParser#block}.
 	 * @param ctx the parse tree

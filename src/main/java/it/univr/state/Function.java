@@ -3,17 +3,19 @@ package it.univr.state;
 import java.util.Vector;
 
 import it.univr.main.MuJsParser;
+import it.univr.main.MuJsParser.BodyFunctionContext;
+import it.univr.main.MuJsParser.BodyfunctionContext;
 
 public class Function {
 	
 	private Variable name; 
 	private Vector<Variable> formalParameters;
-	private MuJsParser.StmtContext body;
+	private MuJsParser.BodyFunctionContext body;
 	
-	public Function(Variable name, Vector<Variable> formalParameters, MuJsParser.StmtContext body) {
+	public Function(Variable name, Vector<Variable> formalParameters, BodyFunctionContext bod) {
 		this.name = name;
 		this.formalParameters = formalParameters;
-		this.body = body;
+		this.body = bod;
 	}
 
 	public Vector<Variable> getFormalParameters() {
@@ -24,11 +26,11 @@ public class Function {
 		this.formalParameters = formalParameters;
 	}
 
-	public MuJsParser.StmtContext getBody() {
+	public MuJsParser.BodyFunctionContext getBody() {
 		return body;
 	}
 
-	public void setBody(MuJsParser.StmtContext body) {
+	public void setBody(MuJsParser.BodyFunctionContext body) {
 		this.body = body;
 	}
 

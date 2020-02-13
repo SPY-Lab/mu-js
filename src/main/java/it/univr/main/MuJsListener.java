@@ -334,6 +334,18 @@ public interface MuJsListener extends ParseTreeListener {
 	 */
 	void exitLess(MuJsParser.LessContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code Return}
+	 * labeled alternative in {@link MuJsParser#ret}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturn(MuJsParser.ReturnContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Return}
+	 * labeled alternative in {@link MuJsParser#ret}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturn(MuJsParser.ReturnContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code FunctionDeclaration}
 	 * labeled alternative in {@link MuJsParser#stmt}.
 	 * @param ctx the parse tree
@@ -382,18 +394,6 @@ public interface MuJsListener extends ParseTreeListener {
 	 */
 	void exitIfStmt(MuJsParser.IfStmtContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code Return}
-	 * labeled alternative in {@link MuJsParser#stmt}.
-	 * @param ctx the parse tree
-	 */
-	void enterReturn(MuJsParser.ReturnContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Return}
-	 * labeled alternative in {@link MuJsParser#stmt}.
-	 * @param ctx the parse tree
-	 */
-	void exitReturn(MuJsParser.ReturnContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code WhileStmt}
 	 * labeled alternative in {@link MuJsParser#stmt}.
 	 * @param ctx the parse tree
@@ -441,6 +441,18 @@ public interface MuJsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitObjectAsg(MuJsParser.ObjectAsgContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code BodyFunction}
+	 * labeled alternative in {@link MuJsParser#bodyfunction}.
+	 * @param ctx the parse tree
+	 */
+	void enterBodyFunction(MuJsParser.BodyFunctionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BodyFunction}
+	 * labeled alternative in {@link MuJsParser#bodyfunction}.
+	 * @param ctx the parse tree
+	 */
+	void exitBodyFunction(MuJsParser.BodyFunctionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MuJsParser#block}.
 	 * @param ctx the parse tree

@@ -64,6 +64,11 @@ expression:
 	|	ID '(' expression ( ',' expression )* ')'						#FunctionCall
 	;
 	
+	
+ret:
+	'return' expression ';'												#Return
+	;	
+	
 stmt:
 	   ID ASG expression SEMICOLON										#AssignmentStmt
 	| 'if' '(' expression ')' block 'else' block						#IfStmt
@@ -72,11 +77,14 @@ stmt:
 	|  <assoc=right> stmt stmt											#Composition
 	|  ID ASG 'new' object SEMICOLON 									#ObjectAsg
 	|  ID '[' expression ']' ASG expression SEMICOLON 					#PropUpdate
-	|  'return' expression ';'											#Return
-	| 'function' ID '(' ID ( ',' ID)* ')' '{' stmt '}'					#FunctionDeclaration
+	| 'function' ID '(' ID ( ',' ID)* ')' '{' bodyfunction '}'			#FunctionDeclaration
 	;
-	
-	
+
+bodyfunction:															
+	stmt? ret 															#BodyFunction									
+	; 	
+
+
 block:  '{' '}'
 	|	'{' stmt '}'
 	;	
