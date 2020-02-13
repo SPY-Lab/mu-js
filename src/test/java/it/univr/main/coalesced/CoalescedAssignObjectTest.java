@@ -18,7 +18,7 @@ import it.univr.state.Variable;
 
 public class CoalescedAssignObjectTest {
 
-	private String dir = "src/test/resources/objects/";
+	private String dir = "src/test/resources/objects/assign/";
 	private CoalascedAbstractDomain domain = new CoalascedAbstractDomain();
 
 	@Test
@@ -116,7 +116,7 @@ public class CoalescedAssignObjectTest {
 	}
 	
 	@Test
-	public void testObjectAssign004() throws Exception {
+	public void testVisitAssigns004() throws Exception {
 		String file = dir + "assign004.js";
 		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 
@@ -137,5 +137,94 @@ public class CoalescedAssignObjectTest {
 		// Heap value
 		Assert.assertEquals(state.getValue(trueSite), trueObj);
 		Assert.assertEquals(state.getValue(falseSite), falseObj);
+	}
+	
+	@Test
+	public void testVisitAssigns005() throws Exception {
+		String file = dir + "assign005.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+
+		AbstractObject trueObj = new AbstractObject(new FA("x"), new Interval("0", "+Inf"));
+		AbstractObject falseObj = new AbstractObject(new FA("y"), new Interval("0", "+Inf"));
+
+		AllocationSite trueSite = new AllocationSite(7,1);
+		AllocationSite falseSite = new AllocationSite(9,1);	
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 2);
+
+		// Store values
+		Assert.assertEquals(state.getValue(new Variable("i")), new Interval("0", "+Inf"));
+		Assert.assertEquals(state.getValue(new Variable("a")), new AllocationSites(trueSite, falseSite));
+
+		// Heap value
+		Assert.assertEquals(state.getValue(trueSite), trueObj);
+		Assert.assertEquals(state.getValue(falseSite), falseObj);
+	}
+	
+	@Test
+	public void testVisitAssigns006() throws Exception {
+		String file = dir + "assign006.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+
+		AbstractObject obj1 = new AbstractObject();
+		AbstractObject obj2 = new AbstractObject(new FA("x"), new Interval("0", "+Inf"));
+
+		AllocationSite site1 = new AllocationSite(6,0);
+		AllocationSite site2 = new AllocationSite(8,1);	
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 3);
+		Assert.assertEquals(state.sizeHeap(), 2);
+
+		// Store values
+		Assert.assertEquals(state.getValue(new Variable("i")), new Interval("0", "+Inf"));
+		Assert.assertEquals(state.getValue(new Variable("a")), new AllocationSites(site1, site2));
+		Assert.assertEquals(state.getValue(new Variable("b")), new AllocationSites(site1, site2));
+		
+		// Heap value
+		Assert.assertEquals(state.getValue(site1), obj1);
+		Assert.assertEquals(state.getValue(site2), obj2);
+	}
+	
+	@Test
+	public void testVisitAssigns007() throws Exception {
+		String file = dir + "assign007.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		
+		AbstractObject obj = new AbstractObject(new FA("x"), new Interval("5", "5"));
+
+		AllocationSite site = new AllocationSite(5,1);
+		
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 2);
+
+		// Store values
+		Assert.assertEquals(state.getValue(new Variable("a")), new AllocationSites(site));
+
+		// Heap value
+		Assert.assertEquals(state.getValue(site), obj);
+	}
+	
+	@Test
+	public void testVisitAssigns008() throws Exception {
+		String file = dir + "assign008.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+
+		AbstractObject obj = new AbstractObject();
+
+		AllocationSite site = new AllocationSite(3,1);	
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 1);
+
+		// Store values
+		Assert.assertEquals(state.getValue(new Variable("a")), new AllocationSites(site));
+
+		// Heap value
+		Assert.assertEquals(state.getValue(site), obj);
 	}
 }

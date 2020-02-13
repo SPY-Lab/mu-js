@@ -25,7 +25,7 @@ public class CoalescedObjectWideningTest {
 		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
 		
 		MultiHashMap<FA, AbstractValue> properties = new MultiHashMap<>();
-		properties.put(new FA("a"), new Interval("1", "2"));
+		properties.put(new FA("a"), new Interval("1", "+Inf"));
 		AbstractObject oObject = new AbstractObject(properties);
 		
 		AllocationSite oSite = new AllocationSite(1,0);
@@ -41,11 +41,11 @@ public class CoalescedObjectWideningTest {
 		Assert.assertEquals(state.getValue(oSite), oObject);
 	}
 	
+	/*
 	@Test
 	public void testObjectWidening002() throws Exception {
 		String file = dir + "widening002.js";
 		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
-		// TODO: non capisco il comportamente del while
-	}
+	}*/
 	
 }

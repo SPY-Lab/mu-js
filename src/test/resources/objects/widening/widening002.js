@@ -1,5 +1,4 @@
 o = new {a:1};
 while(true){
-    o[a] = o[a] + 1;
-    i = o;
+    o["a"] = o["a"] + 1;
 }

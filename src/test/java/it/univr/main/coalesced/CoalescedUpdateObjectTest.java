@@ -18,7 +18,7 @@ import it.univr.state.Variable;
 
 public class CoalescedUpdateObjectTest {
 	
-	private String dir = "src/test/resources/objects/";
+	private String dir = "src/test/resources/objects/update/";
 	private CoalascedAbstractDomain domain = new CoalascedAbstractDomain();
 	
 	@Test
@@ -108,6 +108,93 @@ public class CoalescedUpdateObjectTest {
 		// Store values
 		Assert.assertEquals(state.getValue(new Variable("x")), new AllocationSites(site));
 		Assert.assertEquals(state.getValue(new Variable("y")), new AllocationSites(site));
+		
+		// Heap value
+		Assert.assertEquals(state.getValue(site), object);
+	}
+	
+	@Test
+	public void testPropUpdate005() throws Exception {
+		String file = dir + "update005.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		
+		AbstractObject object = new AbstractObject(new FA("b"), new Interval("4", "8"));
+		
+		AllocationSite site = new AllocationSite(1,0);
+		
+		// State size
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 1);
+		
+		// Store values
+		Assert.assertEquals(state.getValue(new Variable("x")), new AllocationSites(site));
+		Assert.assertEquals(state.getValue(new Variable("a")), new FA("b"));
+		
+		// Heap value
+		Assert.assertEquals(state.getValue(site), object);
+	}
+	
+	@Test
+	public void testPropUpdate006() throws Exception {
+		String file = dir + "update006.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		
+		MultiHashMap<FA, AbstractValue> properties = new MultiHashMap<FA, AbstractValue>();
+		properties.put(new FA("a"), new Interval("2", "2"));
+		properties.put(new FA("b"), new Interval("1", "1"));
+		AbstractObject object = new AbstractObject(properties);
+		
+		AllocationSite site = new AllocationSite(1,0);
+		
+		// State size
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 1);
+		
+		// Store values
+		Assert.assertEquals(state.getValue(new Variable("x")), new AllocationSites(site));
+		Assert.assertEquals(state.getValue(new Variable("a")), new FA("b"));
+		
+		// Heap value
+		Assert.assertEquals(state.getValue(site), object);
+	}
+	
+	public void testPropUpdate007() throws Exception {
+		String file = dir + "update007.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		
+		MultiHashMap<FA, AbstractValue> properties = new MultiHashMap<FA, AbstractValue>();
+		properties.put(new FA("a"), new FA("b"));
+		properties.put(new FA("b"), new Interval("2", "4"));
+		AbstractObject object = new AbstractObject(properties);
+		
+		AllocationSite site = new AllocationSite(2,0);
+		
+		// State size
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 1);
+		
+		// Store values
+		Assert.assertEquals(state.getValue(new Variable("x")), new AllocationSites(site));
+		Assert.assertEquals(state.getValue(new Variable("k")), new FA("b"));
+		
+		// Heap value
+		Assert.assertEquals(state.getValue(site), object);
+	}
+	
+	public void testPropUpdate008() throws Exception {
+		String file = dir + "update008.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain, false);
+		
+		AbstractObject object = new AbstractObject();
+		
+		AllocationSite site = new AllocationSite(2,0);
+		
+		// State size
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 1);
+		
+		// Store values
+		Assert.assertEquals(state.getValue(new Variable("x")), new AllocationSites(site));
 		
 		// Heap value
 		Assert.assertEquals(state.getValue(site), object);
