@@ -172,7 +172,7 @@ public class CoalescedAssignObjectTest {
 		AbstractObject obj2 = new AbstractObject(new FA("x"), new Interval("0", "+Inf"));
 
 		AllocationSite site1 = new AllocationSite(6,0);
-		AllocationSite site2 = new AllocationSite(8,1);	
+		AllocationSite site2 = new AllocationSite(9,1);	
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 3);
