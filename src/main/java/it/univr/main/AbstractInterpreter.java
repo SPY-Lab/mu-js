@@ -93,7 +93,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		if (allocationSites instanceof AllocationSites) {
 			for (AllocationSite l : ((AllocationSites)allocationSites).getAllocationSites()) {
 
-				FA key = new FA(ctx.expression(0).getText());
+				FA key = new FA(visit(ctx.expression(0)).toString());
 				AbstractValue value = visit(ctx.expression(1));
 
 				AbstractValue obj = currentEnvironment.getHeap(getCurrentCallString()).get(l);
@@ -118,9 +118,10 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 			if (sites instanceof AllocationSites) {
 				for (AllocationSite site: ((AllocationSites)sites).getAllocationSites()) {
-					FA key = new FA(ctx.expression().getText());
-					AbstractValue obj = currentEnvironment.getHeap(getCurrentCallString()).get(site);
 
+					FA key = new FA(visit(ctx.expression()).toString());
+					AbstractValue obj = currentEnvironment.get(getCurrentCallString()).getHeap().get(site);
+					
 					if (obj instanceof AbstractObject) {
 						AbstractValue val = ((AbstractObject)obj).get(key);
 						abstractValue = abstractValue.leastUpperBound(val);

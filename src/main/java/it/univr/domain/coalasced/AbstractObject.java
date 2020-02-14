@@ -52,21 +52,28 @@ public class AbstractObject implements AbstractValue {
 
 	@Override
 	public AbstractValue leastUpperBound(AbstractValue other) {
-		// TODO: Marin
-
+		
 		if(other instanceof AbstractObject) {
-			AbstractObject otherAbstractObject = (AbstractObject)other;
+			
 			MultiHashMap<FA, AbstractValue> resultAbstractObjectMap = new MultiHashMap<>();
 
-			for (FA abstractProperty: getAbstractObjectMap().keySet()) {
-				resultAbstractObjectMap.put(abstractProperty, this.lookupAbstractObject(abstractProperty));
-			}
-
-			for (FA abstractProperty: otherAbstractObject.getAbstractObjectMap().keySet()) {
-				resultAbstractObjectMap.put(abstractProperty, otherAbstractObject.lookupAbstractObject(abstractProperty));
+			for (FA abstractProperty: getAbstractObjectMap().keySet())
+				resultAbstractObjectMap.put(abstractProperty, this.lookupAbstractObject(abstractProperty));//this.get(abstractProperty));
+			
+			for (FA abstractProperty: ((AbstractObject) other).getAbstractObjectMap().keySet()) {
+				if (resultAbstractObjectMap.containsKey(abstractProperty)) {
+					AbstractObject tempAbstractObject = new AbstractObject(resultAbstractObjectMap);
+					tempAbstractObject.normalize();
+					AbstractValue tempAbstractValue = tempAbstractObject.lookupAbstractObject(abstractProperty);
+					resultAbstractObjectMap.remove(abstractProperty);
+					resultAbstractObjectMap.put(abstractProperty, tempAbstractValue.leastUpperBound(((AbstractObject) other).lookupAbstractObject(abstractProperty)));
+				} else {
+					resultAbstractObjectMap.put(abstractProperty, ((AbstractObject) other).lookupAbstractObject(abstractProperty));
+				}
 			}
 
 			AbstractObject abstractObject = new AbstractObject(resultAbstractObjectMap);
+			
 			abstractObject.normalize();
 
 			return abstractObject;
@@ -81,10 +88,46 @@ public class AbstractObject implements AbstractValue {
 		return new AbstractObject(getAbstractObjectMap());
 	}
 
+	/**
+	 * Produces the widening between two abstract objects.
+	 * 
+	 * @return AbstractValue object widened
+	 */
 	@Override
 	public AbstractValue widening(AbstractValue other) {
-		// TODO: Marin
-		return leastUpperBound(other);
+		MultiHashMap<FA, AbstractValue> abstractObjectMap = new MultiHashMap<>();
+		
+		this.normalize();
+		
+		if (other instanceof AbstractObject) {
+			
+			((AbstractObject) other).normalize();
+			
+			for (FA thisProperty: this.getAbstractObjectMap().keySet()) {
+			
+				if(((AbstractObject) other).getAbstractObjectMap().containsKey(thisProperty)) {
+					// for equal properties do widening
+					abstractObjectMap.put(thisProperty, this.lookupAbstractObject(thisProperty).widening(((AbstractObject) other).lookupAbstractObject(thisProperty)));
+				} else {
+					// otherwise keep this abstract value with its property
+					abstractObjectMap.put(thisProperty, this.lookupAbstractObject(thisProperty));
+				}
+			}
+		
+			for(FA otherProperty: ((AbstractObject)other).getAbstractObjectMap().keySet()) {
+				if (!this.getAbstractObjectMap().containsKey(otherProperty)) {
+					// keep the other properties as they are
+					abstractObjectMap.put(otherProperty, ((AbstractObject) other).lookupAbstractObject(otherProperty));
+				}
+			}
+			
+			return new AbstractObject(abstractObjectMap);
+			
+		} else if (other instanceof Bottom) {
+			return this.clone();
+		}
+		
+		return new Top();
 	}
 
 	@Override
