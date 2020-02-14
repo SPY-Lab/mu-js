@@ -205,7 +205,7 @@ public class AbstractObjectLubTest {
 		AbstractObject obj2 = new AbstractObject(abstractObjectMap2);
 
 		AbstractValue lub = obj1.leastUpperBound(obj2);
-		System.out.println(lub);
+		
 		MultiHashMap<FA, AbstractValue> expectedAbstractObjectMap = new MultiHashMap<>();
 		expectedAbstractObjectMap.put(FA.star("a"), new Interval("1", "4"));
 		expectedAbstractObjectMap.put(new FA("b"), new Bool(2));
