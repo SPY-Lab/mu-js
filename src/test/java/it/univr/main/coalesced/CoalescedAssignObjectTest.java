@@ -174,7 +174,7 @@ public class CoalescedAssignObjectTest {
 		AbstractObject obj2 = new AbstractObject(new FA("x"), new Interval("0", "+Inf"));
 
 		AllocationSite site1 = new AllocationSite(6,0);
-		AllocationSite site2 = new AllocationSite(8,1);	
+		AllocationSite site2 = new AllocationSite(9,1);	
 
 		// State size
 		Assert.assertEquals(state.sizeStore(), 3);
@@ -217,18 +217,25 @@ public class CoalescedAssignObjectTest {
 				AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 
 
-		AbstractObject obj = new AbstractObject();
+		AllocationSite trueSite1 = new AllocationSite(7,1);
+		AllocationSite trueSite2 = new AllocationSite(8,1);
+		AllocationSite falseSite = new AllocationSite(10,1);
 
-		AllocationSite site = new AllocationSite(3,1);	
-
+		AbstractObject trueObj1 = new AbstractObject();
+		AbstractObject trueObj2 = new AbstractObject(new FA("a"), new AllocationSites(trueSite1));
+		AbstractObject falseObj = new AbstractObject(new FA("x"), new Interval("1", "1"));
+		
 		// State size
-		Assert.assertEquals(state.sizeStore(), 1);
-		Assert.assertEquals(state.sizeHeap(), 1);
+		Assert.assertEquals(state.sizeStore(), 3);
+		Assert.assertEquals(state.sizeHeap(), 3);
 
 		// Store values
-		Assert.assertEquals(state.getValue(new Variable("a")), new AllocationSites(site));
-
+		Assert.assertEquals(state.getValue(new Variable("a")), new AllocationSites(trueSite2, falseSite));
+		Assert.assertEquals(state.getValue(new Variable("b")), new AllocationSites(trueSite1));
+		
 		// Heap value
-		Assert.assertEquals(state.getValue(site), obj);
+		Assert.assertEquals(state.getValue(trueSite1), trueObj1);
+		Assert.assertEquals(state.getValue(trueSite2), trueObj2);
+		Assert.assertEquals(state.getValue(falseSite), falseObj);
 	}
 }
