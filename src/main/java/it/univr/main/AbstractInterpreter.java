@@ -264,7 +264,6 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		AbstractValue guard = domain.juggleToBool(visit(ctx.expression()));
 
 		do {
-
 			/**
 			 * True
 			 */

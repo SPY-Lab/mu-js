@@ -110,7 +110,12 @@ public class AbstractStore extends HashMap<Variable, AbstractValue> {
 
 	@Override
 	public AbstractStore clone() {
-		return (AbstractStore) super.clone();
+		AbstractStore clone = new AbstractStore(domain);
+		
+		for (Variable v : keySet())
+			clone.put(v, getValue(v).clone());
+		
+		return clone;
 	}
 
 	@Override

@@ -226,10 +226,10 @@ public class LiftedUnionAbstractValue implements AbstractValue {
 	public LiftedUnionAbstractValue clone() {
 		LiftedUnionAbstractValue result = new LiftedUnionAbstractValue();
 
-		result.setInterval(((Interval) getInterval()).clone());
-		result.setFA(((FA) getFA()).clone());
-		result.setNaN(((NaN) getNaN()).clone());
-		result.setBool(((Bool) getBool()).clone());
+		result.setInterval((getInterval()).clone());
+		result.setFA(getFA().clone());
+		result.setNaN(getNaN().clone());
+		result.setBool(getBool().clone());
 		
 		return result;
 	}

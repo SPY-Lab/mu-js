@@ -22,7 +22,7 @@ public class CoalescedObjectWideningTest {
 	@Test
 	public void testObjectWidening001() throws Exception {
 		String file = dir + "widening001.js";
-				AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 		
 		MultiHashMap<FA, AbstractValue> properties = new MultiHashMap<>();
 		properties.put(new FA("a"), new Interval("1", "+Inf"));
@@ -40,12 +40,5 @@ public class CoalescedObjectWideningTest {
 		// Heap value
 		Assert.assertEquals(state.getValue(oSite), oObject);
 	}
-	
-	/*
-	@Test
-	public void testObjectWidening002() throws Exception {
-		String file = dir + "widening002.js";
-				AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
-	}*/
-	
+		
 }

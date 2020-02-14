@@ -85,7 +85,7 @@ public class AbstractObject implements AbstractValue {
 
 	@Override
 	public AbstractObject clone() {
-		return new AbstractObject(getAbstractObjectMap());
+		return new AbstractObject((MultiHashMap<FA, AbstractValue>) getAbstractObjectMap().clone());
 	}
 
 	/**

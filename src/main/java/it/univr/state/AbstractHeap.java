@@ -103,7 +103,12 @@ public class AbstractHeap extends HashMap<AllocationSite, AbstractValue> {
 
 	@Override
 	public AbstractHeap clone() {
-		return (AbstractHeap) super.clone();
+		AbstractHeap clone = new AbstractHeap(domain);
+		
+		for (AllocationSite v : keySet())
+			clone.put(v, getValue(v).clone());
+		
+		return clone;
 	}
 
 	@Override
