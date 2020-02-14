@@ -4,7 +4,8 @@ while (true) {
 }
 
 a = new {};
-if (i <= 10) {
+
+if (i < 10) {
 	a = new {x:i};
 } else {
 	
