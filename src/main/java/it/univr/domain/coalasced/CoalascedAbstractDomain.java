@@ -8,27 +8,27 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 
 	@Override
 	public AbstractValue leastUpperBound(AbstractValue v1, AbstractValue v2) {
-
-		if (v1.getClass().equals(v2.getClass())) 
-			return v1.leastUpperBound(v2);
-		else if (v1 instanceof Bottom)
+		if (v1 instanceof Bottom)
 			return v2.clone();
 		else if (v2 instanceof Bottom)
 			return v1.clone();
-		
+		else if (v1.getClass().equals(v2.getClass())) 
+			return v1.leastUpperBound(v2);
+
+
 		return new Top();
 	}
 
 	@Override
 	public AbstractValue widening(AbstractValue v1, AbstractValue v2) {
-
-		if (v1.getClass().equals(v2.getClass()))
-			return v1.widening(v2);
-		else if (v1 instanceof Bottom)
+		if (v1 instanceof Bottom)
 			return v2.clone();
 		else if (v2 instanceof Bottom)
 			return v1.clone();
-		
+		else if (v1.getClass().equals(v2.getClass()))
+			return v1.widening(v2);
+
+
 		return new Top();
 	}
 
@@ -199,7 +199,7 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 				return ((Interval) left).isEqual((Interval) right);
 
 		} 
-		
+
 		return new NaN();
 	}
 
@@ -208,7 +208,7 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 		if (v1 instanceof FA) {
 			return ((FA) v1).indexOf((FA) v2.juggleToString());
 		}
-		
+
 		return new Bottom();
 	}
 
@@ -225,10 +225,10 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 				return new Bool(0).leastUpperBound(second);			
 			}
 		}
-		
+
 		return new Bottom();
 	}
-	
+
 	@Override
 	public AbstractValue or(AbstractValue first, AbstractValue second) {
 		AbstractValue firstEvaluation = first.juggleToBool();
@@ -242,7 +242,7 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 				return new Bool(0).leastUpperBound(second);			
 			}
 		}
-		
+
 		return new Bottom();
 	}
 
