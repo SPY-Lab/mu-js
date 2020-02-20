@@ -245,6 +245,9 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 		currentEnvironment = currentEnvironment.leastUpperBound(trueBranch);
 
+		
+		
+		
 		KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
 		state.add(key, currentEnvironment.get(getCurrentCallString()).clone(), getCurrentCallString());
 

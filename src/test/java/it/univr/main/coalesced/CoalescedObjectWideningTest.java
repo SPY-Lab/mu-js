@@ -177,17 +177,40 @@ public class CoalescedObjectWideningTest {
 		Assert.assertEquals(oObject, state.getValue(oSite));
 	}
 	
-	/*
+	
+//	@Test
+//	public void testObjectWidening008() throws Exception {
+//		String file = dir + "widening008.js";
+//		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+//		
+//		MultiHashMap<FA, AbstractValue> properties = new MultiHashMap<>();
+//		properties.put(FA.star("a"), new Interval("1", "1"));
+//		AbstractObject oObject = new AbstractObject(properties);
+//		
+//		AllocationSite oSite = new AllocationSite(1,0);
+//		
+//		// State size
+//		Assert.assertEquals(state.sizeStore(), 2);
+//		Assert.assertEquals(state.sizeHeap(), 1);
+//		
+//		// Store values
+//		Assert.assertEquals(state.getValue(new Variable("o")), new AllocationSites(oSite));
+//		
+//		// Heap value
+//		Assert.assertEquals(oObject, state.getValue(oSite));
+//	}
+	
+
 	@Test
-	public void testObjectWidening008() throws Exception {
-		String file = dir + "widening008.js";
+	public void testObjectWidening009() throws Exception {
+		String file = dir + "widening009.js";
 		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 		
 		MultiHashMap<FA, AbstractValue> properties = new MultiHashMap<>();
-		properties.put(FA.star("a"), new Interval("1", "1"));
+		properties.put(new FA("a"), new Interval("0", "+Inf"));
 		AbstractObject oObject = new AbstractObject(properties);
 		
-		AllocationSite oSite = new AllocationSite(1,0);
+		AllocationSite oSite = new AllocationSite(4,1);
 		
 		// State size
 		Assert.assertEquals(state.sizeStore(), 2);
@@ -195,8 +218,9 @@ public class CoalescedObjectWideningTest {
 		
 		// Store values
 		Assert.assertEquals(state.getValue(new Variable("o")), new AllocationSites(oSite));
+		Assert.assertEquals(state.getValue(new Variable("i")), new Interval("0", "+Inf"));
 		
 		// Heap value
 		Assert.assertEquals(oObject, state.getValue(oSite));
-	}*/
+	}
 }

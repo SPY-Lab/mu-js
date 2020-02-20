@@ -282,7 +282,7 @@ public class AbstractObject implements AbstractValue {
 
 		return resultAbstractValue;
 	}
-
+	
 	public AbstractValue get(FA k) {
 		AbstractValue v2 = new Bottom();
 		ArrayList<AbstractValue> s = (ArrayList<AbstractValue>) properties.get(k);

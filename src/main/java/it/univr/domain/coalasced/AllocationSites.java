@@ -37,7 +37,9 @@ public class AllocationSites implements AbstractValue {
 
 	@Override
 	public AbstractValue leastUpperBound(AbstractValue other) {
+		
 		if (other instanceof AllocationSites) {
+
 			HashSet<AllocationSite> s = new HashSet<AllocationSite>();
 
 			for (AllocationSite l : sites)

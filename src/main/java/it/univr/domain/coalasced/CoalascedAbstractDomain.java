@@ -8,7 +8,8 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 
 	@Override
 	public AbstractValue leastUpperBound(AbstractValue v1, AbstractValue v2) {
-		if (v1.getClass().equals(v2.getClass()))
+
+		if (v1.getClass().equals(v2.getClass())) 
 			return v1.leastUpperBound(v2);
 		else if (v1 instanceof Bottom)
 			return v2.clone();
@@ -23,6 +24,11 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 
 		if (v1.getClass().equals(v2.getClass()))
 			return v1.widening(v2);
+		else if (v1 instanceof Bottom)
+			return v2.clone();
+		else if (v2 instanceof Bottom)
+			return v1.clone();
+		
 		return new Top();
 	}
 
