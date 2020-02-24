@@ -75,7 +75,7 @@ public class CoalescedRecursiveFunction {
 		Assert.assertEquals(state.sizeHeap(), 0);
 
 		// State values
-		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("60", "+Inf"));
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("-Inf", "240"));
 		Assert.assertEquals(state.getValue(new Variable("y")), new Interval("2", "2"));
 	}
 
@@ -91,7 +91,7 @@ public class CoalescedRecursiveFunction {
 		Assert.assertEquals(state.sizeHeap(), 0);
 
 		// State values
-		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("60", "+Inf"));
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("-Inf", "240"));
 		Assert.assertEquals(state.getValue(new Variable("y")), new Interval("-Inf", "+Inf"));
 	}
 }

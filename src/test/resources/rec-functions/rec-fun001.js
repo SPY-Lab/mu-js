@@ -1,11 +1,9 @@
 function f(a) {
 	if (a == 0) {
-		result = 0;
+		return 0;
 	} else {
-		result = f(a - 1);
+		return f(a - 1);
 	}
-	
-	return result;
 }
 
 

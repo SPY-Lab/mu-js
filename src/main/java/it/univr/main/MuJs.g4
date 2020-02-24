@@ -64,26 +64,18 @@ expression:
 	|	ID '(' expression ( ',' expression )* ')'						#FunctionCall
 	;
 	
-	
-ret:
-	'return' expression ';'												#Return
-	;	
-	
+		
 stmt:
 	   ID ASG expression SEMICOLON										#AssignmentStmt
 	| 'if' '(' expression ')' block 'else' block						#IfStmt
 	| 'while' '(' expression ')' block									#WhileStmt
 	|  block															#BlockStmt
+	|  'return' expression ';'											#ReturnStmt				
 	|  <assoc=right> stmt stmt											#Composition
 	|  ID ASG 'new' object SEMICOLON 									#ObjectAsg
 	|  ID '[' expression ']' ASG expression SEMICOLON 					#PropUpdate
-	| 'function' ID '(' ID ( ',' ID)* ')' '{' bodyfunction '}'			#FunctionDeclaration
+	| 'function' ID '(' ID ( ',' ID)* ')' '{' stmt '}'					#FunctionDeclaration
 	;
-
-bodyfunction:															
-	stmt? ret 															#BodyFunction									
-	; 	
-
 
 block:  '{' '}'
 	|	'{' stmt '}'

@@ -158,7 +158,7 @@ public class CoalescedFunctionTest {
 		Assert.assertEquals(state.sizeHeap(), 0);
 
 		// State values
-		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("-Inf", "+Inf"));
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("1", "+Inf"));
 	}
 
 }

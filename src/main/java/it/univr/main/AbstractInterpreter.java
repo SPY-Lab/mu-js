@@ -3,6 +3,7 @@ package it.univr.main;
 import java.util.HashMap;
 import java.util.Vector;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.apache.commons.collections15.multimap.MultiHashMap;
 
 import it.univr.domain.AbstractDomain;
@@ -15,8 +16,10 @@ import it.univr.domain.coalasced.Bottom;
 import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
 import it.univr.domain.coalasced.NaN;
-import it.univr.main.MuJsParser.BodyFunctionContext;
 import it.univr.main.MuJsParser.FunctionDeclarationContext;
+import it.univr.main.MuJsParser.ProgramContext;
+import it.univr.main.MuJsParser.ReturnStmtContext;
+import it.univr.main.MuJsParser.StmtContext;
 import it.univr.state.AbstractEnvironment;
 import it.univr.state.AbstractState;
 import it.univr.state.CallStringAbstractEnvironment;
@@ -465,13 +468,18 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 
 	@Override
-	public AbstractValue visitReturn(MuJsParser.ReturnContext ctx) {
+	public AbstractValue visitReturnStmt(MuJsParser.ReturnStmtContext ctx) {
 
-
-		FunctionDeclarationContext call = (FunctionDeclarationContext) ctx.getParent().getParent();	
+		FunctionDeclarationContext call = null;
+		try {
+			call = getFunctionDeclarationContext(ctx);
+		} catch (Exception e) {
+			System.err.println("Return statement used outside function declaration!");
+		}
+		
 		Function f = state.getFunction(new Variable(call.ID(0).getText()));
 		f.addReturnValueAtCallString(getCurrentCallString(), visit(ctx.expression()));
-
+		
 		return f.getReturnValueAtCallString(getCurrentCallString()); 
 	}
 
@@ -479,7 +487,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitFunctionDeclaration(MuJsParser.FunctionDeclarationContext ctx) { 
 
 		Variable name = new Variable(ctx.ID(0).getText());
-		BodyFunctionContext body = (BodyFunctionContext) ctx.bodyfunction();
+		StmtContext body = (StmtContext) ctx.stmt();
 		Vector<Variable> formalParameters = new Vector<Variable>();
 
 		for (int i = 1; i < ctx.ID().size(); i++)
@@ -490,14 +498,6 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		state.addFunction(name, function);
 		return new Bottom();
 	}
-
-	@Override 
-	public AbstractValue visitBodyFunction(MuJsParser.BodyFunctionContext ctx) { 
-		if (ctx.stmt() != null)
-			visit(ctx.stmt());
-		return visit(ctx.ret());
-	}
-
 
 	@Override 
 	public AbstractValue visitFunctionCall(MuJsParser.FunctionCallContext ctx) { 
@@ -516,9 +516,6 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 			actualParameters.add(actualPar);
 		}
 		
-//		System.err.println(f.envs);
-
-
 		CallString call = new CallString(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
 		KCallStrings newCallString = getCurrentCallString().clone();
 		newCallString.add(call);
@@ -531,8 +528,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		else if (state.getCallStringEnvironment(key).containsKey(newCallString)) {
 			for (int i = 0; i < f.getFormalParameters().size(); i++) {
 				AbstractValue oldActualParameter = state.getCallStringEnvironment(key).get(newCallString).getValue(f.getFormalParameters().get(i));
-				actualParameters.set(i, oldActualParameter.widening(actualParameters.get(i)));
-				
+				actualParameters.set(i, oldActualParameter.widening(actualParameters.get(i)));				
 			}
 		} else 
 			state.getCallStringEnvironment(key).put(newCallString, currentEnvironment.get(currentCallString).clone());
@@ -550,34 +546,41 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 		currentEnvironment = state.getCallStringEnvironment(key).clone();
 
+		
 		callStrings = newCallString;
-		AbstractValue returnValue = visit(f.getBody());
+		visit(f.getBody());
 		callStrings = currentCallString;
 
+		
 		for (int i = 0; i < f.getFormalParameters().size(); i++) 
 			currentEnvironment.removeVariable(f.getFormalParameters().get(i), newCallString);
 
 		currentEnvironment = old;
 
-		f.addReturnValueAtCallString(newCallString, actualParameters, returnValue);
-		return returnValue; 
+		
+		return f.getReturnValueAtCallString(newCallString); 
 	}
 
 	private KCallStrings getCurrentCallString() {
 		return callStrings.clone();
 	}
+	
+	private FunctionDeclarationContext getFunctionDeclarationContext(ReturnStmtContext ret) throws Exception {
+		ParserRuleContext result = ret;
+		
+		while (true) {
+			result = result.getParent();
+			
+			if (result instanceof ProgramContext)
+				throw new Exception();
+			
+			
+			
+			
+			if (result instanceof FunctionDeclarationContext) 
+				return (FunctionDeclarationContext) result;
+			}
+	}
+	
 
-	//	private boolean incrementCallString(CallString cs) {
-	//		if (callStrings.size() == k) {
-	//			callStrings.add(cs);
-	//			return true;
-	//		} else {
-	//			callStrings.add(cs);
-	//			return false;
-	//		}
-	//	}
-	//
-	//	private void decreaseCallString() {
-	//		callStrings.remove(callStrings.size() -1);
-	//	}
 }

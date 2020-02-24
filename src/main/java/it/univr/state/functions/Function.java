@@ -7,17 +7,17 @@ import org.antlr.v4.runtime.misc.Pair;
 
 import it.univr.domain.AbstractValue;
 import it.univr.main.MuJsParser;
-import it.univr.main.MuJsParser.BodyFunctionContext;
+import it.univr.main.MuJsParser.StmtContext;
 import it.univr.state.Variable;
 
 public class Function {
 
 	private Variable name; 
 	private Vector<Variable> formalParameters;
-	private MuJsParser.BodyFunctionContext body;
+	private MuJsParser.StmtContext body;
 	public HashMap<KCallStrings, Pair<ActualParameters, AbstractValue>> envs;
 
-	public Function(Variable name, Vector<Variable> formalParameters, BodyFunctionContext bod) {
+	public Function(Variable name, Vector<Variable> formalParameters, StmtContext bod) {
 		this.name = name;
 		this.formalParameters = formalParameters;
 		this.body = bod;
@@ -32,11 +32,11 @@ public class Function {
 		this.formalParameters = formalParameters;
 	}
 
-	public MuJsParser.BodyFunctionContext getBody() {
+	public MuJsParser.StmtContext getBody() {
 		return body;
 	}
 
-	public void setBody(MuJsParser.BodyFunctionContext body) {
+	public void setBody(MuJsParser.StmtContext body) {
 		this.body = body;
 	}
 
@@ -81,8 +81,9 @@ public class Function {
 	public void addReturnValueAtCallString(KCallStrings cs, AbstractValue ret) {
 		if (hasCallString(cs)) {
 			AbstractValue oldRet = envs.get(cs).b;
+			ActualParameters oldPars = envs.get(cs).a;
 			envs.remove(cs);
-			envs.put(cs, new Pair<ActualParameters, AbstractValue>(new ActualParameters(), oldRet.widening(ret)));
+			envs.put(cs, new Pair<ActualParameters, AbstractValue>(oldPars, oldRet.leastUpperBound(ret)));
 		} else {
 			envs.put(cs, new Pair<ActualParameters, AbstractValue>(new ActualParameters(), ret));
 		}

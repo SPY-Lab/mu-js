@@ -1,4 +1,4 @@
-// Generated from ./ictac/mu-js/src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
+// Generated from ./venice/mu-js/src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
 
     package it.univr.main;
 
@@ -342,18 +342,6 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReturn(MuJsParser.ReturnContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitReturn(MuJsParser.ReturnContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFunctionDeclaration(MuJsParser.FunctionDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -438,6 +426,18 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterReturnStmt(MuJsParser.ReturnStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReturnStmt(MuJsParser.ReturnStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterObjectAsg(MuJsParser.ObjectAsgContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -445,18 +445,6 @@ public class MuJsBaseListener implements MuJsListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitObjectAsg(MuJsParser.ObjectAsgContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBodyFunction(MuJsParser.BodyFunctionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBodyFunction(MuJsParser.BodyFunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
