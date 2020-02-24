@@ -7,5 +7,5 @@ function f(n) {
 	return result;
 }
 
-x = f(5);
+x = f(3);
 y = f(3);

@@ -17,12 +17,17 @@ import it.univr.domain.lifted.LiftedUnionAbstractDomain;
 
 public class Analyzer {
 
+	
+	private static int defaultCallStringSize = 3;
+	
 	public static void main(String[] args) throws IOException {
 		System.out.println(potd());
-		String file = "src/test/resources/objects/widening/widening001.js"; //args[0];
+		String file = "src/test/resources/rec-functions/rec-fun001.js"; //args[0];
 
 		boolean printInvariants = false;
 
+		int callStringsSize = 3;
+		
 		AbstractDomain domain = new CoalascedAbstractDomain();
 
 		for (int i = 0; i < args.length; ++i) {if (args[i].equals("-coalesced"))
@@ -49,12 +54,12 @@ public class Analyzer {
 		
 		try {
 			if (printInvariants) {
-				AbstractInterpreter analysis = Analyzer.analyze(file, domain);
+				AbstractInterpreter analysis = Analyzer.analyze(file, domain, callStringsSize);
 				analysis.printFunctions();
 				System.out.println("\n");
 				System.out.println(analysis.getAbstractState());
 			} else {
-				AbstractInterpreter analysis = Analyzer.analyze(file, domain);
+				AbstractInterpreter analysis = Analyzer.analyze(file, domain, callStringsSize);
 				analysis.printFunctions();
 				System.out.println("\n");
 				analysis.getCallStringAbstractEnvironment().printTable();
@@ -64,8 +69,23 @@ public class Analyzer {
 		}
 	}
 
+	public static AbstractInterpreter analyze(String file, AbstractDomain domain, int callStringsSize) throws IOException {
+		AbstractInterpreter interpreter = new AbstractInterpreter(domain, false, callStringsSize);
+
+		interpreter.setAbstractDomain(domain);
+		InputStream stream = new FileInputStream(file);
+
+		MuJsLexer lexer = new MuJsLexer(CharStreams.fromStream(stream, StandardCharsets.UTF_8));
+
+		MuJsParser parser = new MuJsParser(new CommonTokenStream(lexer));
+		ParseTree tree = parser.program();
+		interpreter.visit(tree);
+
+		return interpreter;
+	}
+	
 	public static AbstractInterpreter analyze(String file, AbstractDomain domain) throws IOException {
-		AbstractInterpreter interpreter = new AbstractInterpreter(domain, false);
+		AbstractInterpreter interpreter = new AbstractInterpreter(domain, false, defaultCallStringSize);
 
 		interpreter.setAbstractDomain(domain);
 		InputStream stream = new FileInputStream(file);

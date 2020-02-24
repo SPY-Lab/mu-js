@@ -6,8 +6,9 @@ import dnl.utils.text.table.TextTable;
 import it.univr.domain.AbstractDomain;
 import it.univr.domain.AbstractValue;
 import it.univr.domain.AllocationSite;
+import it.univr.state.functions.KCallStrings;
 
-public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractEnvironment> {
+public class CallStringAbstractEnvironment extends HashMap<KCallStrings, AbstractEnvironment> {
 
 	private AbstractDomain domain;
 
@@ -19,7 +20,7 @@ public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractE
 
 	@Override
 	public AbstractEnvironment get(Object cs) {
-		if (cs instanceof CallString) {
+		if (cs instanceof KCallStrings) {
 			if (containsKey(cs))
 				return super.get(cs);
 			else
@@ -29,7 +30,7 @@ public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractE
 		throw new NullPointerException();
 	}
 
-	public CallStringAbstractEnvironment(AbstractDomain domain, AbstractStore store, AbstractHeap heap, CallString cs) {
+	public CallStringAbstractEnvironment(AbstractDomain domain, AbstractStore store, AbstractHeap heap, KCallStrings cs) {
 		super();
 		this.setAbstractDomain(domain);
 		AbstractEnvironment env = new AbstractEnvironment(domain);
@@ -38,7 +39,7 @@ public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractE
 		put(cs, env);
 	}
 
-	public CallStringAbstractEnvironment(AbstractDomain domain, AbstractEnvironment env, CallString cs) {
+	public CallStringAbstractEnvironment(AbstractDomain domain, AbstractEnvironment env, KCallStrings cs) {
 		super();
 		this.setAbstractDomain(domain);
 		put(cs, env);
@@ -52,7 +53,7 @@ public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractE
 		int n = keySet().size();
 		String[][] t = new String[n][3];
 
-		for (CallString cs : keySet()) {
+		for (KCallStrings cs : keySet()) {
 
 			AbstractStore store = getStore(cs);
 			AbstractHeap heap = getHeap(cs);
@@ -85,19 +86,19 @@ public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractE
 		this.domain = domain;
 	}
 
-	public AbstractStore getStore(CallString cs) {
+	public AbstractStore getStore(KCallStrings cs) {
 		return get(cs).getStore();
 	}
 
-	public AbstractHeap getHeap(CallString cs) {
+	public AbstractHeap getHeap(KCallStrings cs) {
 		return get(cs).getHeap();
 	}
 
-	public void putVariable(Variable var, AbstractValue v, CallString cs) {
+	public void putVariable(Variable var, AbstractValue v, KCallStrings cs) {
 		get(cs).getStore().put(var, v);
 	}
 
-	public void removeVariable(Variable var, CallString cs) {
+	public void removeVariable(Variable var, KCallStrings cs) {
 		get(cs).getStore().remove(var);
 	}
 
@@ -105,7 +106,7 @@ public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractE
 	public CallStringAbstractEnvironment clone() {
 		CallStringAbstractEnvironment clone = new CallStringAbstractEnvironment(domain);
 
-		for (CallString cs : this.keySet())
+		for (KCallStrings cs : keySet())
 			clone.put(cs, get(cs).clone());
 
 		return clone;
@@ -114,10 +115,10 @@ public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractE
 	public  CallStringAbstractEnvironment leastUpperBound(CallStringAbstractEnvironment other) {
 		CallStringAbstractEnvironment lub = new CallStringAbstractEnvironment(domain);
 
-		for (CallString cs : keySet()) 
+		for (KCallStrings cs : keySet()) 
 			lub.put(cs, get(cs).leastUpperBound(other.get(cs)));
 
-		for (CallString cs : other.keySet()) 
+		for (KCallStrings cs : other.keySet()) 
 			if (!containsKey(cs))
 				lub.put(cs, other.get(cs).clone());
 
@@ -127,10 +128,10 @@ public class CallStringAbstractEnvironment extends HashMap<CallString, AbstractE
 	public  CallStringAbstractEnvironment widening(CallStringAbstractEnvironment other) {
 		CallStringAbstractEnvironment lub = new CallStringAbstractEnvironment(domain);
 
-		for (CallString cs : keySet()) 
+		for (KCallStrings cs : keySet()) 
 			lub.put(cs, get(cs).widening(other.get(cs)));
 
-		for (CallString cs : other.keySet()) 
+		for (KCallStrings cs : other.keySet()) 
 			if (!containsKey(cs))
 				lub.put(cs, other.get(cs).clone());
 

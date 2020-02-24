@@ -8,4 +8,4 @@ function f(n) {
 }
 
 x = f(5);
-y = f(3);
+y = f(2);

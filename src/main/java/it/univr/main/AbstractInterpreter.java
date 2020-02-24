@@ -16,31 +16,42 @@ import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
 import it.univr.domain.coalasced.NaN;
 import it.univr.main.MuJsParser.BodyFunctionContext;
+import it.univr.main.MuJsParser.FunctionDeclarationContext;
 import it.univr.state.AbstractEnvironment;
 import it.univr.state.AbstractState;
-import it.univr.state.CallString;
 import it.univr.state.CallStringAbstractEnvironment;
-import it.univr.state.Function;
-import it.univr.state.KCallStrings;
 import it.univr.state.KeyAbstractState;
 import it.univr.state.Variable;
+import it.univr.state.functions.ActualParameters;
+import it.univr.state.functions.CallString;
+import it.univr.state.functions.Function;
+import it.univr.state.functions.KCallStrings;
 
 public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 	private CallStringAbstractEnvironment currentEnvironment;
 	private AbstractDomain domain;
 	private AbstractState state;
+	private int callStringsSize;
 
 	private KCallStrings callStrings = new KCallStrings(new CallString(0,0));
+
+	public AbstractInterpreter(AbstractDomain domain, boolean invariants, int callStringSize) {
+		this.currentEnvironment = new CallStringAbstractEnvironment(domain);
+		this.state = new AbstractState(domain);
+		this.callStringsSize = callStringSize;
+		currentEnvironment.put(new KCallStrings(new CallString(0,0)), new AbstractEnvironment(domain));
+	}
 
 	public AbstractInterpreter(AbstractDomain domain, boolean invariants) {
 		this.currentEnvironment = new CallStringAbstractEnvironment(domain);
 		this.state = new AbstractState(domain);
-		currentEnvironment.put(new CallString(0,0), new AbstractEnvironment(domain));
+		this.callStringsSize = 3;
+		currentEnvironment.put(new KCallStrings(new CallString(0,0)), new AbstractEnvironment(domain));
 	}
-
+	
 	public AbstractEnvironment getAbstractEnvironmentAtMainCallString() {
-		return currentEnvironment.get(new CallString(0,0));
+		return currentEnvironment.get(new KCallStrings(new CallString(0,0)));
 	}
 
 	public CallStringAbstractEnvironment getCallStringAbstractEnvironment() {
@@ -121,7 +132,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 					FA key = new FA(visit(ctx.expression()).toString());
 					AbstractValue obj = currentEnvironment.get(getCurrentCallString()).getHeap().get(site);
-					
+
 					if (obj instanceof AbstractObject) {
 						AbstractValue val = ((AbstractObject)obj).get(key);
 						abstractValue = abstractValue.leastUpperBound(val);
@@ -194,12 +205,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 		// Get line
 		KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
-		CallString currentCallString = getCurrentCallString();
-
-		//		if (!state.contains(key)) {
-		//			state.createAbstractEnvironment(key, currentCallString);
-		//			state.getCallStringEnvironment(key).put(currentCallString, currentEnvironment.get(currentCallString).clone());
-		//		}
+		KCallStrings currentCallString = getCurrentCallString();
 
 		state.add(key, currentEnvironment.get(currentCallString).clone(), currentCallString);
 
@@ -438,10 +444,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitIdentifier(MuJsParser.IdentifierContext ctx) { 
 
 		Variable v = new Variable(ctx.ID().getText());
-		CallString currentCallString = getCurrentCallString();
-
-
-
+		KCallStrings currentCallString = getCurrentCallString();
 		if (currentEnvironment.getStore(currentCallString).containsKey(v))
 			return currentEnvironment.getStore(currentCallString).get(v);
 		else {
@@ -463,7 +466,13 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 	@Override
 	public AbstractValue visitReturn(MuJsParser.ReturnContext ctx) {
-		return visit(ctx.expression()); 
+
+
+		FunctionDeclarationContext call = (FunctionDeclarationContext) ctx.getParent().getParent();	
+		Function f = state.getFunction(new Variable(call.ID(0).getText()));
+		f.addReturnValueAtCallString(getCurrentCallString(), visit(ctx.expression()));
+
+		return f.getReturnValueAtCallString(getCurrentCallString()); 
 	}
 
 	@Override 
@@ -494,43 +503,81 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitFunctionCall(MuJsParser.FunctionCallContext ctx) { 
 		CallStringAbstractEnvironment old = currentEnvironment.clone();
 
-		CallString currentCallString = getCurrentCallString();
+		KCallStrings currentCallString = getCurrentCallString().clone();
 
 		Function f = state.getFunction(new Variable(ctx.ID().getText()));
-		CallString newCallString = new CallString(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
-
 
 		KeyAbstractState key = new KeyAbstractState(f.getBody().getStart().getLine(), f.getBody().getStart().getCharPositionInLine());
-		state.add(key, currentEnvironment.get(currentCallString).clone(), newCallString);
+
+		ActualParameters actualParameters = new ActualParameters();
 
 		for (int i = 0; i < f.getFormalParameters().size(); i++) {
-			state.getCallStringEnvironment(key).putVariable(f.getFormalParameters().get(i), visit(ctx.expression(i)), newCallString);
+			AbstractValue actualPar = visit(ctx.expression(i));
+			actualParameters.add(actualPar);
+		}
+		
+//		System.err.println(f.envs);
+
+
+		CallString call = new CallString(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
+		KCallStrings newCallString = getCurrentCallString().clone();
+		newCallString.add(call);
+
+		if (newCallString.size() > callStringsSize)
+			newCallString.remove(0);
+
+		if (!state.contains(key)) 
+			state.add(key, currentEnvironment.get(currentCallString).clone(), newCallString);
+		else if (state.getCallStringEnvironment(key).containsKey(newCallString)) {
+			for (int i = 0; i < f.getFormalParameters().size(); i++) {
+				AbstractValue oldActualParameter = state.getCallStringEnvironment(key).get(newCallString).getValue(f.getFormalParameters().get(i));
+				actualParameters.set(i, oldActualParameter.widening(actualParameters.get(i)));
+				
+			}
+		} else 
+			state.getCallStringEnvironment(key).put(newCallString, currentEnvironment.get(currentCallString).clone());
+
+
+		if (f.hasCallString(newCallString) && actualParameters.equals(f.getActualParametersAtCallString(newCallString))) {
+			return f.getReturnValueAtCallString(newCallString);
+		} else {
+
+			for (int i = 0; i < f.getFormalParameters().size(); i++) 
+				state.getCallStringEnvironment(key).putVariable(f.getFormalParameters().get(i), actualParameters.get(i), newCallString);
+
+			f.addReturnValueAtCallString(newCallString, actualParameters, new Bottom());
 		}
 
 		currentEnvironment = state.getCallStringEnvironment(key).clone();
 
-		incrementCallString(newCallString);
+		callStrings = newCallString;
 		AbstractValue returnValue = visit(f.getBody());
-		decreaseCallString();
+		callStrings = currentCallString;
 
 		for (int i = 0; i < f.getFormalParameters().size(); i++) 
 			currentEnvironment.removeVariable(f.getFormalParameters().get(i), newCallString);
 
-
 		currentEnvironment = old;
+
+		f.addReturnValueAtCallString(newCallString, actualParameters, returnValue);
 		return returnValue; 
 	}
 
-	private CallString getCurrentCallString() {
-		return callStrings.get(callStrings.size() -1);
+	private KCallStrings getCurrentCallString() {
+		return callStrings.clone();
 	}
 
-	private void incrementCallString(CallString cs) {
-		callStrings.add(cs);
-	}
-
-	private void decreaseCallString() {
-		callStrings.removeElementAt(callStrings.size() -1);
-	}
-
+	//	private boolean incrementCallString(CallString cs) {
+	//		if (callStrings.size() == k) {
+	//			callStrings.add(cs);
+	//			return true;
+	//		} else {
+	//			callStrings.add(cs);
+	//			return false;
+	//		}
+	//	}
+	//
+	//	private void decreaseCallString() {
+	//		callStrings.remove(callStrings.size() -1);
+	//	}
 }

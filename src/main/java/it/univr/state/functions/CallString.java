@@ -1,4 +1,4 @@
-package it.univr.state;
+package it.univr.state.functions;
 
 public class CallString {
 
@@ -41,11 +41,11 @@ public class CallString {
 	
 	@Override
 	public CallString clone() {
-		return new CallString(col, row);
+		return new CallString(row, col);
 	}
 	
 	@Override
 	public String toString() {
-		return "("+ row + "|" + col +")";
+		return "["+ row + col +"]";
 	}
 }

@@ -23,6 +23,10 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 
 		if (v1.getClass().equals(v2.getClass()))
 			return v1.widening(v2);
+		else if (v1 instanceof Bottom)
+			return v2.clone();
+		else if (v2 instanceof Bottom)
+			return v1.clone();
 		return new Top();
 	}
 
@@ -91,7 +95,10 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 
 	@Override
 	public AbstractValue sum(AbstractValue left, AbstractValue right) {
-		if ((left instanceof Bool || left instanceof Interval) && (right instanceof Bool || right instanceof Interval))
+		
+		if (left instanceof Bottom || right instanceof Bottom)
+			return new Bottom();	
+		else if ((left instanceof Bool || left instanceof Interval) && (right instanceof Bool || right instanceof Interval))
 			return ((Interval) left.juggleToNumber()).plus((Interval) right.juggleToNumber());
 		else if (left instanceof FA && right instanceof FA)
 			return new FA(Automaton.concat(((FA) left).getAutomaton(), ((FA) right).getAutomaton()));
@@ -118,6 +125,10 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 
 	@Override
 	public AbstractValue mul(AbstractValue left, AbstractValue right) {
+		
+		if (left instanceof Bottom || right instanceof Bottom)
+			return new Bottom();
+		
 		if ((left instanceof Interval || left instanceof Bool || left instanceof FA) && (right instanceof Interval || right instanceof Bool || right instanceof FA)) {
 			AbstractValue leftJuggled = left.juggleToNumber();
 			AbstractValue rightJuggled = right.juggleToNumber();
