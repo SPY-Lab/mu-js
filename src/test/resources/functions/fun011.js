@@ -1,6 +1,4 @@
 function g(b) {
-	b = b - 1;
-	b = b + 1;
 	return b;
 }
 

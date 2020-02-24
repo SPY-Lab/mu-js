@@ -1,4 +1,4 @@
-// Generated from ./ictac/mu-js/src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
+// Generated from ./venice/mu-js/src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
 
     package it.univr.main;
 
@@ -334,18 +334,6 @@ public interface MuJsListener extends ParseTreeListener {
 	 */
 	void exitLess(MuJsParser.LessContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code Return}
-	 * labeled alternative in {@link MuJsParser#ret}.
-	 * @param ctx the parse tree
-	 */
-	void enterReturn(MuJsParser.ReturnContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Return}
-	 * labeled alternative in {@link MuJsParser#ret}.
-	 * @param ctx the parse tree
-	 */
-	void exitReturn(MuJsParser.ReturnContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code FunctionDeclaration}
 	 * labeled alternative in {@link MuJsParser#stmt}.
 	 * @param ctx the parse tree
@@ -430,6 +418,18 @@ public interface MuJsListener extends ParseTreeListener {
 	 */
 	void exitAssignmentStmt(MuJsParser.AssignmentStmtContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ReturnStmt}
+	 * labeled alternative in {@link MuJsParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturnStmt(MuJsParser.ReturnStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ReturnStmt}
+	 * labeled alternative in {@link MuJsParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturnStmt(MuJsParser.ReturnStmtContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code ObjectAsg}
 	 * labeled alternative in {@link MuJsParser#stmt}.
 	 * @param ctx the parse tree
@@ -441,18 +441,6 @@ public interface MuJsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitObjectAsg(MuJsParser.ObjectAsgContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code BodyFunction}
-	 * labeled alternative in {@link MuJsParser#bodyfunction}.
-	 * @param ctx the parse tree
-	 */
-	void enterBodyFunction(MuJsParser.BodyFunctionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code BodyFunction}
-	 * labeled alternative in {@link MuJsParser#bodyfunction}.
-	 * @param ctx the parse tree
-	 */
-	void exitBodyFunction(MuJsParser.BodyFunctionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MuJsParser#block}.
 	 * @param ctx the parse tree

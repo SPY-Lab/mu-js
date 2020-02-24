@@ -27,8 +27,7 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 			return v1.clone();
 		else if (v1.getClass().equals(v2.getClass()))
 			return v1.widening(v2);
-
-
+		
 		return new Top();
 	}
 
@@ -97,7 +96,10 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 
 	@Override
 	public AbstractValue sum(AbstractValue left, AbstractValue right) {
-		if ((left instanceof Bool || left instanceof Interval) && (right instanceof Bool || right instanceof Interval))
+		
+		if (left instanceof Bottom || right instanceof Bottom)
+			return new Bottom();	
+		else if ((left instanceof Bool || left instanceof Interval) && (right instanceof Bool || right instanceof Interval))
 			return ((Interval) left.juggleToNumber()).plus((Interval) right.juggleToNumber());
 		else if (left instanceof FA && right instanceof FA)
 			return new FA(Automaton.concat(((FA) left).getAutomaton(), ((FA) right).getAutomaton()));
@@ -111,6 +113,10 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 
 	@Override
 	public AbstractValue diff(AbstractValue left, AbstractValue right) {
+		
+		if (left instanceof Bottom || right instanceof Bottom)
+			return new Bottom();
+		
 		if ((left instanceof Interval || left instanceof Bool || left instanceof FA) && (right instanceof Interval || right instanceof Bool || right instanceof FA)) {
 			AbstractValue leftJuggled = left.juggleToNumber();
 			AbstractValue rightJuggled = right.juggleToNumber();
@@ -124,6 +130,11 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 
 	@Override
 	public AbstractValue mul(AbstractValue left, AbstractValue right) {
+		
+		
+		if (left instanceof Bottom || right instanceof Bottom)
+			return new Bottom();
+		
 		if ((left instanceof Interval || left instanceof Bool || left instanceof FA) && (right instanceof Interval || right instanceof Bool || right instanceof FA)) {
 			AbstractValue leftJuggled = left.juggleToNumber();
 			AbstractValue rightJuggled = right.juggleToNumber();
@@ -189,6 +200,7 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 
 	@Override
 	public AbstractValue equals(AbstractValue v1, AbstractValue v2) {
+
 		if (v1 instanceof FA && v2 instanceof FA)
 			return new Bool(2);
 		else if ((v1 instanceof Bool || v1 instanceof FA || v1 instanceof Interval) && (v2 instanceof Bool || v2 instanceof FA || v2 instanceof Interval)) {

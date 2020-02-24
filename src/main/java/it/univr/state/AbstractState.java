@@ -3,6 +3,9 @@ package it.univr.state;
 import java.util.HashMap;
 
 import it.univr.domain.AbstractDomain;
+import it.univr.state.functions.CallString;
+import it.univr.state.functions.Function;
+import it.univr.state.functions.KCallStrings;
 
 public class AbstractState {
 
@@ -16,7 +19,7 @@ public class AbstractState {
 		this.domain = domain;
 	}
 
-	public void add(KeyAbstractState key, AbstractEnvironment m, CallString cs) {
+	public void add(KeyAbstractState key, AbstractEnvironment m, KCallStrings cs) {
 		if (state.containsKey(key)) {
 			
 			if (state.get(key).containsKey(cs)) {
@@ -60,7 +63,7 @@ public class AbstractState {
 		return state.containsKey(key);
 	}
 	
-	public void createAbstractEnvironment(KeyAbstractState key, CallString cs) {
+	public void createAbstractEnvironment(KeyAbstractState key, KCallStrings cs) {
 		state.put(key, new CallStringAbstractEnvironment(domain));
 		state.get(key).put(cs, new AbstractEnvironment(domain));
 	}

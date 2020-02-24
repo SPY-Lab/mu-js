@@ -69,7 +69,7 @@ public class AbstractEnvironment  {
 	}
 	
 	public AbstractValue getValue(Variable v) {
-		return getStore().get(v);
+		return getStore().containsKey(v) ? getStore().get(v) : domain.makeBottom();
 	}
 	
 	public AbstractValue getValue(AllocationSite l) {
