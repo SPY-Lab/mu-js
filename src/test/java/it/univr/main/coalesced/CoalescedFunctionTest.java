@@ -146,8 +146,6 @@ public class CoalescedFunctionTest {
 		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("1", "+Inf"));
 	}
 	
-
-	
 	@Test
 	public void testFun011() throws Exception {
 		String file = dir + "fun011.js";
@@ -159,6 +157,257 @@ public class CoalescedFunctionTest {
 
 		// State values
 		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("1", "+Inf"));
+	}
+	
+	@Test
+	public void testFun012() throws Exception {
+		String file = dir + "fun012.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("3", "3"));
+	}
+	
+	@Test
+	public void testFun013() throws Exception {
+		String file = dir + "fun013.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("6", "6"));
+	}
+	
+	@Test
+	public void testFun014() throws Exception {
+		String file = dir + "fun014.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("4", "4"));
+	}
+	
+	@Test
+	public void testFun015() throws Exception {
+		String file = dir + "fun015.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("6", "6"));
+	}
+	
+	@Test
+	public void testFun016() throws Exception {
+		String file = dir + "fun016.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("3", "3"));
+	}
+	
+	@Test
+	public void testFun017() throws Exception {
+		String file = dir + "fun017.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("1", "1"));
+	}
+	
+	@Test
+	public void testFun018() throws Exception {
+		String file = dir + "fun018.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("1", "1"));
+	}
+	
+	@Test
+	public void testFun019() throws Exception {
+		String file = dir + "fun019.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("2", "2"));
+	}
+
+	@Test
+	public void testFun020() throws Exception {
+		String file = dir + "fun020.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("1", "1"));
+	}
+	
+	@Test
+	public void testFun021() throws Exception {
+		String file = dir + "fun021.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("1", "1"));
+	}
+	
+	@Test
+	public void testFun022() throws Exception {
+		String file = dir + "fun022.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("2", "2"));
+	}
+	
+	@Test
+	public void testFun023() throws Exception {
+		String file = dir + "fun023.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("1", "1"));
+	}
+	
+	@Test
+	public void testFun024() throws Exception {
+		String file = dir + "fun024.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("2", "2"));
+	}
+	
+	@Test
+	public void testFun025() throws Exception {
+		String file = dir + "fun025.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("-100", "-100"));
+	}
+	
+	@Test
+	public void testFun026() throws Exception {
+		String file = dir + "fun026.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("3", "3"));
+		Assert.assertEquals(state.getValue(new Variable("y")), new Interval("5", "5"));
+	}
+	
+	@Test
+	public void testFun027() throws Exception {
+		String file = dir + "fun027.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("3", "3"));
+		Assert.assertEquals(state.getValue(new Variable("y")), new Interval("6", "6"));
+	}
+
+	@Test
+	public void testFun028() throws Exception {
+		String file = dir + "fun028.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("3", "3"));
+		Assert.assertEquals(state.getValue(new Variable("y")), new Interval("6", "6"));
+	}
+	
+	@Test
+	public void testFun029() throws Exception {
+		String file = dir + "fun029.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("3", "3"));
+		Assert.assertEquals(state.getValue(new Variable("y")), new Interval("6", "6"));
+	}
+	
+	@Test
+	public void testFun030() throws Exception {
+		String file = dir + "fun030.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("3", "+Inf"));
 	}
 
 }

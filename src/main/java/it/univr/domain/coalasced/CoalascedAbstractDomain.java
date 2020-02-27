@@ -206,7 +206,7 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 		else if ((v1 instanceof Bool || v1 instanceof FA || v1 instanceof Interval) && (v2 instanceof Bool || v2 instanceof FA || v2 instanceof Interval)) {
 			AbstractValue left = v1.juggleToNumber();
 			AbstractValue right = v2.juggleToNumber();
-
+		
 			if (left instanceof Interval && right instanceof Interval)
 				return ((Interval) left).isEqual((Interval) right);
 

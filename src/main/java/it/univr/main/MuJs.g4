@@ -4,17 +4,16 @@ grammar MuJs;
     package it.univr.main;
 }
 
-ASG: '=';
+
+EOL_COMMENT : '//' ~[\r\n]* -> skip;
+
 
 NAN: 'NaN'
 	;
 
-BOOL: 'true' 
-	| 'false';
+BOOL: 'true' | 'false';
 
-SEMICOLON: ';';
-
-ID: [a-z]+
+ID: [a-zA-Z][a-zA-Z0-9]*
 	;
 
 SIGN: '+' | '-';
@@ -23,11 +22,8 @@ INT: SIGN? [0-9]+
 	;
 
 STRING: '"' ~('\r' | '\n' | '"')* '"'
-	| 	'\'' ~('\r' | '\n' )* '\'';
-	
-	 
-LESS : '<'
-	;	
+	| 	'\'' ~('\r' | '\n' )* '\''
+	;
 	
 program: stmt EOF 														#ProgramExecution
 	;
@@ -55,7 +51,7 @@ expression:
 	|	expression '*' expression										#Mul
 	|	expression '/' expression										#Div
 	|	expression '>' expression										#Greater
-	|	expression LESS expression										#Less
+	|	expression '<' expression										#Less
 	|	expression '&&' expression										#And
 	|	expression '||' expression										#Or
 	|	'!' expression													#Not
@@ -66,14 +62,14 @@ expression:
 	
 		
 stmt:
-	   ID ASG expression SEMICOLON										#AssignmentStmt
+	   ID '=' expression ';'											#AssignmentStmt
 	| 'if' '(' expression ')' block 'else' block						#IfStmt
 	| 'while' '(' expression ')' block									#WhileStmt
 	|  block															#BlockStmt
 	|  'return' expression ';'											#ReturnStmt				
 	|  <assoc=right> stmt stmt											#Composition
-	|  ID ASG 'new' object SEMICOLON 									#ObjectAsg
-	|  ID '[' expression ']' ASG expression SEMICOLON 					#PropUpdate
+	|  ID '=' 'new' object ';'		 									#ObjectAsg
+	|  ID '[' expression ']' '=' expression ';'		 					#PropUpdate
 	| 'function' ID '(' ID ( ',' ID)* ')' '{' stmt '}'					#FunctionDeclaration
 	;
 

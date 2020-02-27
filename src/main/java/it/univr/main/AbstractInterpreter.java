@@ -474,6 +474,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitReturnStmt(MuJsParser.ReturnStmtContext ctx) {
 
 		FunctionDeclarationContext call = null;
+		
 		try {
 			call = getFunctionDeclarationContext(ctx);
 		} catch (Exception e) {
@@ -576,11 +577,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 			
 			if (result instanceof ProgramContext)
 				throw new Exception();
-			
-			
-			
-			
-			if (result instanceof FunctionDeclarationContext) 
+			else if (result instanceof FunctionDeclarationContext) 
 				return (FunctionDeclarationContext) result;
 			}
 	}
