@@ -409,5 +409,58 @@ public class CoalescedFunctionTest {
 		// State values
 		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("3", "+Inf"));
 	}
+	
+	@Test
+	public void testFun031() throws Exception {
+		String file = dir + "fun031.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("3", "3"));
+	}
+	
+	@Test
+	public void testFun032() throws Exception {
+		String file = dir + "fun032.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("25", "25"));
+	}
+	
+	@Test
+	public void testFun033() throws Exception {
+		String file = dir + "fun033.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("4", "4"));
+	}
+	
+	@Test
+	public void testFun034() throws Exception {
+		String file = dir + "fun034.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		// State size
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 0);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("0", "1"));
+		Assert.assertEquals(state.getValue(new Variable("i")), new Interval("0", "+Inf"));
+	}
 
 }
