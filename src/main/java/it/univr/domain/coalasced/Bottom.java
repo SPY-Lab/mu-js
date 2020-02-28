@@ -12,7 +12,7 @@ public class Bottom implements AbstractValue {
 		if (other instanceof Interval) return ((Interval) other).clone();
 		if (other instanceof NaN) return ((NaN) other).clone();
 		
-		return (AbstractValue) ((Top) other).clone();
+		return ((Top) other).clone();
 	}
 
 	@Override

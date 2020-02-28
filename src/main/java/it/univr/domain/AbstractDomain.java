@@ -31,4 +31,5 @@ public abstract class AbstractDomain implements TypeJuggligAbstractDomain {
 	public abstract boolean isTrue(AbstractValue v);
 	public abstract boolean isFalse(AbstractValue v);
 	public abstract boolean isTopBool(AbstractValue v);
+	public  abstract AbstractValue makeUnknownInteger();
 }

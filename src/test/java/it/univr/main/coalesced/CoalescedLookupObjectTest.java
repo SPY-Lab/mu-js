@@ -94,7 +94,7 @@ public class CoalescedLookupObjectTest {
 		
 		// Store values
 		Assert.assertEquals(state.getValue(new Variable("y")), new Interval("1", "1"));
-		Assert.assertEquals(state.getValue(new Variable("z")), new Bottom());
+		Assert.assertEquals(state.getValue(new Variable("z")), new Interval("1", "1"));
 	}
 	
 	@Test
@@ -110,7 +110,7 @@ public class CoalescedLookupObjectTest {
 		Assert.assertEquals(state.getValue(new Variable("x")), new Bottom());
 		Assert.assertEquals(state.getValue(new Variable("y")), new Interval("2", "2"));
 	}
-	
+
 	@Test
 	public void testPropLookup008() throws Exception {
 		String file = dir + "lookup008.js";
@@ -123,5 +123,18 @@ public class CoalescedLookupObjectTest {
 		// Store values
 		Assert.assertEquals(state.getValue(new Variable("a")), new FA("a"));
 		Assert.assertEquals(state.getValue(new Variable("b")), new FA("a"));
+	}
+	
+	@Test
+	public void testPropLookup009() throws Exception {
+		String file = dir + "lookup009.js";
+				AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+		
+		// State size
+		Assert.assertEquals(state.sizeStore(), 3);
+		Assert.assertEquals(state.sizeHeap(), 2);
+		
+		// Store values
+		Assert.assertEquals(state.getValue(new Variable("z")), new Interval("15", "15"));
 	}
 }

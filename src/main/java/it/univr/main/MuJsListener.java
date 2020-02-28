@@ -214,6 +214,18 @@ public interface MuJsListener extends ParseTreeListener {
 	 */
 	void exitNot(MuJsParser.NotContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code RandomInt}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterRandomInt(MuJsParser.RandomIntContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code RandomInt}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitRandomInt(MuJsParser.RandomIntContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Equals}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree

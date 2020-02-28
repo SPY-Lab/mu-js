@@ -14,11 +14,6 @@ public class FA implements AbstractValue {
 
 	private static int widening = 3;
 	
-	public static void main(String[] args) {
-		Automaton a = Automaton.rightQuotient(Automaton.suffixesAt(4,Automaton.makeRealAutomaton("hello")),  Automaton.suffix(Automaton.suffixesAt(6, Automaton.makeRealAutomaton("hello"))));
-		System.err.println(a);
-	}
-
 	private Automaton automaton;
 	
 	// 20.12 START

@@ -222,6 +222,18 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRandomInt(MuJsParser.RandomIntContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRandomInt(MuJsParser.RandomIntContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterEquals(MuJsParser.EqualsContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -9,6 +9,7 @@ public class AllocationSites implements AbstractValue {
 
 	private HashSet<AllocationSite> sites;
 
+	@Override
 	public AllocationSites clone() {
 		return new AllocationSites((HashSet<AllocationSite>) sites.clone());
 	}

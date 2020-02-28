@@ -6,6 +6,7 @@ import it.univr.domain.coalasced.Bool;
 import it.univr.domain.coalasced.Bottom;
 import it.univr.domain.coalasced.CoalascedAbstractDomain;
 import it.univr.domain.coalasced.FA;
+import it.univr.domain.coalasced.Interval;
 
 public class LiftedUnionAbstractDomain extends AbstractDomain {
 
@@ -336,5 +337,12 @@ public class LiftedUnionAbstractDomain extends AbstractDomain {
 	public boolean isTopBool(AbstractValue v) {	
 		return v instanceof Bool && ((Bool) v).isTopBool(); 
 
+	}
+
+	@Override
+	public AbstractValue makeUnknownInteger() {
+		LiftedUnionAbstractValue r = new LiftedUnionAbstractValue();
+		r.setInterval(new Interval("-Inf", "+Inf"));
+		return r;
 	}
 }

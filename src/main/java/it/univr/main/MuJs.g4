@@ -58,6 +58,7 @@ expression:
 	|	object															#ObjectExpression
 	|	ID'[' expression ']'											#PropLookup
 	|	ID '(' expression ( ',' expression )* ')'						#FunctionCall
+	|	'randInt' '(' ')'												#RandomInt
 	;
 	
 		

@@ -132,6 +132,13 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNot(MuJsParser.NotContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code RandomInt}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRandomInt(MuJsParser.RandomIntContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Equals}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree

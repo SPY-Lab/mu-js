@@ -414,6 +414,12 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		AbstractValue v = visit(ctx.expression());
 		return domain.not(v);		
 	}
+	
+	@Override 
+	public AbstractValue visitRandomInt(MuJsParser.RandomIntContext ctx) { 
+		return domain.makeUnknownInteger();		
+	}
+	
 
 
 	@Override 

@@ -34,19 +34,19 @@ public class AbstractObject implements AbstractValue {
 
 	@Override
 	public AbstractValue juggleToNumber() {
-		// TODO: Marin
+		// TODO: 
 		return null;
 	}
 
 	@Override
 	public AbstractValue juggleToString() {
-		// TODO: Marin
+		// TODO: 
 		return null;
 	}
 
 	@Override
 	public AbstractValue juggleToBool() {
-		// TODO: Marin
+		// TODO:
 		return null;
 	}
 
@@ -132,7 +132,6 @@ public class AbstractObject implements AbstractValue {
 
 	@Override
 	public AbstractValue greatestLowerBound(AbstractValue value) {
-		// TODO: Marin
 		if (value instanceof AbstractObject)
 			return null;
 		return new Bottom();
@@ -140,8 +139,7 @@ public class AbstractObject implements AbstractValue {
 
 	@Override
 	public AbstractValue narrowing(AbstractValue value) {
-		// TODO: Marin
-		return null;
+		return greatestLowerBound(value);
 	}
 
 	@Override
@@ -151,7 +149,6 @@ public class AbstractObject implements AbstractValue {
 
 	@Override
 	public int hashCode() {
-		// TODO: Marin
 		return this.properties.hashCode();
 	}
 
@@ -265,7 +262,6 @@ public class AbstractObject implements AbstractValue {
 
 
 	public AbstractValue lookupAbstractObject(FA p) {
-		//TODO: Marin
 
 		AbstractValue resultAbstractValue = new Bottom();
 
@@ -273,10 +269,8 @@ public class AbstractObject implements AbstractValue {
 			// for each abstract property
 			if (!Automaton.intersection(p.getAutomaton(), abstractProperty.getAutomaton()).equals(Automaton.makeEmptyLanguage())) {
 
-				for(AbstractValue currentValue: getAbstractObjectMap().get(abstractProperty)) {
-
-					resultAbstractValue = resultAbstractValue.leastUpperBound(currentValue);
-				}
+				for(AbstractValue currentValue: getAbstractObjectMap().get(abstractProperty)) 
+					resultAbstractValue = resultAbstractValue.leastUpperBound(currentValue);	
 			}
 		}
 

@@ -285,4 +285,9 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 		AbstractValue r = juggleToBool(v);
 		return r instanceof Bool && ((Bool) r).isTopBool();
 	}
+
+	@Override
+	public AbstractValue makeUnknownInteger() {
+		return new Interval("-Inf", "+Inf");
+	}
 }
