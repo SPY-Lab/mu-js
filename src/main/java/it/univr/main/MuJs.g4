@@ -37,15 +37,7 @@ val: 	INT 															#Integer
 object: '{' '}'															#EmptyObject
 	|	'{' (ID ':' expression) (';' ID ':' expression)* '}'			#Obj
 	;
-expression:	
-		expression '.' 'substring' '(' expression ',' expression ')'	#Substring
-	|	expression '.' 'charAt' '(' expression ')'						#CharAt
-	|	expression '.' 'indexOf' '(' expression ')'						#IndexOf
-	|	expression '.' 'length'											#Length
-	|	'(' expression ')'												#Parenthesis
-	|	expression '==' expression										#Equals
-	|	ID																#Identifier
-	|	val																#PrimitiveValue
+expression:	val															#PrimitiveValue
 	|	expression '+' expression										#Sum
 	|	expression '-' expression										#Diff
 	|	expression '*' expression										#Mul
@@ -54,6 +46,13 @@ expression:
 	|	expression '<' expression										#Less
 	|	expression '&&' expression										#And
 	|	expression '||' expression										#Or
+	|	expression '.' 'substring' '(' expression ',' expression ')'	#Substring
+	|	expression '.' 'charAt' '(' expression ')'						#CharAt
+	|	expression '.' 'indexOf' '(' expression ')'						#IndexOf
+	|	expression '.' 'length'											#Length
+	|	'(' expression ')'												#Parenthesis
+	|	expression '==' expression										#Equals
+	|	ID																#Identifier
 	|	'!' expression													#Not
 	|	object															#ObjectExpression
 	|	ID'[' expression ']'											#PropLookup
