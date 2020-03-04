@@ -8,24 +8,36 @@ import it.univr.domain.AllocationSite;
 public class AllocationSites implements AbstractValue {
 
 	private HashSet<AllocationSite> sites;
+	private MustMay mustMay;
 
 	@Override
 	public AllocationSites clone() {
-		return new AllocationSites((HashSet<AllocationSite>) sites.clone());
+		return new AllocationSites((HashSet<AllocationSite>) sites.clone(), mustMay.clone());
 	}
 
 	public AllocationSites() {
 		this.sites = new HashSet<AllocationSite>();
+		this.mustMay = new MustMay(1);
 	}
 	
 	public AllocationSites(AllocationSite ... ls) {
 		this.sites = new HashSet<AllocationSite>();
 		for (AllocationSite l : ls)
 			sites.add(l);
+		this.mustMay = new MustMay(1);
 	}
 
 	public AllocationSites(HashSet<AllocationSite> s) {
 		this.sites = s;
+		this.mustMay = new MustMay(1);
+	}
+	
+	public AllocationSites(HashSet<AllocationSite> s, AbstractValue mustMay) {
+		this.sites = s;
+		if (mustMay instanceof MustMay)
+			this.mustMay = (MustMay)mustMay;
+		else
+			this.mustMay = new MustMay(1);
 	}
 
 	public HashSet<AllocationSite> getAllocationSites() {
@@ -49,7 +61,8 @@ public class AllocationSites implements AbstractValue {
 			for (AllocationSite l : ((AllocationSites) other).getAllocationSites())
 				s.add(l.clone());
 
-			return new AllocationSites(s);
+			AbstractValue m = mustMay.leastUpperBound(((AllocationSites) other).getMustMay());
+			return new AllocationSites(s, m);
 		}
 
 		return new Top();
@@ -69,7 +82,8 @@ public class AllocationSites implements AbstractValue {
 				if (((AllocationSites) other).containsSite(l))
 					s.add(l.clone());
 
-			return new AllocationSites(s);
+			AbstractValue m = mustMay.greatestLowerBound(((AllocationSites) other).getMustMay());
+			return new AllocationSites(s, m);
 		}
 
 		return new Top();
@@ -147,4 +161,11 @@ public class AllocationSites implements AbstractValue {
 		return new Bottom(); 
 	}
 
+	public MustMay getMustMay() {
+		return mustMay;
+	}
+	
+	public void setMustMay(MustMay m) {
+		mustMay = m;
+	}
 }

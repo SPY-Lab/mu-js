@@ -54,7 +54,7 @@ public class CoalescedLookupObjectTest {
 		Assert.assertEquals(state.sizeHeap(), 1);
 		
 		// Store values
-		Assert.assertEquals(state.getValue(new Variable("y")), new Interval("1", "4"));
+		Assert.assertEquals(state.getValue(new Variable("y")), new Interval("4", "4"));
 	}
 	
 	@Test

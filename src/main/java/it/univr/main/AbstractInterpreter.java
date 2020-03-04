@@ -15,6 +15,7 @@ import it.univr.domain.coalasced.Bool;
 import it.univr.domain.coalasced.Bottom;
 import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
+import it.univr.domain.coalasced.MustMay;
 import it.univr.domain.coalasced.NaN;
 import it.univr.main.MuJsParser.FunctionDeclarationContext;
 import it.univr.main.MuJsParser.ProgramContext;
@@ -22,6 +23,7 @@ import it.univr.main.MuJsParser.ReturnStmtContext;
 import it.univr.main.MuJsParser.StmtContext;
 import it.univr.state.AbstractEnvironment;
 import it.univr.state.AbstractState;
+import it.univr.state.AbstractStore;
 import it.univr.state.CallStringAbstractEnvironment;
 import it.univr.state.KeyAbstractState;
 import it.univr.state.Variable;
@@ -105,6 +107,9 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		AbstractValue allocationSites = currentEnvironment.getStore(getCurrentCallString()).get(var);
 
 		if (allocationSites instanceof AllocationSites) {
+			
+			boolean performStrongUpdate = ((AllocationSites)allocationSites).getMustMay().isMust();
+			
 			for (AllocationSite l : ((AllocationSites)allocationSites).getAllocationSites()) {
 
 				FA key = new FA(visit(ctx.expression(0)).toString());
@@ -113,7 +118,12 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 				AbstractValue obj = currentEnvironment.getHeap(getCurrentCallString()).get(l);
 				if (obj instanceof AbstractObject) {	
 					AbstractObject object = (AbstractObject)obj;
-					object.put(key, object.get(key).leastUpperBound(value));
+					if (performStrongUpdate) {
+						object.getAbstractObjectMap().remove(key);
+						object.put(key, value);
+					} else {
+						object.put(key, object.get(key).leastUpperBound(value));
+					}
 					object.normalize();
 				}
 			}
@@ -243,6 +253,22 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		if (evaluationGuard.isFalse())
 			return visit(ctx.block(1));
 
+		// save the must and put them at may
+		AbstractStore store = currentEnvironment.getStore(getCurrentCallString());
+		HashMap<Object, AllocationSites> must = new HashMap<>();
+		
+		for (Object key : store.keySet()) {
+			
+			if (store.get(key) instanceof AllocationSites) {
+				AllocationSites sites = (AllocationSites)store.get(key);
+				
+				if (sites.getMustMay().isMust()) {
+					must.put(key, sites);
+					sites.setMustMay(new MustMay(0)); // may
+				}
+			}
+		}
+		
 		CallStringAbstractEnvironment previous = (CallStringAbstractEnvironment) currentEnvironment.clone();
 
 		visit(ctx.block(0));
@@ -253,7 +279,27 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		visit(ctx.block(1));
 
 		currentEnvironment = currentEnvironment.leastUpperBound(trueBranch);
-
+ 
+		/* 
+		* put allocationsites with multiple sites to may
+		* and put to must allocationsites present in the must before the if
+		*/
+		store = currentEnvironment.getStore(getCurrentCallString());
+		
+		for (Object key : store.keySet()) {
+			
+			if (store.get(key) instanceof AllocationSites) {
+				AllocationSites sites = (AllocationSites)store.get(key);
+				if (sites.size() == 1) {
+					if (sites.equals(must.get(key))) {
+						sites.setMustMay(new MustMay(1)); // must
+					}
+				} else {
+					sites.setMustMay(new MustMay(0)); // may
+				}
+			}
+		}
+		must.clear();
 		
 		
 		
@@ -271,9 +317,27 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	@Override 
 	public AbstractValue visitWhileStmt(MuJsParser.WhileStmtContext ctx) { 
 
-		CallStringAbstractEnvironment previous = (CallStringAbstractEnvironment) currentEnvironment.clone();
-
 		AbstractValue guard = domain.juggleToBool(visit(ctx.expression()));
+		
+		// save the must and put them at may
+		HashMap<Object, AllocationSites> must = new HashMap<>();
+		if (domain.isTopBool(guard)) {
+			AbstractStore store = currentEnvironment.getStore(getCurrentCallString());
+			
+			for (Object key : store.keySet()) {
+				
+				if (store.get(key) instanceof AllocationSites) {
+					AllocationSites sites = (AllocationSites)store.get(key);
+					
+					if (sites.getMustMay().isMust()) {
+						must.put(key, sites);
+						sites.setMustMay(new MustMay(0)); // may
+					}
+				}
+			}
+		}
+		
+		CallStringAbstractEnvironment previous = (CallStringAbstractEnvironment) currentEnvironment.clone();
 
 		do {
 			/**
@@ -304,6 +368,29 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 			else
 				previous = currentEnvironment.clone();
 		} while (true);
+		
+		if (domain.isTopBool(guard)) {
+			/* 
+			* put allocationsites with multiple sites to may
+			* and put to must allocationsites present in the must before the if
+			*/
+			AbstractStore store = currentEnvironment.getStore(getCurrentCallString());
+			
+			for (Object key : store.keySet()) {
+				
+				if (store.get(key) instanceof AllocationSites) {
+					AllocationSites sites = (AllocationSites)store.get(key);
+					if (sites.size() == 1) {
+						if (sites.equals(must.get(key))) {
+							sites.setMustMay(new MustMay(1)); // must
+						}
+					} else {
+						sites.setMustMay(new MustMay(0)); // may
+					}
+				}
+			}
+			must.clear();
+		}
 
 		KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
 		state.add(key, currentEnvironment.get(getCurrentCallString()).clone(), getCurrentCallString());
