@@ -1,9 +1,6 @@
 package it.univr.domain.coalasced;
 
-import it.univr.domain.AbstractValue;
-import it.univr.fsm.machine.Automaton;
-
-public class MustMay implements AbstractValue {
+public class MustMay {
 
 	/**
 	 * May static value
@@ -58,22 +55,16 @@ public class MustMay implements AbstractValue {
 	public boolean isMust() {
 		return this.getValue() == MUST;
 	}
-	
+
 	public MustMay inverse() {
-		if (this.isMust())
-			return new MustMay(MAY);
-		else
-			return new MustMay(MUST);
+		return isMust() ? new MustMay(MAY) : new MustMay(MUST);
 	}
 
 	@Override
 	public String toString() {
-		if (value == MAY)
-			return "may";
-		else
-			return "MUST";
+		return value == MAY ? "may" : "MUST";
 	}
-	
+
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof MustMay)
@@ -86,63 +77,15 @@ public class MustMay implements AbstractValue {
 		return new MustMay(getValue());
 	}
 
-	@Override
-	public AbstractValue leastUpperBound(AbstractValue other) {
-		if (other instanceof MustMay) {
-			if (getValue() == ((MustMay) other).getValue())
-				return clone();
-			return new MustMay(MAY);
-		} else if (other instanceof Bottom)
+	public MustMay leastUpperBound(MustMay other) {
+		if (getValue() == other.getValue())
 			return clone();
-
-		return new Top();
+		return new MustMay(MAY);
 	}
 
-	@Override
-	public AbstractValue widening(AbstractValue other) {
-		return leastUpperBound(other);
-	}
-
-	@Override
-	public AbstractValue juggleToNumber() {
-		if (isMay())
-			return new Interval("0", "0");
-		else
-			return new Interval("1", "1");
-	}
-
-	@Override
-	public AbstractValue juggleToString() {
-		if (isMay())
-			return new FA(Automaton.makeAutomaton("may"));
-		else
-			return new FA(Automaton.makeAutomaton("must"));
-	}
-
-	@Override
-	public AbstractValue juggleToBool() {
-		if (isMay())
-			return new Bool(0);
-		else
-			return new Bool(1);
-	}
-
-	@Override
-	public AbstractValue greatestLowerBound(AbstractValue value) {
-		
-		if (value instanceof MustMay) {
-			if (getValue() == ((MustMay) value).getValue())
-				return clone();
-			return new MustMay(MUST);
-		} else if (value instanceof Top)
+	public MustMay greatestLowerBound(MustMay other) {
+		if (getValue() == other.getValue())
 			return clone();
-
-		return new Bottom();
+		return new MustMay(MUST);
 	}
-
-	@Override
-	public AbstractValue narrowing(AbstractValue value) {
-		return greatestLowerBound(value);
-	}
-
 }

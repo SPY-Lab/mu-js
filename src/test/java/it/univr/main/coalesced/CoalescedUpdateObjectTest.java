@@ -357,4 +357,57 @@ public class CoalescedUpdateObjectTest {
 		// Heap value
 		Assert.assertEquals(state.getValue(site), object);
 	}
+	
+	@Test
+	public void testPropUpdate015() throws Exception {
+		String file = dir + "update015.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		MultiHashMap<FA, AbstractValue> xProperties = new MultiHashMap<FA, AbstractValue>();
+		xProperties.put(new FA("a"), new Interval("1", "3"));
+		AbstractObject xObject = new AbstractObject(xProperties);
+		
+		MultiHashMap<FA, AbstractValue> yProperties = new MultiHashMap<FA, AbstractValue>();
+		yProperties.put(new FA("a"), new Interval("2", "3"));
+		AbstractObject yObject = new AbstractObject(yProperties);
+
+		AllocationSite xSite = new AllocationSite(1,0);
+		AllocationSite ySite = new AllocationSite(2,0);
+		
+		// State size
+		Assert.assertEquals(state.sizeStore(), 3);
+		Assert.assertEquals(state.sizeHeap(), 2);
+		
+		// Store values
+		Assert.assertEquals(state.getValue(new Variable("x")), new AllocationSites(xSite));
+		Assert.assertEquals(state.getValue(new Variable("y")), new AllocationSites(ySite));
+		Assert.assertEquals(state.getValue(new Variable("z")), new AllocationSites(xSite, ySite));
+		
+		// Heap value
+		Assert.assertEquals(state.getValue(xSite), xObject);
+		Assert.assertEquals(state.getValue(ySite), yObject);
+	}
+		
+	@Test
+	public void testPropUpdate016() throws Exception {
+		String file = dir + "update016.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		MultiHashMap<FA, AbstractValue> xProperties = new MultiHashMap<FA, AbstractValue>();
+		xProperties.put(new FA("a"), new Interval("2", "2"));
+		AbstractObject xObject = new AbstractObject(xProperties);
+		
+		AllocationSite xSite = new AllocationSite(1,0);
+		
+		// State size
+		Assert.assertEquals(state.sizeStore(), 2);
+		Assert.assertEquals(state.sizeHeap(), 1);
+		
+		// Store values
+		Assert.assertEquals(state.getValue(new Variable("x")), new AllocationSites(xSite));
+		Assert.assertEquals(state.getValue(new Variable("y")), new AllocationSites(xSite));
+		
+		// Heap value
+		Assert.assertEquals(state.getValue(xSite), xObject);
+	}
 }

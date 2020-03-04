@@ -32,7 +32,7 @@ public class AllocationSites implements AbstractValue {
 		this.mustMay = new MustMay(1);
 	}
 	
-	public AllocationSites(HashSet<AllocationSite> s, AbstractValue mustMay) {
+	public AllocationSites(HashSet<AllocationSite> s, MustMay mustMay) {
 		this.sites = s;
 		if (mustMay instanceof MustMay)
 			this.mustMay = (MustMay)mustMay;
@@ -61,7 +61,7 @@ public class AllocationSites implements AbstractValue {
 			for (AllocationSite l : ((AllocationSites) other).getAllocationSites())
 				s.add(l.clone());
 
-			AbstractValue m = mustMay.leastUpperBound(((AllocationSites) other).getMustMay());
+			MustMay m = mustMay.leastUpperBound(((AllocationSites) other).getMustMay());
 			return new AllocationSites(s, m);
 		}
 
@@ -82,7 +82,7 @@ public class AllocationSites implements AbstractValue {
 				if (((AllocationSites) other).containsSite(l))
 					s.add(l.clone());
 
-			AbstractValue m = mustMay.greatestLowerBound(((AllocationSites) other).getMustMay());
+			MustMay m = mustMay.greatestLowerBound(((AllocationSites) other).getMustMay());
 			return new AllocationSites(s, m);
 		}
 
