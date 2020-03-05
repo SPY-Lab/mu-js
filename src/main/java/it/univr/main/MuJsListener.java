@@ -94,18 +94,6 @@ public interface MuJsListener extends ParseTreeListener {
 	 */
 	void exitObj(MuJsParser.ObjContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code Substring}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterSubstring(MuJsParser.SubstringContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Substring}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitSubstring(MuJsParser.SubstringContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code Or}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
@@ -129,6 +117,162 @@ public interface MuJsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDiff(MuJsParser.DiffContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Repeat}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterRepeat(MuJsParser.RepeatContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Repeat}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitRepeat(MuJsParser.RepeatContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code StartsWith}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterStartsWith(MuJsParser.StartsWithContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code StartsWith}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitStartsWith(MuJsParser.StartsWithContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ToUpperCase}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterToUpperCase(MuJsParser.ToUpperCaseContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ToUpperCase}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitToUpperCase(MuJsParser.ToUpperCaseContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Includes}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterIncludes(MuJsParser.IncludesContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Includes}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitIncludes(MuJsParser.IncludesContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Parenthesis}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterParenthesis(MuJsParser.ParenthesisContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Parenthesis}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitParenthesis(MuJsParser.ParenthesisContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code RandomInt}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterRandomInt(MuJsParser.RandomIntContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code RandomInt}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitRandomInt(MuJsParser.RandomIntContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Identifier}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdentifier(MuJsParser.IdentifierContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Identifier}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdentifier(MuJsParser.IdentifierContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code TrimLeft}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterTrimLeft(MuJsParser.TrimLeftContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code TrimLeft}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitTrimLeft(MuJsParser.TrimLeftContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code PropLookup}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterPropLookup(MuJsParser.PropLookupContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code PropLookup}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitPropLookup(MuJsParser.PropLookupContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code FunctionCall}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionCall(MuJsParser.FunctionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FunctionCall}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionCall(MuJsParser.FunctionCallContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Less}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterLess(MuJsParser.LessContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Less}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitLess(MuJsParser.LessContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Substring}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubstring(MuJsParser.SubstringContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Substring}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubstring(MuJsParser.SubstringContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Replace}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterReplace(MuJsParser.ReplaceContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Replace}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitReplace(MuJsParser.ReplaceContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Mul}
 	 * labeled alternative in {@link MuJsParser#expression}.
@@ -154,6 +298,30 @@ public interface MuJsListener extends ParseTreeListener {
 	 */
 	void exitIndexOf(MuJsParser.IndexOfContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code Trim}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterTrim(MuJsParser.TrimContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Trim}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitTrim(MuJsParser.TrimContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code TrimRight}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterTrimRight(MuJsParser.TrimRightContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code TrimRight}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitTrimRight(MuJsParser.TrimRightContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Sum}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
@@ -165,6 +333,18 @@ public interface MuJsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSum(MuJsParser.SumContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ToLowerCase}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterToLowerCase(MuJsParser.ToLowerCaseContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ToLowerCase}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitToLowerCase(MuJsParser.ToLowerCaseContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code PrimitiveValue}
 	 * labeled alternative in {@link MuJsParser#expression}.
@@ -190,18 +370,6 @@ public interface MuJsListener extends ParseTreeListener {
 	 */
 	void exitDiv(MuJsParser.DivContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code Parenthesis}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterParenthesis(MuJsParser.ParenthesisContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Parenthesis}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitParenthesis(MuJsParser.ParenthesisContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code Not}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
@@ -214,18 +382,6 @@ public interface MuJsListener extends ParseTreeListener {
 	 */
 	void exitNot(MuJsParser.NotContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code RandomInt}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterRandomInt(MuJsParser.RandomIntContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code RandomInt}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitRandomInt(MuJsParser.RandomIntContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code Equals}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
@@ -237,30 +393,6 @@ public interface MuJsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEquals(MuJsParser.EqualsContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code Identifier}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterIdentifier(MuJsParser.IdentifierContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Identifier}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitIdentifier(MuJsParser.IdentifierContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code PropLookup}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterPropLookup(MuJsParser.PropLookupContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code PropLookup}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitPropLookup(MuJsParser.PropLookupContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code CharAt}
 	 * labeled alternative in {@link MuJsParser#expression}.
@@ -310,18 +442,6 @@ public interface MuJsListener extends ParseTreeListener {
 	 */
 	void exitGreater(MuJsParser.GreaterContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code FunctionCall}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionCall(MuJsParser.FunctionCallContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code FunctionCall}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionCall(MuJsParser.FunctionCallContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code ObjectExpression}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
@@ -334,17 +454,17 @@ public interface MuJsListener extends ParseTreeListener {
 	 */
 	void exitObjectExpression(MuJsParser.ObjectExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code Less}
+	 * Enter a parse tree produced by the {@code EndsWith}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterLess(MuJsParser.LessContext ctx);
+	void enterEndsWith(MuJsParser.EndsWithContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code Less}
+	 * Exit a parse tree produced by the {@code EndsWith}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitLess(MuJsParser.LessContext ctx);
+	void exitEndsWith(MuJsParser.EndsWithContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code FunctionDeclaration}
 	 * labeled alternative in {@link MuJsParser#stmt}.

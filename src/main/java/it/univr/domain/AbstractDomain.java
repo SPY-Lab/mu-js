@@ -31,5 +31,19 @@ public abstract class AbstractDomain implements TypeJuggligAbstractDomain {
 	public abstract boolean isTrue(AbstractValue v);
 	public abstract boolean isFalse(AbstractValue v);
 	public abstract boolean isTopBool(AbstractValue v);
-	public  abstract AbstractValue makeUnknownInteger();
+	public abstract AbstractValue makeUnknownInteger();
+	
+	
+	public abstract AbstractValue includes(AbstractValue left, AbstractValue right);
+	public abstract AbstractValue repeat(AbstractValue left, AbstractValue right);
+	public abstract AbstractValue startsWith(AbstractValue left, AbstractValue right);
+	public abstract AbstractValue endsWith(AbstractValue left, AbstractValue right);
+	
+	public abstract AbstractValue trim(AbstractValue par);
+	public abstract AbstractValue trimLeft(AbstractValue par);
+	public abstract AbstractValue trimRight(AbstractValue par);
+	
+	public abstract AbstractValue toUpperCase(AbstractValue par);
+	public abstract AbstractValue toLowerCase(AbstractValue par);
+	public abstract AbstractValue replace(AbstractValue a, AbstractValue b, AbstractValue c);
 }

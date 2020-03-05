@@ -62,13 +62,6 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitObj(MuJsParser.ObjContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Substring}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSubstring(MuJsParser.SubstringContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Or}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
@@ -82,6 +75,97 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDiff(MuJsParser.DiffContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Repeat}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRepeat(MuJsParser.RepeatContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StartsWith}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStartsWith(MuJsParser.StartsWithContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToUpperCase}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToUpperCase(MuJsParser.ToUpperCaseContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Includes}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIncludes(MuJsParser.IncludesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Parenthesis}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenthesis(MuJsParser.ParenthesisContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code RandomInt}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRandomInt(MuJsParser.RandomIntContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Identifier}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdentifier(MuJsParser.IdentifierContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code TrimLeft}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTrimLeft(MuJsParser.TrimLeftContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code PropLookup}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPropLookup(MuJsParser.PropLookupContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code FunctionCall}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionCall(MuJsParser.FunctionCallContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Less}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLess(MuJsParser.LessContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Substring}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSubstring(MuJsParser.SubstringContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Replace}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReplace(MuJsParser.ReplaceContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Mul}
 	 * labeled alternative in {@link MuJsParser#expression}.
@@ -97,12 +181,33 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIndexOf(MuJsParser.IndexOfContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Trim}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTrim(MuJsParser.TrimContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code TrimRight}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTrimRight(MuJsParser.TrimRightContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Sum}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitSum(MuJsParser.SumContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ToLowerCase}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitToLowerCase(MuJsParser.ToLowerCaseContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code PrimitiveValue}
 	 * labeled alternative in {@link MuJsParser#expression}.
@@ -118,13 +223,6 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDiv(MuJsParser.DivContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Parenthesis}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitParenthesis(MuJsParser.ParenthesisContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Not}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
@@ -132,33 +230,12 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNot(MuJsParser.NotContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code RandomInt}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRandomInt(MuJsParser.RandomIntContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Equals}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitEquals(MuJsParser.EqualsContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Identifier}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIdentifier(MuJsParser.IdentifierContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code PropLookup}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPropLookup(MuJsParser.PropLookupContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code CharAt}
 	 * labeled alternative in {@link MuJsParser#expression}.
@@ -188,13 +265,6 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitGreater(MuJsParser.GreaterContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code FunctionCall}
-	 * labeled alternative in {@link MuJsParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionCall(MuJsParser.FunctionCallContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code ObjectExpression}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
@@ -202,12 +272,12 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitObjectExpression(MuJsParser.ObjectExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Less}
+	 * Visit a parse tree produced by the {@code EndsWith}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLess(MuJsParser.LessContext ctx);
+	T visitEndsWith(MuJsParser.EndsWithContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code FunctionDeclaration}
 	 * labeled alternative in {@link MuJsParser#stmt}.

@@ -158,6 +158,26 @@ public class LiftedUnionAbstractDomain extends AbstractDomain {
 		return new LiftedUnionAbstractValue();
 	}
 
+
+	@Override
+	public AbstractValue replace(AbstractValue v1, AbstractValue v2, AbstractValue v3) {
+		if (v1 instanceof LiftedUnionAbstractValue && v2 instanceof LiftedUnionAbstractValue && v3 instanceof LiftedUnionAbstractValue) {
+
+			CoalascedAbstractDomain cdom = new CoalascedAbstractDomain();
+			LiftedUnionAbstractValue result = new LiftedUnionAbstractValue();
+
+			for (AbstractValue a : ((LiftedUnionAbstractValue) v1).getTuple().values())
+				for (AbstractValue b : ((LiftedUnionAbstractValue) v2).getTuple().values()) 
+					for (AbstractValue c : ((LiftedUnionAbstractValue) v3).getTuple().values()) 
+						if (!(a instanceof Bottom) && !(b instanceof Bottom) && !(c instanceof Bottom)) 
+							result.lub(cdom.replace(a, b, c));
+
+			return result;
+		}
+
+		return new LiftedUnionAbstractValue();
+	}
+	
 	@Override
 	public AbstractValue charAt(AbstractValue v1, AbstractValue v2) {
 		if (v1 instanceof LiftedUnionAbstractValue && v2 instanceof LiftedUnionAbstractValue) {
@@ -169,6 +189,92 @@ public class LiftedUnionAbstractDomain extends AbstractDomain {
 				for (AbstractValue right : ((LiftedUnionAbstractValue) v2).getTuple().values()) 
 					if (!(left instanceof Bottom) && !(right instanceof Bottom)) 
 						result.lub(cdom.charAt(left, right));
+
+			return result;
+		}
+
+		return new LiftedUnionAbstractValue();
+	}
+
+
+	@Override
+	public AbstractValue trim(AbstractValue v1) {
+		if (v1 instanceof LiftedUnionAbstractValue) {
+
+			CoalascedAbstractDomain cdom = new CoalascedAbstractDomain();
+			LiftedUnionAbstractValue result = new LiftedUnionAbstractValue();
+
+			for (AbstractValue left : ((LiftedUnionAbstractValue) v1).getTuple().values())
+					if (!(left instanceof Bottom)) 
+						result.lub(cdom.trim(left));
+
+			return result;
+		}
+
+		return new LiftedUnionAbstractValue();
+	}
+
+	@Override
+	public AbstractValue toLowerCase(AbstractValue v1) {
+		if (v1 instanceof LiftedUnionAbstractValue) {
+
+			CoalascedAbstractDomain cdom = new CoalascedAbstractDomain();
+			LiftedUnionAbstractValue result = new LiftedUnionAbstractValue();
+
+			for (AbstractValue left : ((LiftedUnionAbstractValue) v1).getTuple().values())
+					if (!(left instanceof Bottom)) 
+						result.lub(cdom.toLowerCase(left));
+
+			return result;
+		}
+
+		return new LiftedUnionAbstractValue();
+	}
+	
+	@Override
+	public AbstractValue toUpperCase(AbstractValue v1) {
+		if (v1 instanceof LiftedUnionAbstractValue) {
+
+			CoalascedAbstractDomain cdom = new CoalascedAbstractDomain();
+			LiftedUnionAbstractValue result = new LiftedUnionAbstractValue();
+
+			for (AbstractValue left : ((LiftedUnionAbstractValue) v1).getTuple().values())
+					if (!(left instanceof Bottom)) 
+						result.lub(cdom.toUpperCase(left));
+
+			return result;
+		}
+
+		return new LiftedUnionAbstractValue();
+	}
+
+	@Override
+	public AbstractValue trimLeft(AbstractValue v1) {
+		if (v1 instanceof LiftedUnionAbstractValue) {
+
+			CoalascedAbstractDomain cdom = new CoalascedAbstractDomain();
+			LiftedUnionAbstractValue result = new LiftedUnionAbstractValue();
+
+			for (AbstractValue left : ((LiftedUnionAbstractValue) v1).getTuple().values())
+					if (!(left instanceof Bottom)) 
+						result.lub(cdom.trimLeft(left));
+
+			return result;
+		}
+
+		return new LiftedUnionAbstractValue();
+	}
+	
+	@Override
+	public AbstractValue trimRight(AbstractValue v1) {
+		if (v1 instanceof LiftedUnionAbstractValue) {
+
+			CoalascedAbstractDomain cdom = new CoalascedAbstractDomain();
+			LiftedUnionAbstractValue result = new LiftedUnionAbstractValue();
+
+			for (AbstractValue left : ((LiftedUnionAbstractValue) v1).getTuple().values())
+					if (!(left instanceof Bottom)) 
+						result.lub(cdom.trimRight(left));
 
 			return result;
 		}
@@ -344,5 +450,81 @@ public class LiftedUnionAbstractDomain extends AbstractDomain {
 		LiftedUnionAbstractValue r = new LiftedUnionAbstractValue();
 		r.setInterval(new Interval("-Inf", "+Inf"));
 		return r;
+	}
+
+	@Override
+	public AbstractValue includes(AbstractValue v1, AbstractValue v2) {
+		if (v1 instanceof LiftedUnionAbstractValue && v2 instanceof LiftedUnionAbstractValue) {
+
+			CoalascedAbstractDomain cdom = new CoalascedAbstractDomain();
+			LiftedUnionAbstractValue result = new LiftedUnionAbstractValue();
+
+			for (AbstractValue a : ((LiftedUnionAbstractValue) v1).getTuple().values())
+				for (AbstractValue b : ((LiftedUnionAbstractValue) v2).getTuple().values()) 
+						if (!(a instanceof Bottom) && !(b instanceof Bottom)) 
+							result.lub(cdom.includes(a, b));
+
+			return result;
+		}
+
+		return new LiftedUnionAbstractValue();
+	}
+
+	@Override
+	public AbstractValue repeat(AbstractValue v1, AbstractValue v2) {
+		if (v1 instanceof LiftedUnionAbstractValue && v2 instanceof LiftedUnionAbstractValue) {
+
+			CoalascedAbstractDomain cdom = new CoalascedAbstractDomain();
+			LiftedUnionAbstractValue result = new LiftedUnionAbstractValue();
+
+			for (AbstractValue a : ((LiftedUnionAbstractValue) v1).getTuple().values())
+				for (AbstractValue b : ((LiftedUnionAbstractValue) v2).getTuple().values()) 
+						if (!(a instanceof Bottom) && !(b instanceof Bottom)) 
+							result.lub(cdom.repeat(a, b));
+
+			return result;
+		}
+
+		return new LiftedUnionAbstractValue();
+	}
+	
+
+
+	@Override
+	public AbstractValue startsWith(AbstractValue v1, AbstractValue v2) {
+		if (v1 instanceof LiftedUnionAbstractValue && v2 instanceof LiftedUnionAbstractValue) {
+
+			CoalascedAbstractDomain cdom = new CoalascedAbstractDomain();
+			LiftedUnionAbstractValue result = new LiftedUnionAbstractValue();
+
+			for (AbstractValue a : ((LiftedUnionAbstractValue) v1).getTuple().values())
+				for (AbstractValue b : ((LiftedUnionAbstractValue) v2).getTuple().values()) 
+						if (!(a instanceof Bottom) && !(b instanceof Bottom)) 
+							result.lub(cdom.startsWith(a, b));
+
+			return result;
+		}
+
+		return new LiftedUnionAbstractValue();
+	}
+	
+
+
+	@Override
+	public AbstractValue endsWith(AbstractValue v1, AbstractValue v2) {
+		if (v1 instanceof LiftedUnionAbstractValue && v2 instanceof LiftedUnionAbstractValue) {
+
+			CoalascedAbstractDomain cdom = new CoalascedAbstractDomain();
+			LiftedUnionAbstractValue result = new LiftedUnionAbstractValue();
+
+			for (AbstractValue a : ((LiftedUnionAbstractValue) v1).getTuple().values())
+				for (AbstractValue b : ((LiftedUnionAbstractValue) v2).getTuple().values()) 
+						if (!(a instanceof Bottom) && !(b instanceof Bottom)) 
+							result.lub(cdom.endsWith(a, b));
+
+			return result;
+		}
+
+		return new LiftedUnionAbstractValue();
 	}
 }

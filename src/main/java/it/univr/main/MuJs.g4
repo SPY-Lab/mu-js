@@ -50,6 +50,16 @@ expression:	val															#PrimitiveValue
 	|	expression '.' 'charAt' '(' expression ')'						#CharAt
 	|	expression '.' 'indexOf' '(' expression ')'						#IndexOf
 	|	expression '.' 'length'											#Length
+	|	expression '.' 'includes' '(' expression ')'					#Includes
+	|	expression '.' 'repeat' '(' expression ')'						#Repeat
+	|	expression '.' 'startsWith' '(' expression ')'					#StartsWith
+	|	expression '.' 'endsWith' '(' expression ')'					#EndsWith
+	|	expression '.' 'trim' '(' ')'									#Trim
+	|	expression '.' 'trimLeft' '(' ')'								#TrimLeft
+	|	expression '.' 'trimRight' '(' ')'								#TrimRight
+	|	expression '.' 'toLowerCase' '(' ')'							#ToLowerCase
+	|	expression '.' 'toUpperCase' '(' ')'							#ToUpperCase
+	|	expression '.' 'replace' '(' expression ',' expression')'		#Replace
 	|	'(' expression ')'												#Parenthesis
 	|	expression '==' expression										#Equals
 	|	ID																#Identifier

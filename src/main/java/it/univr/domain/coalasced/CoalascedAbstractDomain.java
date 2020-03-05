@@ -27,7 +27,7 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 			return v1.clone();
 		else if (v1.getClass().equals(v2.getClass()))
 			return v1.widening(v2);
-		
+
 		return new Top();
 	}
 
@@ -96,7 +96,7 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 
 	@Override
 	public AbstractValue sum(AbstractValue left, AbstractValue right) {
-		
+
 		if (left instanceof Bottom || right instanceof Bottom)
 			return new Bottom();	
 		else if ((left instanceof Bool || left instanceof Interval) && (right instanceof Bool || right instanceof Interval))
@@ -113,10 +113,10 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 
 	@Override
 	public AbstractValue diff(AbstractValue left, AbstractValue right) {
-		
+
 		if (left instanceof Bottom || right instanceof Bottom)
 			return new Bottom();
-		
+
 		if ((left instanceof Interval || left instanceof Bool || left instanceof FA) && (right instanceof Interval || right instanceof Bool || right instanceof FA)) {
 			AbstractValue leftJuggled = left.juggleToNumber();
 			AbstractValue rightJuggled = right.juggleToNumber();
@@ -130,11 +130,11 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 
 	@Override
 	public AbstractValue mul(AbstractValue left, AbstractValue right) {
-		
-		
+
+
 		if (left instanceof Bottom || right instanceof Bottom)
 			return new Bottom();
-		
+
 		if ((left instanceof Interval || left instanceof Bool || left instanceof FA) && (right instanceof Interval || right instanceof Bool || right instanceof FA)) {
 			AbstractValue leftJuggled = left.juggleToNumber();
 			AbstractValue rightJuggled = right.juggleToNumber();
@@ -206,7 +206,7 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 		else if ((v1 instanceof Bool || v1 instanceof FA || v1 instanceof Interval) && (v2 instanceof Bool || v2 instanceof FA || v2 instanceof Interval)) {
 			AbstractValue left = v1.juggleToNumber();
 			AbstractValue right = v2.juggleToNumber();
-		
+
 			if (left instanceof Interval && right instanceof Interval)
 				return ((Interval) left).isEqual((Interval) right);
 
@@ -290,4 +290,86 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 	public AbstractValue makeUnknownInteger() {
 		return new Interval("-Inf", "+Inf");
 	}
+
+	@Override
+	public AbstractValue includes(AbstractValue left, AbstractValue right) {
+		if (left instanceof FA && right instanceof FA) 
+			return ((FA) left).includes((FA) right);
+
+		return new Bottom();
+	}
+
+	@Override
+	public AbstractValue repeat(AbstractValue left, AbstractValue right) {
+		if (left instanceof FA && right instanceof Interval) 
+			return ((FA) left).repeat((Interval) right);
+
+		return new Bottom();
+	}
+	
+	@Override
+	public AbstractValue startsWith(AbstractValue left, AbstractValue right) {
+		if (left instanceof FA && right instanceof FA) 
+			return ((FA) left).startsWith((FA) right);
+
+		return new Bottom();
+	}	
+	
+	@Override
+	public AbstractValue endsWith(AbstractValue left, AbstractValue right) {
+		if (left instanceof FA && right instanceof FA) 
+			return ((FA) left).endsWith((FA) right);
+
+		return new Bottom();
+	}
+
+	@Override
+	public AbstractValue trim(AbstractValue par) {
+		if (par instanceof FA) 
+			return ((FA) par).trim();
+
+		return new Bottom();
+	}
+
+	@Override
+	public AbstractValue trimLeft(AbstractValue par) {
+		if (par instanceof FA) 
+			return ((FA) par).trimLeft();
+
+		return new Bottom();
+	}
+
+	@Override
+	public AbstractValue trimRight(AbstractValue par) {
+		if (par instanceof FA) 
+			return ((FA) par).trimRight();
+
+		return new Bottom();
+	}
+
+	@Override
+	public AbstractValue toLowerCase(AbstractValue par) {
+		if (par instanceof FA) 
+			return ((FA) par).toLowerCase();
+
+		return new Bottom();
+	}
+
+	@Override
+	public AbstractValue toUpperCase(AbstractValue par) {
+		if (par instanceof FA) 
+			return ((FA) par).toUpperCase();
+
+		return new Bottom();
+	}
+	
+	@Override
+	public AbstractValue replace(AbstractValue a, AbstractValue b, AbstractValue c) {
+		if (a instanceof FA && b instanceof FA && c instanceof FA) 
+			return ((FA) a).replace((FA) b, (FA) c);
+
+		return new Bottom();
+	}
+	
+	
 }

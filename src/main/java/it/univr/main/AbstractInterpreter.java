@@ -161,6 +161,54 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitEmptyObject(MuJsParser.EmptyObjectContext ctx) {
 		return new AbstractObject(); 
 	}
+	
+	@Override
+	public AbstractValue visitIncludes(MuJsParser.IncludesContext ctx) {
+		AbstractValue left = visit(ctx.expression(0));
+		AbstractValue right = visit(ctx.expression(1));
+
+		return domain.includes(left, right);
+	}
+
+
+	@Override
+	public AbstractValue visitStartsWith(MuJsParser.StartsWithContext ctx) {
+		AbstractValue left = visit(ctx.expression(0));
+		AbstractValue right = visit(ctx.expression(1));
+
+		return domain.startsWith(left, right);
+	}
+
+	@Override
+	public AbstractValue visitReplace(MuJsParser.ReplaceContext ctx) {
+		AbstractValue a = visit(ctx.expression(0));
+		AbstractValue b = visit(ctx.expression(1));
+		AbstractValue c = visit(ctx.expression(2));
+
+		return domain.replace(a, b, c);
+	}
+
+	@Override
+	public AbstractValue visitEndsWith(MuJsParser.EndsWithContext ctx) {
+		AbstractValue left = visit(ctx.expression(0));
+		AbstractValue right = visit(ctx.expression(1));
+
+		return domain.endsWith(left, right);
+	}
+
+	@Override
+	public AbstractValue visitToLowerCase(MuJsParser.ToLowerCaseContext ctx) {
+		AbstractValue par = visit(ctx.expression());
+
+		return domain.toLowerCase(par);
+	}
+	
+	@Override
+	public AbstractValue visitToUpperCase(MuJsParser.ToUpperCaseContext ctx) {
+		AbstractValue par = visit(ctx.expression());
+
+		return domain.toUpperCase(par);
+	}
 
 	@Override 
 	public AbstractValue visitObj(MuJsParser.ObjContext ctx) {
@@ -409,6 +457,27 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		AbstractValue right = visit(ctx.expression(1));
 
 		return domain.greater(left, right);
+	}
+	
+	@Override 
+	public AbstractValue visitTrim(MuJsParser.TrimContext ctx) { 
+		AbstractValue par = visit(ctx.expression());
+
+		return domain.trim(par);
+	}
+	
+	@Override 
+	public AbstractValue visitTrimLeft(MuJsParser.TrimLeftContext ctx) { 
+		AbstractValue par = visit(ctx.expression());
+
+		return domain.trimLeft(par);
+	}
+	
+	@Override 
+	public AbstractValue visitTrimRight(MuJsParser.TrimRightContext ctx) { 
+		AbstractValue par = visit(ctx.expression());
+
+		return domain.trimRight(par);
 	}
 
 	@Override public AbstractValue visitEquals(MuJsParser.EqualsContext ctx) { 
