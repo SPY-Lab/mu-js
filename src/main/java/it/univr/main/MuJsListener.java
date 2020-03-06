@@ -430,6 +430,18 @@ public interface MuJsListener extends ParseTreeListener {
 	 */
 	void exitAnd(MuJsParser.AndContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code Slice}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterSlice(MuJsParser.SliceContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Slice}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitSlice(MuJsParser.SliceContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Greater}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree

@@ -46,4 +46,5 @@ public abstract class AbstractDomain implements TypeJuggligAbstractDomain {
 	public abstract AbstractValue toUpperCase(AbstractValue par);
 	public abstract AbstractValue toLowerCase(AbstractValue par);
 	public abstract AbstractValue replace(AbstractValue a, AbstractValue b, AbstractValue c);
+	public abstract AbstractValue slice(AbstractValue a, AbstractValue b);
 }

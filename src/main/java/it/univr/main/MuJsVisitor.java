@@ -258,6 +258,13 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAnd(MuJsParser.AndContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code Slice}
+	 * labeled alternative in {@link MuJsParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSlice(MuJsParser.SliceContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Greater}
 	 * labeled alternative in {@link MuJsParser#expression}.
 	 * @param ctx the parse tree

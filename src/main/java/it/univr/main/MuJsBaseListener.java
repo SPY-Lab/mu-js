@@ -438,6 +438,18 @@ public class MuJsBaseListener implements MuJsListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterSlice(MuJsParser.SliceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSlice(MuJsParser.SliceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterGreater(MuJsParser.GreaterContext ctx) { }
 	/**
 	 * {@inheritDoc}

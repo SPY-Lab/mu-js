@@ -460,6 +460,14 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	}
 	
 	@Override 
+	public AbstractValue visitSlice(MuJsParser.SliceContext ctx) { 
+		AbstractValue str = visit(ctx.expression(0));
+		AbstractValue i = visit(ctx.expression(1));
+
+		return domain.slice(str, i);
+	}
+	
+	@Override 
 	public AbstractValue visitTrim(MuJsParser.TrimContext ctx) { 
 		AbstractValue par = visit(ctx.expression());
 

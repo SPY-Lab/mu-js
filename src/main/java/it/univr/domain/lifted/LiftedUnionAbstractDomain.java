@@ -102,6 +102,26 @@ public class LiftedUnionAbstractDomain extends AbstractDomain {
 
 		return new LiftedUnionAbstractValue();
 	}
+	
+	@Override
+	public AbstractValue slice(AbstractValue v1, AbstractValue v2) {
+
+		if (v1 instanceof LiftedUnionAbstractValue && v2 instanceof LiftedUnionAbstractValue) {
+			CoalascedAbstractDomain cdom = new CoalascedAbstractDomain();
+			LiftedUnionAbstractValue result = new LiftedUnionAbstractValue();
+
+			for (AbstractValue left : ((LiftedUnionAbstractValue) v1).getTuple().values())
+				for (AbstractValue right : ((LiftedUnionAbstractValue) v2).getTuple().values()) {
+					if (!(left instanceof Bottom) && !(right instanceof Bottom))
+						result.lub(cdom.slice(left, right));
+				}
+
+			return result;
+
+		}
+
+		return new LiftedUnionAbstractValue();
+	}
 
 	@Override
 	public AbstractValue diff(AbstractValue v1, AbstractValue v2) {

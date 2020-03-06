@@ -1009,4 +1009,71 @@ public class FA implements AbstractValue {
     public FA replace(FA a, FA b) {
     	return new FA(Automaton.replace(getAutomaton(), a.getAutomaton(), b.getAutomaton()));
     }
+	
+    /**
+     * Method that, given the starting index, returns the automaton that recognizes all the substrings from
+     * the given index till the end.
+     * @param start starting index, negative value possible.
+     * @return
+     */
+    public FA slice(Interval start) {
+
+        if(this.getAutomaton().hasCycle())
+            return this;
+        
+        int s1 = Integer.parseInt(start.getHigh());
+
+        //if the starting index is greater or equal to zero we return the result of Substring
+        if(s1 >= 0){
+            return new FA(Automaton.singleParameterSubstring(this.getAutomaton(), s1));
+        }
+
+        //otherwise the index is negative and we need to transform it in a positive value and return the result
+        return auxSlice(s1, this.getAutomaton().getInitialState(), new HashSet<Transition>(), Automaton.makeEmptyLanguage());
+    }
+
+    /**
+     * Recursive auxiliary function that, for each possible path, returns the substring of the automaton
+     * in the given indexes.
+     * @param start negative starting index
+     * @param currentState state we are currently exploring
+     * @param delta set of transitions
+     * @param result result automaton
+     * @return
+     */
+    private FA auxSlice(int start, State currentState, HashSet<Transition> delta, Automaton result){
+
+        if(currentState.isFinalState()){
+
+            HashSet<State> states = new HashSet<>();
+
+            for(State s: this.getAutomaton().getStates()){
+                State newState = (State)s.clone();
+                states.add(newState);
+                if(!newState.equals(currentState)){
+                    newState.setFinalState(false);
+                }
+            }
+
+
+            Automaton b = new Automaton(delta, states);
+            FA partial = new FA(b);
+
+            int length = Integer.parseInt(partial.length().getHigh()) + start;
+
+            if(length < 0)
+            	length = 0;
+            
+            result = Automaton.union(result, Automaton.singleParameterSubstring(b, length));
+        }
+
+        for(Transition t : this.getAutomaton().getOutgoingTransitionsFrom(currentState)){
+            HashSet<Transition> clone = (HashSet<Transition>)delta.clone();
+            clone.add(t);
+            result = Automaton.union(result, auxSlice(start, t.getTo(), clone, result).getAutomaton());
+        }
+
+        return new FA(result);
+    }
+
 }

@@ -57,6 +57,7 @@ expression:	val															#PrimitiveValue
 	|	expression '.' 'trim' '(' ')'									#Trim
 	|	expression '.' 'trimLeft' '(' ')'								#TrimLeft
 	|	expression '.' 'trimRight' '(' ')'								#TrimRight
+	|	expression '.' 'slice' '(' expression ')'						#Slice
 	|	expression '.' 'toLowerCase' '(' ')'							#ToLowerCase
 	|	expression '.' 'toUpperCase' '(' ')'							#ToUpperCase
 	|	expression '.' 'replace' '(' expression ',' expression')'		#Replace
