@@ -13,6 +13,6 @@
 	<classpathentry kind="lib" path="lib/collections-generic-4.01.jar"/>
 	<classpathentry kind="lib" path="lib/j-text-utils-0.3.4.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.6.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/java-fsm-library"/>
+	<classpathentry kind="lib" path="lib/fsa.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
