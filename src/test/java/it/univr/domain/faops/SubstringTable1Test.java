@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import it.univr.domain.coalasced.FA;
+import it.univr.domain.coalasced.*;
 import it.univr.domain.coalasced.Interval;
 import it.univr.fsm.machine.Automaton;
 import it.univr.fsm.machine.State;
@@ -207,9 +208,69 @@ public class SubstringTable1Test {
 		
 		Assert.assertEquals(expectedResult, result);
 	}
-	
-	
-	@Test
+
+    @Test
+    public void testSubstringT1Case11_009() throws Exception {
+        HashSet<State> states = new HashSet<State>();
+        HashSet<Transition> delta = new HashSet<Transition>();
+
+        State q0 = new State("q0", true, false);
+        State q1 = new State("q1", false, false);
+        State q2 = new State("q2", false, false);
+        State q3 = new State("q3", false, true);
+
+        states.add(q0);
+        states.add(q1);
+        states.add(q2);
+        states.add(q3);
+
+        delta.add(new Transition(q0, q0, "a"));
+        delta.add(new Transition(q0, q1, "c"));
+        delta.add(new Transition(q1, q2, "c"));
+        delta.add(new Transition(q2, q3, "c"));
+        delta.add(new Transition(q3, q3, "b"));
+
+        // a^*cccb^*
+        Automaton a = new Automaton(delta, states);
+
+        FA automaton = new FA(a);
+        FA result = automaton.substring(new Interval("2", "2"), new Interval("3", "4"));
+
+        HashSet<Automaton> automata = new HashSet<>();
+
+        List<String> ss = new ArrayList<>(Arrays.asList("a", "aa", "c", "ac", "cc", "cb"));
+
+        for (String s : ss)
+            automata.add(Automaton.makeAutomaton(s));
+
+        FA expectedResult = new FA(Automaton.union(automata));
+
+        Assert.assertEquals(expectedResult, result);
+    }
+
+    @Test
+    public void testSubstringT1Case11_010() throws Exception {
+
+        Automaton b = Automaton.makeAutomaton("hello");
+
+        FA automaton = new FA(Automaton.union(b));
+
+        FA result = automaton.substring(new Interval("2", "2"), new Interval("3", "4"));
+
+        HashSet<Automaton> automata = new HashSet<>();
+
+        List<String> ss = new ArrayList<>(Arrays.asList("l", "ll"));
+
+        for (String s : ss)
+            automata.add(Automaton.makeAutomaton(s));
+
+        FA expectedResult = new FA(Automaton.union(automata));
+
+        Assert.assertEquals(expectedResult, result);
+    }
+
+
+    @Test
 	public void testSubstringT1Case12_001() throws Exception {
 		FA a = new FA(Automaton.makeAutomaton("hello"));
 		
@@ -265,7 +326,7 @@ public class SubstringTable1Test {
 		automata.add(Automaton.makeEmptyString());
 		
 		FA expectedResult = new FA(Automaton.union(automata));
-		
+
 		Assert.assertEquals(expectedResult, result);
 	}
 
@@ -537,6 +598,7 @@ public class SubstringTable1Test {
 			automata.add(Automaton.concat(astar, Automaton.makeAutomaton(s)));
 			automata.add(Automaton.concat(Automaton.makeAutomaton(s), bstar));
 		}
+
 		automata.add(Automaton.concat(astar, Automaton.makeEmptyString()));
 		automata.add(Automaton.makeEmptyString());
 		
@@ -550,6 +612,10 @@ public class SubstringTable1Test {
 		Automaton automatonResult = Automaton.union(automata);
 		automatonResult.minimize();
 		FA expectedResult = new FA(automatonResult);
+
+        visualizeAutomaton.show(automaton, "a");
+        visualizeAutomaton.show(expectedResult, "expectation");
+        visualizeAutomaton.show(result, "reality");
 		
 		Assert.assertEquals(expectedResult, result);
 	}
@@ -1108,5 +1174,33 @@ public class SubstringTable1Test {
 		
 		Assert.assertEquals(expectedResult, result);
 	}
+
+	@Test
+    public void testSubstringT1Case44_002(){
+
+        Automaton b = Automaton.makeAutomaton("hello");
+        FA automaton = new FA(b);
+
+        FA result = automaton.substring(new Interval("0", "2"), new Interval("2", "+Inf"));
+
+        HashSet<Automaton> automata = new HashSet<>();
+
+        List<String> ss =  new ArrayList<>(Arrays.asList("he", "hel", "hell", "hello", "e", "el", "ell", "ello", "l", "ll", "llo"));
+
+        for (String s : ss)
+            automata.add(Automaton.makeAutomaton(s));
+
+        automata.add(Automaton.makeEmptyString());
+
+        Automaton automatonResult = Automaton.union(automata);
+        automatonResult.minimize();
+        FA expectedResult = new FA(automatonResult);
+
+        visualizeAutomaton.show(automaton, "a");
+        visualizeAutomaton.show(expectedResult, "expectation");
+        visualizeAutomaton.show(result, "reality");
+
+        Assert.assertEquals(expectedResult, result);
+    }
 
 }

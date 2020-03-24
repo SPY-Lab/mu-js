@@ -54,10 +54,10 @@ public class SliceTest {
         HashSet<Automaton> r = new HashSet<>();
         r.add(Automaton.makeAutomaton("nda"));
         r.add(Automaton.makeAutomaton("ala"));
-        
+
         FA result = new FA(Automaton.union(r));
         FA resultR = a.slice(start);
-        
+
         Assert.assertEquals(resultR, result);
     }
 
@@ -74,7 +74,7 @@ public class SliceTest {
         HashSet<Automaton> r = new HashSet<>();
         r.add(Automaton.makeAutomaton("nda"));
         r.add(Automaton.makeAutomaton("pan"));
-        
+
         FA result = new FA(Automaton.union(r));
         FA resultR = a.slice(start);
 
@@ -109,7 +109,7 @@ public class SliceTest {
         HashSet<Automaton> r = new HashSet<>();
         r.add(Automaton.makeAutomaton("onium"));
         r.add(Automaton.makeEmptyString());
-        
+
         FA result = new FA(Automaton.union(r));
         FA resultR = a.slice(start);
 
@@ -131,7 +131,7 @@ public class SliceTest {
         r.add(Automaton.makeAutomaton("nda"));
         r.add(Automaton.makeAutomaton("ndas"));
         r.add(Automaton.makeAutomaton("ndaros"));
-        
+
         FA result = new FA(Automaton.union(r));
         FA resultR = a.slice(start);
 
@@ -153,7 +153,7 @@ public class SliceTest {
         r.add(Automaton.makeAutomaton("da"));
         r.add(Automaton.makeAutomaton("as"));
         r.add(Automaton.makeAutomaton("os"));
-        
+
         FA result = new FA(Automaton.union(r));
         FA resultR = a.slice(start);
 
@@ -196,7 +196,7 @@ public class SliceTest {
 
         FA result = new FA(Automaton.union(r));
         FA resultR = a.slice(start);
-        
+
         Assert.assertEquals(resultR, result);
     }
 
@@ -212,7 +212,7 @@ public class SliceTest {
 
         HashSet<Automaton> r = new HashSet<>();
         r.add(Automaton.makeEmptyString());
-        
+
         FA result = new FA(Automaton.union(r));
         FA resultR = a.slice(start);
 
@@ -237,7 +237,7 @@ public class SliceTest {
         r.add(Automaton.makeAutomaton("an"));
         r.add(Automaton.makeAutomaton("anda"));
         r.add(Automaton.makeAutomaton("oala"));
-        
+
         FA result = new FA(Automaton.union(r));
         FA resultR = a.slice(start);
 
