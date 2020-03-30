@@ -104,16 +104,17 @@ public class LiftedUnionAbstractDomain extends AbstractDomain {
 	}
 	
 	@Override
-	public AbstractValue slice(AbstractValue v1, AbstractValue v2) {
+	public AbstractValue slice(AbstractValue v1, AbstractValue v2, AbstractValue v3) {
 
 		if (v1 instanceof LiftedUnionAbstractValue && v2 instanceof LiftedUnionAbstractValue) {
 			CoalascedAbstractDomain cdom = new CoalascedAbstractDomain();
 			LiftedUnionAbstractValue result = new LiftedUnionAbstractValue();
 
-			for (AbstractValue left : ((LiftedUnionAbstractValue) v1).getTuple().values())
-				for (AbstractValue right : ((LiftedUnionAbstractValue) v2).getTuple().values()) {
-					if (!(left instanceof Bottom) && !(right instanceof Bottom))
-						result.lub(cdom.slice(left, right));
+			for (AbstractValue a : ((LiftedUnionAbstractValue) v1).getTuple().values())
+				for (AbstractValue b : ((LiftedUnionAbstractValue) v2).getTuple().values()) 
+					for (AbstractValue c : ((LiftedUnionAbstractValue) v3).getTuple().values()) {
+					if (!(a instanceof Bottom) && !(b instanceof Bottom) && !(c instanceof Bottom))
+						result.lub(cdom.slice(a, b, c));
 				}
 
 			return result;

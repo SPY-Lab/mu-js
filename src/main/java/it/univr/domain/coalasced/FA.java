@@ -1031,6 +1031,21 @@ public class FA implements AbstractValue {
         //otherwise the index is negative and we need to transform it in a positive value and return the result
         return auxSlice(s1, this.getAutomaton().getInitialState(), new HashSet<Transition>(), Automaton.makeEmptyLanguage());
     }
+    
+    public FA slice(Interval start, Interval end) {
+    	
+    	if (start.isFiniteConcrete() && end.isFiniteConcrete()) {
+    		Automaton result = Automaton.makeEmptyLanguage();
+
+    		for (Long i: start.getIntergers())
+        		for (Long j: end.getIntergers())
+        			result = Automaton.union(result, Automaton.slice(getAutomaton(), i, j));
+    		
+    		return new FA(result);
+    	} else {
+    		return new FA(Automaton.makeTopLanguage());
+    	}
+    }
 
     /**
      * Recursive auxiliary function that, for each possible path, returns the substring of the automaton

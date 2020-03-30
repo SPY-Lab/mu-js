@@ -373,9 +373,9 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 	
 
 	@Override
-	public AbstractValue slice(AbstractValue a, AbstractValue b) {
+	public AbstractValue slice(AbstractValue a, AbstractValue b, AbstractValue c) {
 		if (a instanceof FA && b instanceof Interval) 
-			return ((FA) a).slice((Interval) b);
+			return ((FA) a).slice((Interval) b, (Interval) c);
 
 		return new Bottom();
 	}
