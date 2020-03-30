@@ -22,6 +22,7 @@ import it.univr.main.MuJsParser.ProgramContext;
 import it.univr.main.MuJsParser.ReturnStmtContext;
 import it.univr.main.MuJsParser.StmtContext;
 import it.univr.state.AbstractEnvironment;
+import it.univr.state.AbstractHeap;
 import it.univr.state.AbstractState;
 import it.univr.state.AbstractStore;
 import it.univr.state.CallStringAbstractEnvironment;
@@ -264,6 +265,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		// Get variable name
 		Variable v = new Variable(ctx.getChild(0).getText());
 
+		
 		// Get line
 		KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
 		KCallStrings currentCallString = getCurrentCallString();
@@ -271,7 +273,10 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		state.add(key, currentEnvironment.get(currentCallString).clone(), currentCallString);
 
 		state.getCallStringEnvironment(key).putVariable(v, visit(ctx.expression()), currentCallString);
+
+		AbstractHeap lastHeap = currentEnvironment.get(currentCallString).getHeap();
 		currentEnvironment = state.getCallStringEnvironment(key).clone();
+		currentEnvironment.get(currentCallString).getHeap().putAll(lastHeap);	
 
 		return new Bottom(); 
 	}
@@ -725,13 +730,14 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		visit(f.getBody());
 		callStrings = currentCallString;
 
+		AbstractHeap lastHeap = currentEnvironment.get(newCallString).getHeap();
 		
 		for (int i = 0; i < f.getFormalParameters().size(); i++) 
 			currentEnvironment.removeVariable(f.getFormalParameters().get(i), newCallString);
 
 		currentEnvironment = old;
-
-		
+				
+		currentEnvironment.get(currentCallString).getHeap().putAll(lastHeap);		
 		return f.getReturnValueAtCallString(newCallString); 
 	}
 
