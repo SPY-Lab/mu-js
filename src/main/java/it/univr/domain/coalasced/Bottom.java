@@ -11,6 +11,7 @@ public class Bottom implements AbstractValue {
 		if (other instanceof Bool) return ((Bool) other).clone();
 		if (other instanceof Interval) return ((Interval) other).clone();
 		if (other instanceof NaN) return ((NaN) other).clone();
+		if (other instanceof AllocationSites) return ((AllocationSites) other).clone();
 		
 		return ((Top) other).clone();
 	}

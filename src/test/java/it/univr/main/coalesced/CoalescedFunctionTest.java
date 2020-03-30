@@ -1,9 +1,15 @@
 package it.univr.main.coalesced;
 
+import org.apache.commons.collections15.multimap.MultiHashMap;
 import org.junit.Assert;
 import org.junit.Test;
 
+import it.univr.domain.AbstractValue;
+import it.univr.domain.AllocationSite;
+import it.univr.domain.coalasced.AbstractObject;
+import it.univr.domain.coalasced.AllocationSites;
 import it.univr.domain.coalasced.CoalascedAbstractDomain;
+import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
 import it.univr.main.Analyzer;
 import it.univr.state.AbstractEnvironment;
@@ -461,6 +467,27 @@ public class CoalescedFunctionTest {
 		// State values
 		Assert.assertEquals(state.getValue(new Variable("x")), new Interval("0", "1"));
 		Assert.assertEquals(state.getValue(new Variable("i")), new Interval("0", "+Inf"));
+	}
+	
+	@Test
+	public void testFun035() throws Exception {
+		String file = dir + "fun035.js";
+		AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+		AllocationSite xSite = new AllocationSite(2, 1);
+		AllocationSites xSites = new AllocationSites(xSite);
+		
+		MultiHashMap<FA, AbstractValue> properties = new MultiHashMap<>();
+		properties.put(new FA("a"), new Interval("1", "1"));
+		AbstractObject xObject = new AbstractObject(properties);		
+		
+		// State size
+		Assert.assertEquals(state.sizeStore(), 1);
+		Assert.assertEquals(state.sizeHeap(), 1);
+
+		// State values
+		Assert.assertEquals(state.getValue(new Variable("x")), xSites);
+		Assert.assertEquals(state.getValue(xSite), xObject);
 	}
 
 }
