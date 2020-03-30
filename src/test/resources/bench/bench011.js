@@ -1,4 +1,4 @@
-function translatePast(output) {
+function translateFuture(output) {
     time = output;
     if(!output.indexOf("jaj") == -1){
         time = time.slice(0, -3) + "Hu";
