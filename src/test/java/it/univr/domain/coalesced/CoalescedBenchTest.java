@@ -1,6 +1,7 @@
 package it.univr.domain.coalesced;
 
 import it.univr.domain.AbstractValue;
+import it.univr.domain.AllocationSite;
 import it.univr.domain.coalasced.*;
 import org.apache.commons.collections15.multimap.MultiHashMap;
 import org.junit.Assert;
@@ -96,18 +97,6 @@ public class CoalescedBenchTest {
         Assert.assertEquals(new FA(Automaton.makeRealAutomaton("robbie")), state.getValue(new Variable("x")));
         Assert.assertEquals(new FA(Automaton.makeRealAutomaton("123456")), state.getValue(new Variable("y")));
         Assert.assertEquals(new FA(Automaton.makeRealAutomaton("bobby")), state.getValue(new Variable("z")));
-
-        //DEBUGGING
-        FA a = new FA(Automaton.makeRealAutomaton("isRobbie"));
-        if(a.startsWith(new FA(Automaton.makeRealAutomaton("is"))).equals(new Bool(1))){
-            FA b = new FA(Automaton.makeRealAutomaton("is"));
-            a = a.substring(b.length(), a.length());
-            System.out.println(a);
-            System.out.println(b.length());
-            System.out.println("startswith");
-        }
-        System.out.println(a.substring(new Interval("0", "0"), new Interval("1", "1")).toLowerCase());
-        System.out.println(a.substring(new Interval("1", "1"), a.length()));
     }
 
     @Test
@@ -173,9 +162,15 @@ public class CoalescedBenchTest {
         properties.put(new FA(Automaton.makeRealAutomaton("outputIndex")), new Interval("0", "0"));
         properties.put(new FA(Automaton.makeRealAutomaton("name")), new FA(Automaton.makeRealAutomaton("123456")));
         AbstractObject oObject = new AbstractObject(properties);
-
+ 
+        
+        AllocationSite xSite = new AllocationSite(4, 8);
+        AllocationSites xSites = new AllocationSites(xSite);
+        
+        
         Assert.assertEquals(new FA(Automaton.makeRealAutomaton("null")), state.getValue(new Variable("y")));
-        Assert.assertEquals(oObject, state.getValue(new Variable("x")));
+        Assert.assertEquals(xSites, state.getValue(new Variable("x")));
+        Assert.assertEquals(oObject, state.getValue(xSite));
 
     }
 

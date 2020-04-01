@@ -107,7 +107,7 @@ public class AbstractHeap extends HashMap<AllocationSite, AbstractValue> {
 		
 		for (AllocationSite v : keySet())
 			clone.put(v, getValue(v).clone());
-		
+		assert(this.equals(clone));
 		return clone;
 	}
 
