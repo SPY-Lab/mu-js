@@ -1,14 +1,11 @@
 package it.univr.domain.coalesced;
 
 import it.univr.domain.AbstractValue;
-import it.univr.domain.coalasced.AbstractObject;
+import it.univr.domain.coalasced.*;
 import org.apache.commons.collections15.multimap.MultiHashMap;
 import org.junit.Assert;
 import org.junit.Test;
 
-import it.univr.domain.coalasced.CoalascedAbstractDomain;
-import it.univr.domain.coalasced.FA;
-import it.univr.domain.coalasced.Interval;
 import it.univr.fsm.machine.Automaton;
 import it.univr.main.Analyzer;
 import it.univr.state.AbstractEnvironment;
@@ -95,9 +92,22 @@ public class CoalescedBenchTest {
         Assert.assertEquals(state.sizeStore(), 3);
         Assert.assertEquals(state.sizeHeap(), 0);
 
+
         Assert.assertEquals(new FA(Automaton.makeRealAutomaton("robbie")), state.getValue(new Variable("x")));
         Assert.assertEquals(new FA(Automaton.makeRealAutomaton("123456")), state.getValue(new Variable("y")));
-        Assert.assertEquals(new FA(Automaton.makeRealAutomaton("Bobby")), state.getValue(new Variable("z")));
+        Assert.assertEquals(new FA(Automaton.makeRealAutomaton("bobby")), state.getValue(new Variable("z")));
+
+        //DEBUGGING
+        FA a = new FA(Automaton.makeRealAutomaton("isRobbie"));
+        if(a.startsWith(new FA(Automaton.makeRealAutomaton("is"))).equals(new Bool(1))){
+            FA b = new FA(Automaton.makeRealAutomaton("is"));
+            a = a.substring(b.length(), a.length());
+            System.out.println(a);
+            System.out.println(b.length());
+            System.out.println("startswith");
+        }
+        System.out.println(a.substring(new Interval("0", "0"), new Interval("1", "1")).toLowerCase());
+        System.out.println(a.substring(new Interval("1", "1"), a.length()));
     }
 
     @Test
@@ -128,7 +138,8 @@ public class CoalescedBenchTest {
 
         Assert.assertEquals(new FA(Automaton.makeEmptyString()), state.getValue(new Variable("x")));
         Assert.assertEquals(new FA(Automaton.makeRealAutomaton("123")), state.getValue(new Variable("y")));
-        Assert.assertEquals(new FA(Automaton.makeRealAutomaton("abcd")), state.getValue(new Variable("z")));
+        Assert.assertEquals(new FA(Automaton.makeRealAutomaton("abc d")), state.getValue(new Variable("z")));
+
 
     }
 
@@ -150,21 +161,21 @@ public class CoalescedBenchTest {
 
     @Test
     public void testBench009() throws Exception {
-        //non riesco a creare oggetto, abstractObject è solo <Fa, interval>
         String file = "src/test/resources/bench/bench009.js";
 
         AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 
         //State size
-        Assert.assertEquals(state.sizeStore(), 1);
-        Assert.assertEquals(state.sizeHeap(), 0);
+        Assert.assertEquals(state.sizeStore(), 2);
+        Assert.assertEquals(state.sizeHeap(), 1);
 
-        /*MultiHashMap<Interval, FA> properties = new MultiHashMap<>();
-        properties.put(new Interval("0", "0"), new FA(Automaton.makeRealAutomaton("123456")));
+        MultiHashMap<FA, AbstractValue> properties = new MultiHashMap<>();
+        properties.put(new FA(Automaton.makeRealAutomaton("outputIndex")), new Interval("0", "0"));
+        properties.put(new FA(Automaton.makeRealAutomaton("name")), new FA(Automaton.makeRealAutomaton("123456")));
         AbstractObject oObject = new AbstractObject(properties);
 
-        Assert.assertEquals(oObject, state.getValue(new Variable("x")));*/
         Assert.assertEquals(new FA(Automaton.makeRealAutomaton("null")), state.getValue(new Variable("y")));
+        Assert.assertEquals(oObject, state.getValue(new Variable("x")));
 
     }
 
@@ -182,12 +193,13 @@ public class CoalescedBenchTest {
         Assert.assertEquals(new FA(Automaton.makeRealAutomaton("jajleS")), state.getValue(new Variable("x")));
         Assert.assertEquals(new FA(Automaton.makeRealAutomaton("jarwaQ")), state.getValue(new Variable("y")));
         Assert.assertEquals(new FA(Automaton.makeRealAutomaton("DISnem")), state.getValue(new Variable("z")));
-        Assert.assertEquals(new FA(Automaton.makeRealAutomaton("123pId")), state.getValue(new Variable("w")));
+        Assert.assertEquals(new FA(Automaton.makeRealAutomaton("123 pId")), state.getValue(new Variable("w")));
 
     }
 
     @Test
     public void testBench011() throws Exception {
+
         String file = "src/test/resources/bench/bench011.js";
 
         AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();

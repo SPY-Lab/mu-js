@@ -11,4 +11,4 @@ function stripCommentAndWhitespace(line){
 
 x = stripCommentAndWhitespace("#Bob   ");
 y = stripCommentAndWhitespace("123#1 2 3 4");
-z = stripCommentAndWhitespace("abc d");
+z = stripCommentAndWhitespace("   abc d   ");
