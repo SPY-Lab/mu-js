@@ -1,13 +1,17 @@
 function propertyName(methodName){
     if(methodName.startsWith("is")){
-        propertyName = methodName.substring("is".length, methodName.length);
+        pn = methodName.substring("is".length, methodName.length);
     }else{
         if(methodName.startsWith("get")){
-            propertyName = methodName.substring("get".length, methodName.length);
-        }else{}
+        	pn = methodName.substring("get".length, methodName.length);
+        }else{
+        	pn = methodName;
+        }
     }
-
-    return propertyName.substring(0, 1).toLowerCase() + propertyName.substring(1, propertyName.length + 1);
+    
+    x = pn.substring(0, 1).toLowerCase();
+    y = pn.substring(1, pn.length + 1);
+    return x + y;
 }
 
 x = propertyName("isRobbie");

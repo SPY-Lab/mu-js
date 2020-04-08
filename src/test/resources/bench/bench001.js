@@ -2,7 +2,7 @@ function removeCurlies(input){
     result = "";
     skip = false;
     i = 0;
-    while( i < input.length){
+    while(input.length > i + 1){
         c = input.charAt(i);
         if(c == "{"){
             skip = true;

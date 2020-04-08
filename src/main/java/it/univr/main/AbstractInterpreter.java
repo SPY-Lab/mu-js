@@ -274,10 +274,13 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 		state.getCallStringEnvironment(key).putVariable(v, visit(ctx.expression()), currentCallString);
 
-		AbstractHeap lastHeap = currentEnvironment.get(currentCallString).getHeap();
+		AbstractHeap lastHeap = currentEnvironment.get(currentCallString).getHeap().clone();
 		currentEnvironment = state.getCallStringEnvironment(key).clone();
-		currentEnvironment.get(currentCallString).getHeap().putAll(lastHeap);	
 
+		
+		for (AllocationSite l : lastHeap.keySet()) 
+			currentEnvironment.get(currentCallString).getHeap().put(l,lastHeap.get(l).clone());	
+	
 		return new Bottom(); 
 	}
 
@@ -364,7 +367,8 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 	@Override 
 	public AbstractValue visitProgramExecution(MuJsParser.ProgramExecutionContext ctx) {
-		return visit(ctx.stmt()); 
+		visit(ctx.stmt()); 
+		return domain.makeBottom();
 	}
 
 	@Override 
@@ -656,7 +660,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		} catch (Exception e) {
 			System.err.println("Return statement used outside function declaration!");
 		}
-		
+				
 		Function f = state.getFunction(new Variable(call.ID(0).getText()));
 		f.addReturnValueAtCallString(getCurrentCallString(), visit(ctx.expression()));
 		
@@ -731,14 +735,17 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		visit(f.getBody());
 		callStrings = currentCallString;
 
-		AbstractHeap lastHeap = currentEnvironment.get(newCallString).getHeap();
-		
+		AbstractHeap lastHeap = currentEnvironment.get(newCallString).getHeap().clone();
 		for (int i = 0; i < f.getFormalParameters().size(); i++) 
 			currentEnvironment.removeVariable(f.getFormalParameters().get(i), newCallString);
 
 		currentEnvironment = old;
 				
-		currentEnvironment.get(currentCallString).getHeap().putAll(lastHeap);		
+		
+		for (AllocationSite l : lastHeap.keySet()) 
+			currentEnvironment.get(currentCallString).getHeap().put(l,lastHeap.get(l).clone());	
+		
+
 		return f.getReturnValueAtCallString(newCallString); 
 	}
 

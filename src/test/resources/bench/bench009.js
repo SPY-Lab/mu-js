@@ -1,7 +1,7 @@
 function parse(name){
-    tid = new {};
     colonIndex = name.indexOf(":");
     if(colonIndex < 0){
+        tid = new { };
         tid["outputIndex"] = 0;
         tid["name"] = name;
         return tid;
