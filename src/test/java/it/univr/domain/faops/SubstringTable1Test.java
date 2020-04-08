@@ -253,7 +253,7 @@ public class SubstringTable1Test {
 
         Automaton b = Automaton.makeAutomaton("hello");
 
-        FA automaton = new FA(Automaton.union(b));
+        FA automaton = new FA(b);
 
         FA result = automaton.substring(new Interval("2", "2"), new Interval("3", "4"));
 

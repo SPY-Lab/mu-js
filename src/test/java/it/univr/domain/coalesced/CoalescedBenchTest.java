@@ -214,4 +214,19 @@ public class CoalescedBenchTest {
         Assert.assertEquals(new FA(Automaton.makeRealAutomaton("123 ret")), state.getValue(new Variable("w")));
 
     }
+
+    @Test
+    public void testBench012() throws Exception {
+
+        String file = "src/test/resources/bench/bench012.js";
+
+        AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+        //State size
+        Assert.assertEquals(state.sizeStore(), 1);
+        Assert.assertEquals(state.sizeHeap(), 0);
+
+        //Assert.assertEquals(new FA(Automaton.makeRealAutomaton("jajHu")), state.getValue(new Variable("x")));
+        System.out.println(state.getValue(new Variable("x")));
+    }
 }
