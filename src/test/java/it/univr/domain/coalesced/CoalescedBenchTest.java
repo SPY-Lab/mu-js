@@ -213,7 +213,7 @@ public class CoalescedBenchTest {
     @Test
     public void testBench012() throws Exception {
 
-        String file = "src/test/resources/bench/bench012.js";
+        String file = "src/test/resources/bench/bench013.js";
 
         AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
 
