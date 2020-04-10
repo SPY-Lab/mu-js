@@ -317,5 +317,15 @@ public class CharAtTest {
 		FA expectedResult = new FA(Automaton.union(automata));
 		Assert.assertEquals(expectedResult, result);
 	}
-	
+
+    @Test
+    public void charAtTestCase6() {
+        FA a = new FA(Automaton.makeRealAutomaton("www.google.it"));
+
+        FA result = a.charAt(new Interval("0", "0"));
+
+        FA expectedResult = new FA(Automaton.makeRealAutomaton("w"));
+
+        Assert.assertEquals(expectedResult, result);
+    }
 }

@@ -22,7 +22,7 @@ public class Analyzer {
 	
 	public static void main(String[] args) throws IOException {
 		System.out.println(potd());
-		String file = "src/test/resources/rec-functions/rec-fun001.js"; //args[0];
+		String file = "src/test/resources/bench/bench013.js"; //args[0];
 
 		boolean printInvariants = false;
 

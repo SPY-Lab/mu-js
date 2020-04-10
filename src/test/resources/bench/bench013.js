@@ -2,32 +2,30 @@ function parseHost(input){
     input = input.trim();
     input = input.toLowerCase();
     if (!input.startsWith("https://")){
-        return "null";
+        r = "null";
     }else{
         input = input.substring(8, input.length);
-        if(input.charAt(0) == "["){
-            return "null";
+        if(!input.startsWith("www.")){
+            r = "null";
         }else{
-            if(!input.startsWith("www.")){
-                return "null";
+            if(input.endsWith(".it")){
+                domain = input.substring(4, input.length - 3);
+                r = new {a: "https"; b: "www"; c: domain; d: ".it"};
             }else{
-                if(input.endsWith(".it")){
-                    domain = input.substring(4, input.length - 3);
-                    object = new {a: "https"; b: "www"; c: domain; d: ".it"};
-                    return object;
-                }else{
-                    return "null";
-                }
+                r = "null";
             }
         }
     }
+    return r;
 }
 
-//parse dei primi 3 domini .it che usano https
 function parseFirstDomain(s){
-    while(true){
+    stop = false;
+    while(!stop){
         if(s.length == 0){
-            return "null";
+            stop = true;
+            result = new {a: "null"};
+            //result = "null";
         }else{
             index = s.indexOf("\n");
             if(index == -1){
@@ -37,15 +35,16 @@ function parseFirstDomain(s){
                 sub = s.substring(0, index);
                 s = s.substring(index + 1, s.length);
             }
+
             result = parseHost(sub);
             if(! result == "null"){
-                return result;
+                stop = true;
             }else{}
         }
 
     }
 
-    return "null";
+    return result;
 }
 
-x = parseFirstDomain("https://google.it\na");
+x = parseFirstDomain("https://www.google.it");

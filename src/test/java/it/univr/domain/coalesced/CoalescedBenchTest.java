@@ -219,9 +219,30 @@ public class CoalescedBenchTest {
 
         //State size
         Assert.assertEquals(state.sizeStore(), 1);
-        Assert.assertEquals(state.sizeHeap(), 0);
+        Assert.assertEquals(state.sizeHeap(), 2);
 
-        //Assert.assertEquals(new FA(Automaton.makeRealAutomaton("jajHu")), state.getValue(new Variable("x")));
+        MultiHashMap<FA, AbstractValue> properties = new MultiHashMap<>();
+        properties.put(new FA(Automaton.makeRealAutomaton("a")), new FA(Automaton.makeRealAutomaton("www")));
+        properties.put(new FA(Automaton.makeRealAutomaton("b")), new FA(Automaton.makeRealAutomaton("google")));
+        properties.put(new FA(Automaton.makeRealAutomaton("c")), new FA(Automaton.makeRealAutomaton("it")));
+        AbstractObject oObject = new AbstractObject(properties);
+
+        MultiHashMap<FA, AbstractValue> properties2 = new MultiHashMap<>();
+        properties2.put(new FA(Automaton.makeRealAutomaton("a")), new FA(Automaton.makeRealAutomaton("null")));
+        AbstractObject oObject2 = new AbstractObject(properties2);
+
         System.out.println(state.getValue(new Variable("x")));
     }
+
+    @Test
+    public void testBench013() throws Exception {
+
+        String file = "src/test/resources/bench/bench014.js";
+
+        AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+        System.out.println(state.getValue(new Variable("x")));
+    }
+
+
 }
