@@ -10,7 +10,7 @@ function parseHost(input){
         }else{
             if(input.endsWith(".it")){
                 domain = input.substring(4, input.length - 3);
-                r = new {a: "https"; b: "www"; c: domain; d: ".it"};
+                r = new {a: "https"; b: "www"; c: domain; d: "it"};
             }else{
                 r = "null";
             }

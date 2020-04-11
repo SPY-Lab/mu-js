@@ -224,9 +224,10 @@ public class CoalescedBenchTest {
         Assert.assertEquals(state.sizeHeap(), 2);
 
         MultiHashMap<FA, AbstractValue> properties = new MultiHashMap<>();
-        properties.put(new FA(Automaton.makeRealAutomaton("a")), new FA(Automaton.makeRealAutomaton("www")));
-        properties.put(new FA(Automaton.makeRealAutomaton("b")), new FA(Automaton.makeRealAutomaton("google")));
-        properties.put(new FA(Automaton.makeRealAutomaton("c")), new FA(Automaton.makeRealAutomaton("it")));
+        properties.put(new FA(Automaton.makeRealAutomaton("a")), new FA(Automaton.makeRealAutomaton("https")));
+        properties.put(new FA(Automaton.makeRealAutomaton("b")), new FA(Automaton.makeRealAutomaton("www")));
+        properties.put(new FA(Automaton.makeRealAutomaton("c")), new FA(Automaton.makeRealAutomaton("google")));
+        properties.put(new FA(Automaton.makeRealAutomaton("d")), new FA(Automaton.makeRealAutomaton("it")));
         AbstractObject oObject = new AbstractObject(properties);
 
         MultiHashMap<FA, AbstractValue> properties2 = new MultiHashMap<>();
