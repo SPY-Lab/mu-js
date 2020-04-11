@@ -201,8 +201,25 @@ public class CoalascedAbstractDomain extends AbstractDomain {
 	@Override
 	public AbstractValue equals(AbstractValue v1, AbstractValue v2) {
 
-		if (v1 instanceof FA && v2 instanceof FA)
+		if (v1 instanceof FA && v2 instanceof FA) {
+			Automaton first = ((FA) v1).getAutomaton();
+			Automaton second = ((FA) v2).getAutomaton();
+			
+			
+			if (Automaton.isEmptyLanguageAccepted(Automaton.intersection(first, second)))
+				return new Bool(0);
+			
+			if (!first.hasCycle() && !second.hasCycle()) {
+				if (first.getLanguage() == second.getLanguage() && second.getLanguage().size() == 1)
+					return new Bool(1);
+				
+				if (first.getLanguage() != second.getLanguage() && second.getLanguage().size() == 1 && first.getLanguage().size() == 1)
+					return new Bool(0);
+			}
+			
 			return new Bool(2);
+		}
+			
 		else if ((v1 instanceof Bool || v1 instanceof FA || v1 instanceof Interval) && (v2 instanceof Bool || v2 instanceof FA || v2 instanceof Interval)) {
 			AbstractValue left = v1.juggleToNumber();
 			AbstractValue right = v2.juggleToNumber();

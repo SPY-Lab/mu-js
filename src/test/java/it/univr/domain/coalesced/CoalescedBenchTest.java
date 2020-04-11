@@ -12,6 +12,8 @@ import it.univr.main.Analyzer;
 import it.univr.state.AbstractEnvironment;
 import it.univr.state.Variable;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.HashSet;
 
 public class CoalescedBenchTest {
@@ -211,7 +213,7 @@ public class CoalescedBenchTest {
     }
 
     @Test
-    public void testBench012() throws Exception {
+    public void testBench013() throws Exception {
 
         String file = "src/test/resources/bench/bench013.js";
 
@@ -231,18 +233,14 @@ public class CoalescedBenchTest {
         properties2.put(new FA(Automaton.makeRealAutomaton("a")), new FA(Automaton.makeRealAutomaton("null")));
         AbstractObject oObject2 = new AbstractObject(properties2);
 
-        System.out.println(state.getValue(new Variable("x")));
+        AllocationSite site2 = new AllocationSite(27, 12);
+        AllocationSite site1 = new AllocationSite(13, 16);
+        
+        AllocationSites xSites = new AllocationSites(site1, site2);  
+        
+        assertEquals(state.getValue(new Variable("x")), xSites);
+        
+        assertEquals(state.getValue(site1), oObject);
+        assertEquals(state.getValue(site2), oObject2);
     }
-
-    @Test
-    public void testBench013() throws Exception {
-
-        String file = "src/test/resources/bench/bench014.js";
-
-        AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
-
-        System.out.println(state.getValue(new Variable("x")));
-    }
-
-
 }

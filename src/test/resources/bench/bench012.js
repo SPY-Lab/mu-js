@@ -40,7 +40,7 @@ function isValidDomain(input){
 function parseFirst3(s){
     i = 0;
     domains = "";
-    while(i < 4){
+    while(i < 1){
         if(s.length == 0){
             return "null";
         }else{
@@ -51,7 +51,7 @@ function parseFirst3(s){
             }else{
                 sub = s.substring(0, index);
                 s = s.substring(index + 1, s.length);
-            }ini
+            }
             result = parseHost(sub);
             if(! result == "null"){
                 domains = domains + result;
