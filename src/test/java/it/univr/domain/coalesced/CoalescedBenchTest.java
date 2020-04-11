@@ -244,4 +244,37 @@ public class CoalescedBenchTest {
         assertEquals(state.getValue(site1), oObject);
         assertEquals(state.getValue(site2), oObject2);
     }
+
+    @Test
+    public void testBench014() throws Exception {
+
+        String file = "src/test/resources/bench/bench014.js";
+
+        AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+        //State size
+        Assert.assertEquals(state.sizeStore(), 1);
+        Assert.assertEquals(state.sizeHeap(), 2);
+
+        MultiHashMap<FA, AbstractValue> properties = new MultiHashMap<>();
+        properties.put(new FA(Automaton.makeRealAutomaton("a")), new FA(Automaton.makeRealAutomaton("https")));
+        properties.put(new FA(Automaton.makeRealAutomaton("b")), new FA(Automaton.makeRealAutomaton("www")));
+        properties.put(new FA(Automaton.makeRealAutomaton("c")), new FA(Automaton.makeRealAutomaton("abc")));
+        properties.put(new FA(Automaton.makeRealAutomaton("d")), new FA(Automaton.makeRealAutomaton("it")));
+        AbstractObject oObject = new AbstractObject(properties);
+
+        MultiHashMap<FA, AbstractValue> properties2 = new MultiHashMap<>();
+        properties2.put(new FA(Automaton.makeRealAutomaton("a")), new FA(Automaton.makeRealAutomaton("null")));
+        AbstractObject oObject2 = new AbstractObject(properties2);
+
+        AllocationSite site2 = new AllocationSite(16, 20);
+        AllocationSite site1 = new AllocationSite(31, 12);
+
+        AllocationSites xSites = new AllocationSites(site1, site2);
+
+        assertEquals(state.getValue(new Variable("x")), xSites);
+
+        assertEquals(state.getValue(site1), oObject2);
+        assertEquals(state.getValue(site2), oObject);
+    }
 }
