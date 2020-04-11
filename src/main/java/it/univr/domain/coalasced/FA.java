@@ -529,6 +529,20 @@ public class FA implements AbstractValue {
 		if (getAutomaton().hasCycle())
 			return new Interval("-1", "+Inf");
 
+				
+		if (getAutomaton().isSingleString() && search.getAutomaton().isSingleString()) {
+			String first =  getAutomaton().getSingleString();
+			String second = search.getAutomaton().getSingleString();
+			
+			if (first.contains(second)) {
+				int i = first.indexOf(second);
+				return new Interval(String.valueOf(i),String.valueOf(i));
+			} else {
+				return new Interval("-1","-1");
+			}
+					
+		}		
+		
 		Automaton build = getAutomaton().isSingleString() ? Automaton.makeRealAutomaton(getAutomaton().getSingleString()) : getAutomaton().clone();
 		Automaton search_clone = search.getAutomaton().isSingleString() ? Automaton.makeRealAutomaton(search.getAutomaton().getSingleString()) : search.getAutomaton().clone();
 

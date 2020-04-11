@@ -30,13 +30,13 @@ function parseFirstDomain(s){
             stop = true;
             result = new {a: "null"};
         }else{
-            index = s.indexOf("\n");
+            index = s.indexOf("|");
             if(index == -1){
                 sub = s.substring(0, s.length);
                 s = "";
             }else{
                 sub = s.substring(0, index);
-                s = s.substring(index + 2, s.length);
+                s = s.substring(index, s.length);
             }
 
             result = parseHost(sub);
@@ -50,4 +50,4 @@ function parseFirstDomain(s){
     return result;
 }
 
-x = parseFirstDomain("a\nhttps://www.abc.it");
+x = parseFirstDomain("a|https://www.abc.it");
