@@ -29,7 +29,6 @@ function parseFirstDomain(s){
         if(s.length == 0){
             stop = true;
             result = new {a: "null"};
-            //result = "null";
         }else{
             index = s.indexOf("\n");
             if(index == -1){
@@ -37,7 +36,7 @@ function parseFirstDomain(s){
                 s = "";
             }else{
                 sub = s.substring(0, index);
-                s = s.substring(index + 1, s.length);
+                s = s.substring(index + 2, s.length);
             }
 
             result = parseHost(sub);

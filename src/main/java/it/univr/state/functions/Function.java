@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import org.antlr.v4.runtime.misc.Pair;
 
+import it.univr.domain.AbstractDomain;
 import it.univr.domain.AbstractValue;
 import it.univr.main.MuJsParser;
 import it.univr.main.MuJsParser.StmtContext;
@@ -16,11 +17,13 @@ public class Function {
 	private Vector<Variable> formalParameters;
 	private MuJsParser.StmtContext body;
 	public HashMap<KCallStrings, Pair<ActualParameters, AbstractValue>> envs;
-
-	public Function(Variable name, Vector<Variable> formalParameters, StmtContext bod) {
+	private AbstractDomain domain;
+	
+	public Function(Variable name, Vector<Variable> formalParameters, StmtContext bod, AbstractDomain domain) {
 		this.name = name;
 		this.formalParameters = formalParameters;
 		this.body = bod;
+		this.domain = domain;
 		this.envs = new HashMap<KCallStrings, Pair<ActualParameters,AbstractValue>>();
 	}
 
@@ -72,7 +75,7 @@ public class Function {
 		if (hasCallString(cs)) {
 			AbstractValue oldRet = envs.get(cs).b;
 			envs.remove(cs);
-			envs.put(cs, new Pair<ActualParameters, AbstractValue>(pars, oldRet.leastUpperBound(ret)));
+			envs.put(cs, new Pair<ActualParameters, AbstractValue>(pars, domain.leastUpperBound(oldRet,ret)));
 		} else {
 			envs.put(cs, new Pair<ActualParameters, AbstractValue>(pars, ret));
 		}
@@ -83,7 +86,7 @@ public class Function {
 			AbstractValue oldRet = envs.get(cs).b;
 			ActualParameters oldPars = envs.get(cs).a;
 			envs.remove(cs);
-			envs.put(cs, new Pair<ActualParameters, AbstractValue>(oldPars, oldRet.leastUpperBound(ret)));
+			envs.put(cs, new Pair<ActualParameters, AbstractValue>(oldPars, domain.leastUpperBound(oldRet,ret)));
 		} else {
 			envs.put(cs, new Pair<ActualParameters, AbstractValue>(new ActualParameters(), ret));
 		}

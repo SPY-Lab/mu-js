@@ -677,7 +677,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		for (int i = 1; i < ctx.ID().size(); i++)
 			formalParameters.add(new Variable(ctx.ID(i).getText()));
 
-		Function function = new Function(name, formalParameters, body);
+		Function function = new Function(name, formalParameters, body, domain);
 
 		state.addFunction(name, function);
 		return new Bottom();
