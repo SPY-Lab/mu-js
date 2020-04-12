@@ -1,4 +1,4 @@
-// Generated from ./src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
+// Generated from ../eclipse-workspace/mu-js/src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
 
     package it.univr.main;
 
@@ -585,6 +585,18 @@ public interface MuJsListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitObjectAsg(MuJsParser.ObjectAsgContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ForEach}
+	 * labeled alternative in {@link MuJsParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterForEach(MuJsParser.ForEachContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ForEach}
+	 * labeled alternative in {@link MuJsParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitForEach(MuJsParser.ForEachContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MuJsParser#block}.
 	 * @param ctx the parse tree

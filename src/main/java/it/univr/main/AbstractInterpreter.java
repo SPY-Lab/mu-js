@@ -17,6 +17,7 @@ import it.univr.domain.coalasced.FA;
 import it.univr.domain.coalasced.Interval;
 import it.univr.domain.coalasced.MustMay;
 import it.univr.domain.coalasced.NaN;
+import it.univr.main.MuJsParser.ForEachContext;
 import it.univr.main.MuJsParser.FunctionDeclarationContext;
 import it.univr.main.MuJsParser.ProgramContext;
 import it.univr.main.MuJsParser.ReturnStmtContext;
@@ -55,7 +56,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		this.callStringsSize = 3;
 		currentEnvironment.put(new KCallStrings(new CallString(0,0)), new AbstractEnvironment(domain));
 	}
-	
+
 	public AbstractEnvironment getAbstractEnvironmentAtMainCallString() {
 		return currentEnvironment.get(new KCallStrings(new CallString(0,0)));
 	}
@@ -108,9 +109,9 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		AbstractValue allocationSites = currentEnvironment.getStore(getCurrentCallString()).get(var);
 
 		if (allocationSites instanceof AllocationSites) {
-			
+
 			boolean performStrongUpdate = ((AllocationSites)allocationSites).getMustMay().isMust();
-			
+
 			for (AllocationSite l : ((AllocationSites)allocationSites).getAllocationSites()) {
 
 				FA key = new FA(visit(ctx.expression(0)).toString());
@@ -162,7 +163,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitEmptyObject(MuJsParser.EmptyObjectContext ctx) {
 		return new AbstractObject(); 
 	}
-	
+
 	@Override
 	public AbstractValue visitIncludes(MuJsParser.IncludesContext ctx) {
 		AbstractValue left = visit(ctx.expression(0));
@@ -203,7 +204,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 		return domain.toLowerCase(par);
 	}
-	
+
 	@Override
 	public AbstractValue visitToUpperCase(MuJsParser.ToUpperCaseContext ctx) {
 		AbstractValue par = visit(ctx.expression());
@@ -265,7 +266,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		// Get variable name
 		Variable v = new Variable(ctx.getChild(0).getText());
 
-		
+
 		// Get line
 		KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
 		KCallStrings currentCallString = getCurrentCallString();
@@ -277,10 +278,10 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		AbstractHeap lastHeap = currentEnvironment.get(currentCallString).getHeap().clone();
 		currentEnvironment = state.getCallStringEnvironment(key).clone();
 
-		
+
 		for (AllocationSite l : lastHeap.keySet()) 
 			currentEnvironment.get(currentCallString).getHeap().put(l,lastHeap.get(l).clone());	
-	
+
 		return new Bottom(); 
 	}
 
@@ -312,19 +313,19 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		// save the must and put them at may
 		AbstractStore store = currentEnvironment.getStore(getCurrentCallString());
 		HashMap<Object, AllocationSites> must = new HashMap<>();
-		
+
 		for (Object key : store.keySet()) {
-			
+
 			if (store.get(key) instanceof AllocationSites) {
 				AllocationSites sites = (AllocationSites)store.get(key);
-				
+
 				if (sites.getMustMay().isMust()) {
 					must.put(key, sites);
 					sites.setMustMay(new MustMay(0)); // may
 				}
 			}
 		}
-		
+
 		CallStringAbstractEnvironment previous = (CallStringAbstractEnvironment) currentEnvironment.clone();
 
 		visit(ctx.block(0));
@@ -335,15 +336,15 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		visit(ctx.block(1));
 
 		currentEnvironment = currentEnvironment.leastUpperBound(trueBranch);
- 
+
 		/* 
-		* put allocationsites with multiple sites to may
-		* and put to must allocationsites present in the must before the if
-		*/
+		 * put allocationsites with multiple sites to may
+		 * and put to must allocationsites present in the must before the if
+		 */
 		store = currentEnvironment.getStore(getCurrentCallString());
-		
+
 		for (Object key : store.keySet()) {
-			
+
 			if (store.get(key) instanceof AllocationSites) {
 				AllocationSites sites = (AllocationSites)store.get(key);
 				if (sites.size() == 1) {
@@ -356,9 +357,9 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 			}
 		}
 		must.clear();
-		
-		
-		
+
+
+
 		KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
 		state.add(key, currentEnvironment.get(getCurrentCallString()).clone(), getCurrentCallString());
 
@@ -375,17 +376,17 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitWhileStmt(MuJsParser.WhileStmtContext ctx) { 
 
 		AbstractValue guard = domain.juggleToBool(visit(ctx.expression()));
-		
+
 		// save the must and put them at may
 		HashMap<Object, AllocationSites> must = new HashMap<>();
 		if (domain.isTopBool(guard)) {
 			AbstractStore store = currentEnvironment.getStore(getCurrentCallString());
-			
+
 			for (Object key : store.keySet()) {
-				
+
 				if (store.get(key) instanceof AllocationSites) {
 					AllocationSites sites = (AllocationSites)store.get(key);
-					
+
 					if (sites.getMustMay().isMust()) {
 						must.put(key, sites);
 						sites.setMustMay(new MustMay(0)); // may
@@ -393,7 +394,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 				}
 			}
 		}
-		
+
 		CallStringAbstractEnvironment previous = (CallStringAbstractEnvironment) currentEnvironment.clone();
 
 		do {
@@ -425,16 +426,16 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 			else
 				previous = currentEnvironment.clone();
 		} while (true);
-		
+
 		if (domain.isTopBool(guard)) {
 			/* 
-			* put allocationsites with multiple sites to may
-			* and put to must allocationsites present in the must before the if
-			*/
+			 * put allocationsites with multiple sites to may
+			 * and put to must allocationsites present in the must before the if
+			 */
 			AbstractStore store = currentEnvironment.getStore(getCurrentCallString());
-			
+
 			for (Object key : store.keySet()) {
-				
+
 				if (store.get(key) instanceof AllocationSites) {
 					AllocationSites sites = (AllocationSites)store.get(key);
 					if (sites.size() == 1) {
@@ -455,6 +456,81 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		return new Bottom(); 
 	}
 
+
+	@Override 
+	public AbstractValue visitForEach(MuJsParser.ForEachContext ctx) { 
+
+		// save the must and put them at may
+		HashMap<Object, AllocationSites> must = new HashMap<>();
+
+		AbstractStore store = currentEnvironment.getStore(getCurrentCallString());
+
+		for (Object key : store.keySet()) {
+
+			if (store.get(key) instanceof AllocationSites) {
+				AllocationSites sites = (AllocationSites)store.get(key);
+
+				if (sites.getMustMay().isMust()) {
+					must.put(key, sites);
+					sites.setMustMay(new MustMay(0)); // may
+				}
+			}
+
+		}
+		
+
+		CallStringAbstractEnvironment previous = (CallStringAbstractEnvironment) currentEnvironment.clone();
+
+		Variable local = new Variable(ctx.ID(0).getText());
+		Variable vObj = new Variable(ctx.ID(1).getText());
+		
+		if (currentEnvironment.get(getCurrentCallString()).getStore().getValue(vObj) instanceof AllocationSites) {
+			AllocationSites sites = (AllocationSites) currentEnvironment.get(getCurrentCallString()).getStore().getValue(vObj);
+
+			for (AllocationSite l : sites.getAllocationSites()) {
+				AbstractObject obj = (AbstractObject) currentEnvironment.get(getCurrentCallString()).getHeap().get(l);
+				
+				for (FA p : obj.getAbstractObjectMap().keySet()) {
+					currentEnvironment.get(getCurrentCallString()).getStore().remove(local);
+					currentEnvironment.get(getCurrentCallString()).getStore().put(local, p);
+					visit(ctx.block());
+
+					currentEnvironment = previous.leastUpperBound(currentEnvironment);
+					previous = currentEnvironment.clone();
+				}
+			}
+		}
+		
+		currentEnvironment.get(getCurrentCallString()).getStore().remove(local);
+
+		
+		/* 
+		 * put allocationsites with multiple sites to may
+		 * and put to must allocationsites present in the must before the if
+		 */
+		store = currentEnvironment.getStore(getCurrentCallString());
+
+		for (Object key : store.keySet()) {
+
+			if (store.get(key) instanceof AllocationSites) {
+				AllocationSites sites = (AllocationSites)store.get(key);
+				if (sites.size() == 1) {
+					if (sites.equals(must.get(key))) {
+						sites.setMustMay(new MustMay(1)); // must
+					}
+				} else {
+					sites.setMustMay(new MustMay(0)); // may
+				}
+			}
+		}
+		must.clear();
+
+		KeyAbstractState key = new KeyAbstractState(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
+		state.add(key, currentEnvironment.get(getCurrentCallString()).clone(), getCurrentCallString());
+
+		return new Bottom(); 
+	}
+
 	/**
 	 * 
 	 * MuJS Expression
@@ -467,7 +543,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 		return domain.greater(left, right);
 	}
-	
+
 	@Override 
 	public AbstractValue visitSlice(MuJsParser.SliceContext ctx) { 
 		AbstractValue str = visit(ctx.expression(0));
@@ -476,21 +552,21 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 		return domain.slice(str, i, j);
 	}
-	
+
 	@Override 
 	public AbstractValue visitTrim(MuJsParser.TrimContext ctx) { 
 		AbstractValue par = visit(ctx.expression());
 
 		return domain.trim(par);
 	}
-	
+
 	@Override 
 	public AbstractValue visitTrimLeft(MuJsParser.TrimLeftContext ctx) { 
 		AbstractValue par = visit(ctx.expression());
 
 		return domain.trimLeft(par);
 	}
-	
+
 	@Override 
 	public AbstractValue visitTrimRight(MuJsParser.TrimRightContext ctx) { 
 		AbstractValue par = visit(ctx.expression());
@@ -588,12 +664,12 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 		AbstractValue v = visit(ctx.expression());
 		return domain.not(v);		
 	}
-	
+
 	@Override 
 	public AbstractValue visitRandomInt(MuJsParser.RandomIntContext ctx) { 
 		return domain.makeUnknownInteger();		
 	}
-	
+
 
 
 	@Override 
@@ -654,16 +730,16 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	public AbstractValue visitReturnStmt(MuJsParser.ReturnStmtContext ctx) {
 
 		FunctionDeclarationContext call = null;
-		
+
 		try {
 			call = getFunctionDeclarationContext(ctx);
 		} catch (Exception e) {
 			System.err.println("Return statement used outside function declaration!");
 		}
-				
+
 		Function f = state.getFunction(new Variable(call.ID(0).getText()));
 		f.addReturnValueAtCallString(getCurrentCallString(), visit(ctx.expression()));
-		
+
 		return f.getReturnValueAtCallString(getCurrentCallString()); 
 	}
 
@@ -699,7 +775,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 			AbstractValue actualPar = visit(ctx.expression(i));
 			actualParameters.add(actualPar);
 		}
-		
+
 		CallString call = new CallString(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine());
 		KCallStrings newCallString = getCurrentCallString().clone();
 		newCallString.add(call);
@@ -730,7 +806,7 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 
 		currentEnvironment = state.getCallStringEnvironment(key).clone();
 
-		
+
 		callStrings = newCallString;
 		visit(f.getBody());
 		callStrings = currentCallString;
@@ -740,11 +816,11 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 			currentEnvironment.removeVariable(f.getFormalParameters().get(i), newCallString);
 
 		currentEnvironment = old;
-				
-		
+
+
 		for (AllocationSite l : lastHeap.keySet()) 
 			currentEnvironment.get(currentCallString).getHeap().put(l,lastHeap.get(l).clone());	
-		
+
 
 		return f.getReturnValueAtCallString(newCallString); 
 	}
@@ -752,19 +828,19 @@ public class AbstractInterpreter extends MuJsBaseVisitor<AbstractValue> {
 	private KCallStrings getCurrentCallString() {
 		return callStrings.clone();
 	}
-	
+
 	private FunctionDeclarationContext getFunctionDeclarationContext(ReturnStmtContext ret) throws Exception {
 		ParserRuleContext result = ret;
-		
+
 		while (true) {
 			result = result.getParent();
-			
+
 			if (result instanceof ProgramContext)
 				throw new Exception();
 			else if (result instanceof FunctionDeclarationContext) 
 				return (FunctionDeclarationContext) result;
-			}
+		}
 	}
-	
+
 
 }

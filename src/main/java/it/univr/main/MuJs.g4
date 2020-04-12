@@ -75,6 +75,7 @@ expression:	val															#PrimitiveValue
 stmt:
 	   ID '=' expression ';'											#AssignmentStmt
 	| 'if' '(' expression ')' block 'else' block						#IfStmt
+	| 'for' '(' ID 'in' ID ')'	block									#ForEach
 	| 'while' '(' expression ')' block									#WhileStmt
 	|  block															#BlockStmt
 	|  'return' expression ';'											#ReturnStmt				

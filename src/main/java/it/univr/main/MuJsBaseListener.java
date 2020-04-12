@@ -1,4 +1,4 @@
-// Generated from ./src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
+// Generated from ../eclipse-workspace/mu-js/src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
 
     package it.univr.main;
 
@@ -589,6 +589,18 @@ public class MuJsBaseListener implements MuJsListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitObjectAsg(MuJsParser.ObjectAsgContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterForEach(MuJsParser.ForEachContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitForEach(MuJsParser.ForEachContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

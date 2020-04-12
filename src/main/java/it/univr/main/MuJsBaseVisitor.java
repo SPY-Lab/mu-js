@@ -1,4 +1,4 @@
-// Generated from ./src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
+// Generated from ../eclipse-workspace/mu-js/src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
 
     package it.univr.main;
 
@@ -349,6 +349,13 @@ public class MuJsBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitObjectAsg(MuJsParser.ObjectAsgContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitForEach(MuJsParser.ForEachContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

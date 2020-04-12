@@ -1,4 +1,4 @@
-// Generated from ./src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
+// Generated from ../eclipse-workspace/mu-js/src/main/java/it/univr/main/MuJs.g4 by ANTLR 4.7.2
 
     package it.univr.main;
 
@@ -348,6 +348,13 @@ public interface MuJsVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitObjectAsg(MuJsParser.ObjectAsgContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ForEach}
+	 * labeled alternative in {@link MuJsParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForEach(MuJsParser.ForEachContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MuJsParser#block}.
 	 * @param ctx the parse tree

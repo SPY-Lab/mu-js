@@ -50,4 +50,4 @@ function parseFirstDomain(s){
     return result;
 }
 
-x = parseFirstDomain("a|https://www.abc.it");
+x = parseFirstDomain("a|https://www.c.it");

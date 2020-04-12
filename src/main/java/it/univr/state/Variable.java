@@ -7,6 +7,8 @@ package it.univr.state;
  */
 public class Variable {
 	
+	private boolean isLocal;
+	
 	/**
 	 * Name Variable
 	 */
