@@ -281,4 +281,26 @@ public class CoalescedBenchTest {
         assertEquals(state.getValue(site1), oObject2);
         assertEquals(state.getValue(site2), oObject);
     }
+    
+    @Test
+    public void testBench015() throws Exception {
+
+        String file = "src/test/resources/bench/bench015.js";
+
+        AbstractEnvironment state = Analyzer.analyze(file, domain).getAbstractEnvironmentAtMainCallString();
+
+        //State size
+        Assert.assertEquals(state.sizeStore(), 6);
+        Assert.assertEquals(state.sizeHeap(), 1);
+
+        FA inputValue = FA.union("MANabc;Manchester", "GNFgef;Greenfield");
+        Interval semiCValue = new Interval("6", "6");
+        FA codeValue = FA.union("MAN", "GNF");
+        FA nameValue = FA.union("Manchester", "Greenfield");
+        
+        assertEquals(state.getValue(new Variable("input")), inputValue);
+        assertEquals(state.getValue(new Variable("semiC")), semiCValue);
+        assertEquals(state.getValue(new Variable("code")), codeValue);
+        assertEquals(state.getValue(new Variable("name")), nameValue);
+    }
 }
