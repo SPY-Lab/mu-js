@@ -1,5 +1,5 @@
-# MuJS static analyzer
-MuJS static analyzer is a static analyzer based on abstract interpretation for MuJs, a sub-language of JavaScript. Its syntax is reported in figure above.
+# μJS static analyzer
+μJS static analyzer is a static analyzer based on abstract interpretation for μJs, a sub-language of JavaScript. Its syntax is reported in figure above.
 
 ![image](misc/syntax.PNG)
 
@@ -7,7 +7,7 @@ MuJS static analyzer is a static analyzer based on abstract interpretation for M
 ```
 git clone https://github.com/SPY-Lab/mu-js
 ```
-Here you can find the JAR file `mujs.jar` and you can run the MuJS static analyzer as
+Here you can find the JAR file `mujs.jar` and you can run the μJS static analyzer as
 ```
 java -jar mujs.jar filename.js 
 ```
@@ -20,7 +20,7 @@ Some option are available:
 * `-help`: print the menu.
 
 ## Example
-Consider the following MuJS program.
+Consider the following μJS program.
 
 ```
 str = "helloworld";
