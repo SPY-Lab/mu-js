@@ -1,3 +1,6 @@
+/**
+ * Site: Useful string methods - Mozilla
+ */
 
 stations = new {st1: "MANabc;Manchester"; st2:"GNFgef;Greenfield"};
 
