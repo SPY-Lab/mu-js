@@ -1,5 +1,9 @@
-MAXLENGTH = 5;
+/**
+ * Project: Glide
+ * Class: GlideTrace.java
+ */
 
+MAXLENGTH = 5;
 function truncateTag(tag){
     if(tag.length > MAXLENGTH){
         return tag.substring(0, MAXLENGTH - 1);

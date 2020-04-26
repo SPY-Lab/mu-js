@@ -1,3 +1,8 @@
+/**
+ * Based partially on the project jurl (class:
+ * DefaultURLParser.java)
+ */
+
 function parseHost(input){
     input = input.trim();
     if (!input.startsWith("https://")){

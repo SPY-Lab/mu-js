@@ -1,3 +1,8 @@
+/**
+ * Project: RxJava – Reactive Extensions for the JVM
+ * Class: JavadocCodesAndLinks.java
+ */
+
 function removeCurlies(input){
     result = "";
     skip = false;

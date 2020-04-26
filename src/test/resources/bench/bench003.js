@@ -1,3 +1,7 @@
+/**
+ * Project: Elasticsearch - distributed RESTful search engine built for the cloud.
+ * Class: TestingConventionsTasks.java
+ */
 function normalizeLoGLine(line) {
     if (line.includes("ERROR")) {
         return line.substring(line.indexOf("ERROR"), line.length);

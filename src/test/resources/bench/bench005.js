@@ -1,3 +1,8 @@
+/**
+ * Project: Elasticsearch - distributed RESTful search engine built for the cloud.
+ * Class: BuildParams.java
+ */
+
 function propertyName(methodName){
     if(methodName.startsWith("is")){
         pn = methodName.substring("is".length, methodName.length);

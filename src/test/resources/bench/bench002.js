@@ -1,3 +1,7 @@
+/**
+ * Project: xJava – Reactive Extensions for the JVM
+ * Class: JavadocFindUnescaoedAngleBrackets.java
+ */
 function countLine(s, kdx){
     c = 1;
     i = kdx;

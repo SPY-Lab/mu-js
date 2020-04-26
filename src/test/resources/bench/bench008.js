@@ -1,3 +1,8 @@
+/**
+ * Project: REACT native
+ * Class: ResolveAssetSource.js
+ */
+
 function coerceLocalScriptURL(scriptURL){
     if (scriptURL.startsWith("assets://")) {
         return "null";

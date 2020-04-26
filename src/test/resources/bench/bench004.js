@@ -1,3 +1,8 @@
+/**
+ * Project: Elasticsearch - distributed RESTful search engine built for the cloud.
+ * Class: VagrantProgressLogger.java
+ */
+
 HEADINGPREFIX = "";
 squashedPrefix = "a";
 inProgressReport = true;

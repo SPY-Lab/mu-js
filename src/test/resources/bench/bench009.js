@@ -1,3 +1,8 @@
+/**
+ * Project: Tensorflow
+ * Class: TensorFlowInferenceInterface.java
+ */
+
 function parse(name){
     colonIndex = name.indexOf(":");
     if(colonIndex < 0){

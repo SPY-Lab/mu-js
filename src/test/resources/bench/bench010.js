@@ -1,3 +1,8 @@
+/**
+ * Project: MOMENT javascript
+ * Class: tlh.js
+ */
+
 function translateFuture(output) {
     time = output;
     if(!output.indexOf("jaj") == -1){

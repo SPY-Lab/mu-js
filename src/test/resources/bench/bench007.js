@@ -1,3 +1,8 @@
+/**
+ * Project: Mockito
+ * Class: PluginFileReader.java
+ */
+
 function stripCommentAndWhitespace(line){
     hash = line.indexOf("#");
 
