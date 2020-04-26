@@ -213,7 +213,7 @@ public class IndexOfTest {
 		
 		FA search = new FA(Automaton.makeAutomaton("o"));
 		
-		Assert.assertEquals(new Interval("-1", "4"), automaton.indexOf(search));
+		Assert.assertEquals(new Interval("1", "4"), automaton.indexOf(search));
 	}
 	
 	@Test

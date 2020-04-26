@@ -1,18 +1,12 @@
-/**
- * Site: Useful string methods - Mozilla
- */
 
-function fixCapitalization(input){
-    result = "";
-    for (c in cities) {
-        lower = input[c].toLowerCase();
-        firstLetter = lower.slice(0, 1);
-        firstLetter = firstLetter.toUpperCase();
-        result = result + firstLetter + lower.substring(1, lower.length) + ", ";
-    }
+stations = new {st1: "MANabc;Manchester"; st2:"GNFgef;Greenfield"};
 
-    return result.substring(0, result.length - 2);
+result = "";
+
+for (st in stations) {
+  input = stations[st];
+  code = input.substring(0,3);
+  semiC = input.indexOf(';');
+  name = input.substring(semiC + 1, input.length);
+  result = result + code + ': ' + name;
 }
-
-cities = new {city1: "lonDon"; city2: "ManCHESTer"};
-x = fixCapitalization(cities);
